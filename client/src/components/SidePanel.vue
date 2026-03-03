@@ -40,7 +40,7 @@ const isFormInvalid = computed(() => {
                 {{ showReservationForm ? 'Cancel' : 'Reserve a Spot'}}
             </button>
             <div
-                v-if="showReservationForm"
+                v-show="showReservationForm"
             >
                 <ReservationForm/>
             </div>

@@ -1,7 +1,9 @@
 <script setup lang="ts">
 import { ref, computed } from 'vue';
+import { useParkingStore } from '@/stores/parking-store';
 
 const reserveName = ref('');
+const parkingStore = useParkingStore();
 
 const isFormInvalid = computed(() => {
   return reserveName.value.trim() === ''
@@ -16,7 +18,7 @@ const isFormInvalid = computed(() => {
             placeholder="Name"
         />
         <div class="font-md">
-            Current price: $<span class="font-bold">30</span>
+            Current price: $<span class="font-bold">{{ parkingStore.currentPrice }}</span>
             <div class="pt-1 text-xs text-gray-500">
                 <p>Reserving a spot now locks in the above price. Click "Submit" to proceed with the reservation.</p>
             </div>
