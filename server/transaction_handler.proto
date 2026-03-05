@@ -1,0 +1,22 @@
+syntax = "proto2";
+
+service Transaction_Handler {
+    // Makes a payment for a reservation
+    rpc makePayment (transReq) returns (transResp) {}
+}
+
+// Consists of IDs for the user and reservation, payment info, and the value of the transaction
+message transReq {
+    required string resID = 1;
+    required string paymentInfo = 2;
+    required string uID = 3;
+    required string val = 4;
+}
+
+// Consists of reservation and user ID, and the generated transaction ID, and a success/fail indicator
+message transResp {
+    required string resID = 1;
+    required string transID = 2;
+    required string uID = 3;
+    required bool success = 4;
+}
