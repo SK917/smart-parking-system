@@ -1,0 +1,20 @@
+syntax = "proto2";
+
+service Pricing_Calculator {
+    // Client Interface requests a price for a spot
+    rpc getPrice (PriceReq) returns (PriceResp) {}
+
+}
+
+// Price Request specifies which lot and spot
+message PriceReq {
+    required string lotID = 1;
+    required string spotID = 2;
+}
+
+// Price Response returns the price for that spot in the specified lot
+message PriceResp {
+    required float price = 1;
+    required string lotID = 2;
+    required string spotID = 3;
+}

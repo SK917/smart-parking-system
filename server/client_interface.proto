@@ -1,0 +1,35 @@
+syntax = "proto2";
+
+service Client_Interface {
+    // Client requests a list of available parking spots
+    rpc getAvailablespots (AvailablespotReq) returns (AvailablespotResp) {}
+    // Client makes a reservation for a specific parking spot in a specific lot
+    rpc makeReservation (ResReq) returns (ResResp) {}
+
+}
+
+// Available spots request specifies which parking lot
+message AvailablespotReq {
+    required string lotID = 1;
+}
+
+// Available spot response returns list of available spots in that parking lot as comma separated IDs
+message AvailablespotResp {
+    required string availablespots = 1;
+}
+
+// Reservation request specifies which parking lot and spot, userID, date and time, duration, and payment info
+message ResReq {
+    required string lotID = 1;
+    required string spotID = 2;
+    required string uID = 3;
+    required string paymentInfo = 4;
+    required string datetime = 5;
+    required string duration = 6;
+}
+
+// Reservation response is success/fail
+message ResResp {
+    required bool success = 1;
+    required string resID = 2;
+}
