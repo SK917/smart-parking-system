@@ -1,18 +1,18 @@
 <script setup lang="ts">
-import { ref, computed } from 'vue';
-import ReservationForm from './ReservationForm.vue';
+    import { ref, computed } from 'vue';
+    import ReservationForm from './ReservationForm.vue';
 
-const showReservationForm = ref(false);
-const reserveName = ref('');
-const reserveNum = ref('');
+    const showReservationForm = ref(false);
+    const reserveName = ref('');
+    const reserveId = ref('');
 
-const toggleReservationForm = () => {
-    showReservationForm.value = !showReservationForm.value;
-}
+    const toggleReservationForm = () => {
+        showReservationForm.value = !showReservationForm.value;
+    }
 
-const isFormInvalid = computed(() => {
-  return reserveName.value.trim() === '' || reserveNum.value.trim() === ''
-})
+    const isFormInvalid = computed(() => {
+    return reserveName.value.trim() === '' || reserveId.value.trim() === ''
+    })
 
 </script>
 
@@ -55,7 +55,7 @@ const isFormInvalid = computed(() => {
         <div class="flex flex-col p-4 gap-4">
             <div class="text-md text-red-600 font-semibold">
                 <p>Need to check your reservation?</p>
-                <p>Enter your name and reservation number below.</p>
+                <p>Enter your name and reservation ID below.</p>
             </div>
             <input
                 v-model="reserveName"
@@ -63,9 +63,9 @@ const isFormInvalid = computed(() => {
                 placeholder="Name"
             />
             <input
-                v-model="reserveNum"
+                v-model="reserveId"
                 class="border bg-gray-100 outline-0 border-gray-700 p-1 rounded-md focus:outline-red-500 focus:outline-2 hover:outline-red-300 hover:outline-2"
-                placeholder="Reservation Number"
+                placeholder="Reservation ID"
             />
             <button
                 :disabled="isFormInvalid" 

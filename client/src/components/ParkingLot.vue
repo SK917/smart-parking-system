@@ -12,11 +12,7 @@
 
 <template>
     <div
-        class="grid gap-6 p-8"
-        :style="{
-            gridTemplateColumns: 'repeat(10, 80px)',
-            gridTemplateRows: 'repeat(6, 100px)'
-        }"
+        class="grid gap-0 p-2 grid-rows-6 grid-cols-12"
     >
         <ParkingSpot
             v-for="spot in parkingStore.spots"
