@@ -1,19 +1,21 @@
 syntax = "proto2";
 
 service Client_Interface {
-    // Client requests a list of available parking spots
+    // Client requests a list of available parking spots along with prices
     rpc getAvailablespots (AvailablespotReq) returns (AvailablespotResp) {}
     // Client makes a reservation for a specific parking spot in a specific lot
     rpc makeReservation (ResReq) returns (ResResp) {}
 
 }
 
-// Available spots request specifies which parking lot
+// Available spots request specifies which parking lot, time, and duration
 message AvailablespotReq {
     required string lotID = 1;
+    required string datetime = 2;
+    required int32 duration = 3;
 }
 
-// Available spot response returns list of available spots in that parking lot as comma separated IDs
+// Available spot response returns list of available spots in that parking lot as JSON
 message AvailablespotResp {
     required string availablespots = 1;
 }

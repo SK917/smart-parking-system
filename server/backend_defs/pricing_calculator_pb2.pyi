@@ -7,19 +7,19 @@ from typing import ClassVar as _ClassVar, Optional as _Optional
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class PriceReq(_message.Message):
-    __slots__ = ("lotID", "spotID")
+    __slots__ = ("lotID", "spots", "datetime", "duration")
     LOTID_FIELD_NUMBER: _ClassVar[int]
-    SPOTID_FIELD_NUMBER: _ClassVar[int]
+    SPOTS_FIELD_NUMBER: _ClassVar[int]
+    DATETIME_FIELD_NUMBER: _ClassVar[int]
+    DURATION_FIELD_NUMBER: _ClassVar[int]
     lotID: str
-    spotID: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, lotID: _Optional[str] = ..., spotID: _Optional[_Iterable[str]] = ...) -> None: ...
+    spots: _containers.RepeatedScalarFieldContainer[str]
+    datetime: str
+    duration: int
+    def __init__(self, lotID: _Optional[str] = ..., spots: _Optional[_Iterable[str]] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ...) -> None: ...
 
 class PriceResp(_message.Message):
-    __slots__ = ("price", "lotID", "spotID")
-    PRICE_FIELD_NUMBER: _ClassVar[int]
-    LOTID_FIELD_NUMBER: _ClassVar[int]
-    SPOTID_FIELD_NUMBER: _ClassVar[int]
-    price: _containers.RepeatedScalarFieldContainer[float]
-    lotID: str
-    spotID: _containers.RepeatedScalarFieldContainer[str]
-    def __init__(self, price: _Optional[_Iterable[float]] = ..., lotID: _Optional[str] = ..., spotID: _Optional[_Iterable[str]] = ...) -> None: ...
+    __slots__ = ("prices",)
+    PRICES_FIELD_NUMBER: _ClassVar[int]
+    prices: str
+    def __init__(self, prices: _Optional[str] = ...) -> None: ...

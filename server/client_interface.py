@@ -12,14 +12,20 @@ PRICE_CALC = None
 class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
     def getAvailablespots(self, request, context):
         # make request to database for open spots with no reservation
+        spotsReq = database_interface_pb2.AvailableSpotsReq(lotID=request.lotID)
+        spots = DB_INTERFACE.getAvailableSpots(spotsReq).availableSpots
         # make request to pricing calculator for prices for those spots
+        priceReq = pricing_calculator_pb2.PriceReq(lotID=request.lotID, spots=spots, datetime=request.datetime, duration=request.duration)
+        prices = PRICE_CALC.getPrice(priceReq).prices
         # return spots with their prices
-        pass
+        availableSpots = client_interface_pb2.AvailablespotResp(availablespots=availableSpots)
+        return availableSpots
 
     def makeReservation(self, request, context):
-        # make a reservation to the database to check if the user already has a reservation
+        # make a request to the database to check if the user already has a reservation
+        # make a request to the database to check if the user has already paid for this reservation
         # make request to transaction handler to process transaction
-        # make request to database to enter a new reservation entry for the requested spot
+        # make request to database to enter a new reservation entry or update existing entry for the requested spot
         # return whether or not the reservation was successful
         pass
 

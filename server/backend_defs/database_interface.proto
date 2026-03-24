@@ -5,8 +5,14 @@ service Database_Interface {
     rpc getAvailableSpots (AvailableSpotsReq) returns (AvailableSpotsResp) {}
     // Updates list of reservations
     rpc updateReservations (UpdateResReq) returns (UpdateResResp) {}
-    // Updates list of transactions made
-    rpc updateTransaction (TransUpdateReq) returns (TransUpdateResp) {}
+    // creates a new transaction, used by transaction handler
+    rpc createTransaction (TransCreateReq) returns (TransCreateResp) {}
+    // Returns a list of transactions for the specified reservation/user
+    rpc getTransactions (TransGetReq) returns (TransGetResp) {}
+    // Updates user info (or creates a new one)
+    rpc updateUser (userUpdateReq) returns (userUpdateResp) {}
+    // Returns requested user info
+    rpc getUser (userGetReq) returns (userGetResp) {}
 }
 
 // Specifies which parking lot
@@ -15,14 +21,14 @@ message AvailableSpotsReq {
     
 }
 
-// Returns list of comma separated parking spot IDs
+// Returns list of parking spots in JSON format
 message AvailableSpotsResp {
     required string availableSpots = 1;
 }
 
 // Request specifies reservation to be added/changed
 message UpdateResReq {
-    required string resID = 1;
+    optional string resID = 1;
     required string lotID = 2;
     required string spotID = 3;
     required string uID = 4;
@@ -34,19 +40,57 @@ message UpdateResReq {
 message UpdateResResp {
     required bool success = 1;
     required bool resID = 2;
+    optional string errorCode = 3;
 }
 
-// Transaction update request consists of related reservation ID, user ID, and payment info
-message TransUpdateReq {
+// Transaction create request consists of related reservation ID, user ID, payment method, and success/fail
+message TransCreateReq {
     required string resID = 1;
     required string uID = 2;
-    required string paymentInfo = 3;
-    required string transID = 4;
+    required string paymentMethod = 3;
     required string val = 5;
+    required bool success = 6;
 }
 
-// Transaction update response consists of success/fail and transaction ID
-message TransUpdateResp {
+// Transaction create response consists of success/fail and transaction ID
+message TransCreateResp {
     required string transID = 1;
     required bool success = 2;
+    optional string errorCode = 3;
+}
+
+// Transaction get request contains uID or resID, or none to get all transactions made
+message TransGetReq {
+    optional string uID = 1;
+    optional string resID = 2;
+}
+
+// returned list of transactions is in JSON formatted string
+message TransGetResp {
+    required string transactions = 1;
+}
+
+// contains user info to be updated
+message userUpdateReq {
+    optional string uID = 1;
+    optional string username = 2;
+    optional string password = 3;
+    optional string email = 4;
+}
+
+// response is success/fail
+message userUpdateResp {
+    required bool success = 1;
+    optional string errorCode = 2;
+}
+
+// get request uses username or email
+message userGetReq {
+    optional string username = 1;
+    optional string email = 2;
+}
+
+// returns user info as JSON
+message userGetResp {
+    required string userData = 1;
 }

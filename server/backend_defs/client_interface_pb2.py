@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x16\x63lient_interface.proto\"!\n\x10\x41vailablespotReq\x12\r\n\x05lotID\x18\x01 \x02(\t\"+\n\x11\x41vailablespotResp\x12\x16\n\x0e\x61vailablespots\x18\x01 \x02(\t\"m\n\x06ResReq\x12\r\n\x05lotID\x18\x01 \x02(\t\x12\x0e\n\x06spotID\x18\x02 \x02(\t\x12\x0b\n\x03uID\x18\x03 \x02(\t\x12\x13\n\x0bpaymentInfo\x18\x04 \x02(\t\x12\x10\n\x08\x64\x61tetime\x18\x05 \x02(\t\x12\x10\n\x08\x64uration\x18\x06 \x02(\t\")\n\x07ResResp\x12\x0f\n\x07success\x18\x01 \x02(\x08\x12\r\n\x05resID\x18\x02 \x02(\t2x\n\x10\x43lient_Interface\x12<\n\x11getAvailablespots\x12\x11.AvailablespotReq\x1a\x12.AvailablespotResp\"\x00\x12&\n\x0fmakeReservation\x12\x07.ResReq\x1a\x08.ResResp\"\x00')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x16\x63lient_interface.proto\"E\n\x10\x41vailablespotReq\x12\r\n\x05lotID\x18\x01 \x02(\t\x12\x10\n\x08\x64\x61tetime\x18\x02 \x02(\t\x12\x10\n\x08\x64uration\x18\x03 \x02(\x05\"+\n\x11\x41vailablespotResp\x12\x16\n\x0e\x61vailablespots\x18\x01 \x02(\t\"m\n\x06ResReq\x12\r\n\x05lotID\x18\x01 \x02(\t\x12\x0e\n\x06spotID\x18\x02 \x02(\t\x12\x0b\n\x03uID\x18\x03 \x02(\t\x12\x13\n\x0bpaymentInfo\x18\x04 \x02(\t\x12\x10\n\x08\x64\x61tetime\x18\x05 \x02(\t\x12\x10\n\x08\x64uration\x18\x06 \x02(\t\")\n\x07ResResp\x12\x0f\n\x07success\x18\x01 \x02(\x08\x12\r\n\x05resID\x18\x02 \x02(\t2x\n\x10\x43lient_Interface\x12<\n\x11getAvailablespots\x12\x11.AvailablespotReq\x1a\x12.AvailablespotResp\"\x00\x12&\n\x0fmakeReservation\x12\x07.ResReq\x1a\x08.ResResp\"\x00')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,13 +32,13 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'client_interface_pb2', _glo
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_AVAILABLESPOTREQ']._serialized_start=26
-  _globals['_AVAILABLESPOTREQ']._serialized_end=59
-  _globals['_AVAILABLESPOTRESP']._serialized_start=61
-  _globals['_AVAILABLESPOTRESP']._serialized_end=104
-  _globals['_RESREQ']._serialized_start=106
-  _globals['_RESREQ']._serialized_end=215
-  _globals['_RESRESP']._serialized_start=217
-  _globals['_RESRESP']._serialized_end=258
-  _globals['_CLIENT_INTERFACE']._serialized_start=260
-  _globals['_CLIENT_INTERFACE']._serialized_end=380
+  _globals['_AVAILABLESPOTREQ']._serialized_end=95
+  _globals['_AVAILABLESPOTRESP']._serialized_start=97
+  _globals['_AVAILABLESPOTRESP']._serialized_end=140
+  _globals['_RESREQ']._serialized_start=142
+  _globals['_RESREQ']._serialized_end=251
+  _globals['_RESRESP']._serialized_start=253
+  _globals['_RESRESP']._serialized_end=294
+  _globals['_CLIENT_INTERFACE']._serialized_start=296
+  _globals['_CLIENT_INTERFACE']._serialized_end=416
 # @@protoc_insertion_point(module_scope)

@@ -50,7 +50,7 @@ class Client_InterfaceServicer(object):
     """Missing associated documentation comment in .proto file."""
 
     def getAvailablespots(self, request, context):
-        """Client requests a list of available parking spots
+        """Client requests a list of available parking spots along with prices
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')

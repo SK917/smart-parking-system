@@ -12,12 +12,28 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
     def updateReservations(self, request, context):
         # checks if the reservation already exists in the database
         # if yes, update the reservation with the info in the request
-        # if no, make a new reservation entry with the relevant information, linked to the relevant transaction
+        # if no, consider it a new reservation, make a new reservation entry with the relevant information, set payment statues to pending by default
         pass
     
-    def updateTransaction(self, request, context):
-        # check if the transaction object already exists in the database
-        # if yes, update the transaction with the relevant info
-        # if no, create a new transaction object
+    def createTransaction(self, request, context):
+        # create a new transaction entry with the relevant info
+        # if the transaction is a success, go to the associated reservation and update its payment status to complete
         # return success/fail
+        pass
+
+    def getTransactions(self, request, context):
+        # check which entries are filled in the request
+        # If the user ID is filled, return transactions made by the user
+        # If the resID is filled, return the transactions associated with that reservation
+        pass
+
+    def updateUser(self, request, context):
+        # check if user exists already
+        # if yes, update user info
+        # if no, create new user
+        # return success/fail and error code
+        pass
+
+    def getUser(self, request, context):
+        # get requested user info and return as JSON
         pass

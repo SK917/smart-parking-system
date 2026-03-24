@@ -5,10 +5,14 @@ from typing import ClassVar as _ClassVar, Optional as _Optional
 DESCRIPTOR: _descriptor.FileDescriptor
 
 class AvailablespotReq(_message.Message):
-    __slots__ = ("lotID",)
+    __slots__ = ("lotID", "datetime", "duration")
     LOTID_FIELD_NUMBER: _ClassVar[int]
+    DATETIME_FIELD_NUMBER: _ClassVar[int]
+    DURATION_FIELD_NUMBER: _ClassVar[int]
     lotID: str
-    def __init__(self, lotID: _Optional[str] = ...) -> None: ...
+    datetime: str
+    duration: int
+    def __init__(self, lotID: _Optional[str] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ...) -> None: ...
 
 class AvailablespotResp(_message.Message):
     __slots__ = ("availablespots",)

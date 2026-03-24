@@ -44,10 +44,25 @@ class Database_InterfaceStub(object):
                 request_serializer=database__interface__pb2.UpdateResReq.SerializeToString,
                 response_deserializer=database__interface__pb2.UpdateResResp.FromString,
                 _registered_method=True)
-        self.updateTransaction = channel.unary_unary(
-                '/Database_Interface/updateTransaction',
-                request_serializer=database__interface__pb2.TransUpdateReq.SerializeToString,
-                response_deserializer=database__interface__pb2.TransUpdateResp.FromString,
+        self.createTransaction = channel.unary_unary(
+                '/Database_Interface/createTransaction',
+                request_serializer=database__interface__pb2.TransCreateReq.SerializeToString,
+                response_deserializer=database__interface__pb2.TransCreateResp.FromString,
+                _registered_method=True)
+        self.getTransactions = channel.unary_unary(
+                '/Database_Interface/getTransactions',
+                request_serializer=database__interface__pb2.TransGetReq.SerializeToString,
+                response_deserializer=database__interface__pb2.TransGetResp.FromString,
+                _registered_method=True)
+        self.updateUser = channel.unary_unary(
+                '/Database_Interface/updateUser',
+                request_serializer=database__interface__pb2.userUpdateReq.SerializeToString,
+                response_deserializer=database__interface__pb2.userUpdateResp.FromString,
+                _registered_method=True)
+        self.getUser = channel.unary_unary(
+                '/Database_Interface/getUser',
+                request_serializer=database__interface__pb2.userGetReq.SerializeToString,
+                response_deserializer=database__interface__pb2.userGetResp.FromString,
                 _registered_method=True)
 
 
@@ -68,8 +83,29 @@ class Database_InterfaceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
-    def updateTransaction(self, request, context):
-        """Updates list of transactions made
+    def createTransaction(self, request, context):
+        """creates a new transaction, used by transaction handler
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def getTransactions(self, request, context):
+        """Returns a list of transactions for the specified reservation/user
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def updateUser(self, request, context):
+        """Updates user info (or creates a new one)
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def getUser(self, request, context):
+        """Returns requested user info
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -88,10 +124,25 @@ def add_Database_InterfaceServicer_to_server(servicer, server):
                     request_deserializer=database__interface__pb2.UpdateResReq.FromString,
                     response_serializer=database__interface__pb2.UpdateResResp.SerializeToString,
             ),
-            'updateTransaction': grpc.unary_unary_rpc_method_handler(
-                    servicer.updateTransaction,
-                    request_deserializer=database__interface__pb2.TransUpdateReq.FromString,
-                    response_serializer=database__interface__pb2.TransUpdateResp.SerializeToString,
+            'createTransaction': grpc.unary_unary_rpc_method_handler(
+                    servicer.createTransaction,
+                    request_deserializer=database__interface__pb2.TransCreateReq.FromString,
+                    response_serializer=database__interface__pb2.TransCreateResp.SerializeToString,
+            ),
+            'getTransactions': grpc.unary_unary_rpc_method_handler(
+                    servicer.getTransactions,
+                    request_deserializer=database__interface__pb2.TransGetReq.FromString,
+                    response_serializer=database__interface__pb2.TransGetResp.SerializeToString,
+            ),
+            'updateUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.updateUser,
+                    request_deserializer=database__interface__pb2.userUpdateReq.FromString,
+                    response_serializer=database__interface__pb2.userUpdateResp.SerializeToString,
+            ),
+            'getUser': grpc.unary_unary_rpc_method_handler(
+                    servicer.getUser,
+                    request_deserializer=database__interface__pb2.userGetReq.FromString,
+                    response_serializer=database__interface__pb2.userGetResp.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -159,7 +210,7 @@ class Database_Interface(object):
             _registered_method=True)
 
     @staticmethod
-    def updateTransaction(request,
+    def createTransaction(request,
             target,
             options=(),
             channel_credentials=None,
@@ -172,9 +223,90 @@ class Database_Interface(object):
         return grpc.experimental.unary_unary(
             request,
             target,
-            '/Database_Interface/updateTransaction',
-            database__interface__pb2.TransUpdateReq.SerializeToString,
-            database__interface__pb2.TransUpdateResp.FromString,
+            '/Database_Interface/createTransaction',
+            database__interface__pb2.TransCreateReq.SerializeToString,
+            database__interface__pb2.TransCreateResp.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def getTransactions(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/Database_Interface/getTransactions',
+            database__interface__pb2.TransGetReq.SerializeToString,
+            database__interface__pb2.TransGetResp.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def updateUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/Database_Interface/updateUser',
+            database__interface__pb2.userUpdateReq.SerializeToString,
+            database__interface__pb2.userUpdateResp.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def getUser(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/Database_Interface/getUser',
+            database__interface__pb2.userGetReq.SerializeToString,
+            database__interface__pb2.userGetResp.FromString,
             options,
             channel_credentials,
             insecure,
