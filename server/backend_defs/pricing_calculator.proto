@@ -6,15 +6,15 @@ service Pricing_Calculator {
 
 }
 
-// Price Request specifies which lot and spot
+// Price Request specifies which lot and available spots
 message PriceReq {
     required string lotID = 1;
-    required string spotID = 2;
+    repeated string spotID = 2;
 }
 
-// Price Response returns the price for that spot in the specified lot
+// Price Response returns the price for each available spot in the specified lot
 message PriceResp {
-    required float price = 1;
+    repeated float price = 1;
     required string lotID = 2;
-    required string spotID = 3;
+    repeated string spotID = 3;
 }
