@@ -1,4 +1,5 @@
 import grpc
+from concurrent import futures
 from backend_defs import client_interface_pb2_grpc, client_interface_pb2
 from backend_defs import database_interface_pb2_grpc, database_interface_pb2
 from backend_defs import pricing_calculator_pb2_grpc, pricing_calculator_pb2
@@ -31,7 +32,16 @@ class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
 
 # TODO: combine the launching of all backend code into one start script
 if __name__ == '__main__':
-    channel = grpc.insecure_channel("localhost:50051")
-    T_HANDLER = transaction_handler_pb2_grpc.Transaction_HandlerStub(channel)
-    DB_INTERFACE = database_interface_pb2_grpc.Database_InterfaceStub(channel)
-    PRICE_CALC = pricing_calculator_pb2_grpc.Pricing_CalculatorStub(channel)
+    # set up stubs to talk to other backend services
+    internal_channel = grpc.insecure_channel("localhost:50051")
+    T_HANDLER = transaction_handler_pb2_grpc.Transaction_HandlerStub(internal_channel)
+    DB_INTERFACE = database_interface_pb2_grpc.Database_InterfaceStub(internal_channel)
+    PRICE_CALC = pricing_calculator_pb2_grpc.Pricing_CalculatorStub(internal_channel)
+
+    # start the gRPC server on port 50052 so the proxy can talk to it
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    client_interface_pb2_grpc.add_Client_InterfaceServicer_to_server(clientInterface(), server)
+    server.add_insecure_port("[::]:50052")
+    server.start()
+    print("client_interface server running on port 50052")
+    server.wait_for_termination()

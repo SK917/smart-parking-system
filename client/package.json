@@ -8,10 +8,13 @@
     "build": "run-p type-check \"build-only {@}\" --",
     "preview": "vite preview",
     "build-only": "vite build",
-    "type-check": "vue-tsc --build"
+    "type-check": "vue-tsc --build",
+    "gen-proto": "protoc -I=../server/backend_defs --js_out=import_style=commonjs:./src/proto --grpc-web_out=import_style=typescript,mode=grpcwebtext:./src/proto ../server/backend_defs/client_interface.proto ../server/backend_defs/database_interface.proto ../server/backend_defs/pricing_calculator.proto ../server/backend_defs/transaction_handler.proto"
   },
   "dependencies": {
     "@tailwindcss/vite": "^4.2.0",
+    "google-protobuf": "^4.0.2",
+    "grpc-web": "^2.0.2",
     "lucide-vue-next": "^0.577.0",
     "pinia": "^3.0.4",
     "tailwindcss": "^4.2.0",
@@ -24,6 +27,7 @@
     "@vitejs/plugin-vue": "^6.0.4",
     "@vue/tsconfig": "^0.8.1",
     "npm-run-all2": "^8.0.4",
+    "protoc-gen-grpc-web": "^1.5.0",
     "typescript": "~5.9.3",
     "vite": "^7.3.1",
     "vite-plugin-vue-devtools": "^8.0.6",
