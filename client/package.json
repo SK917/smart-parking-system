@@ -9,9 +9,12 @@
     "preview": "vite preview",
     "build-only": "vite build",
     "type-check": "vue-tsc --build",
-    "gen-proto": "protoc -I=../server/backend_defs --js_out=import_style=commonjs:./src/proto --grpc-web_out=import_style=typescript,mode=grpcwebtext:./src/proto ../server/backend_defs/client_interface.proto ../server/backend_defs/database_interface.proto ../server/backend_defs/pricing_calculator.proto ../server/backend_defs/transaction_handler.proto"
+    "gen-proto": "protoc -I=../server/backend_defs --js_out=import_style=es6:./src/proto --grpc-web_out=import_style=typescript,mode=grpcwebtext:./src/proto ../server/backend_defs/client_interface.proto ../server/backend_defs/database_interface.proto ../server/backend_defs/pricing_calculator.proto ../server/backend_defs/transaction_handler.proto",
+    "gen-proto2": "protoc -I=../server/backend_defs --es_out=./src/proto --es_opt=target=ts ../server/backend_defs/client_interface.proto ../server/backend_defs/database_interface.proto ../server/backend_defs/pricing_calculator.proto ../server/backend_defs/transaction_handler.proto"
   },
   "dependencies": {
+    "@connectrpc/connect": "^2.1.1",
+    "@connectrpc/connect-web": "^2.1.1",
     "@tailwindcss/vite": "^4.2.0",
     "google-protobuf": "^4.0.2",
     "grpc-web": "^2.0.2",
@@ -22,6 +25,8 @@
     "vue-router": "^5.0.2"
   },
   "devDependencies": {
+    "@bufbuild/protobuf": "^2.11.0",
+    "@bufbuild/protoc-gen-es": "^2.11.0",
     "@tsconfig/node24": "^24.0.4",
     "@types/node": "^24.10.13",
     "@vitejs/plugin-vue": "^6.0.4",

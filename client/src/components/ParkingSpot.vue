@@ -1,6 +1,10 @@
 <script setup lang="ts">
-    import { computed } from "vue";
+    import { ref, computed, watch } from "vue";
     import type { ParkingSpot } from "@/services/types";
+    import { useParkingStore } from "@/stores/parking-store";
+    
+    const parkingStore = useParkingStore();
+    const isSelected = ref(false);
 
     const props = defineProps<{
         spot: ParkingSpot;
@@ -28,14 +32,33 @@
 
     const colourClasses = computed(() => {
         if (props.spot.booked_by_user) return "border-slate-500 text-slate-500";
-        if (!props.spot.is_available) return "border-gray-300 text-gray-300";
-        return "border-lime-500 text-lime-500";
+        if (!props.spot.is_available) return "border-gray-300 text-gray-300 cursor-not-allowed";
+        if(isSelected.value) return "border-blue-600 text-blue-600 hover:border-blue-600 cursor-pointer";
+        return "border-lime-500 text-lime-500 hover:border-blue-400 hover:text-blue-400 cursor-pointer";
     });
+
+    // watch the store's selectedSpot - whenever it changes, update isSelected
+    watch(
+        () => parkingStore.selectedSpot,
+        (newSelectedSpot) => {
+            isSelected.value = newSelectedSpot?.id === props.spot.id;
+        }
+    );
+
+    const selectSpot = () => {
+        // if this spot is already selected, deselect it
+        if (isSelected.value) {
+            parkingStore.clearSelectedSpot();
+        } else {
+            parkingStore.selectParkingSpot(props.spot.id);
+        }
+    }
 </script>
 
 <template>
-    <div
+    <button
         :style="gridPosition"
+        @click="selectSpot"
         class="relative m-3 ml-0.5 flex items-center justify-center font-bold text-xl font-chakra border-4"
         :class="[orientationClasses, colourClasses]"
     >
@@ -47,5 +70,5 @@
         >
             You are here
         </div>
-    </div>
+    </button>
 </template>

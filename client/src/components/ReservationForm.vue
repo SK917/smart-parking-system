@@ -12,17 +12,18 @@
     const spotNum = ref(14);
 
     const handleSubmit = () => {
+        // parkingStore.reserveSpot(spotNum.value, "1", reserveName.value, "Credit Card", new Date().toISOString(), "20");
         showPopup.value = true;
     };
 
     const handleConfirm = () => {
-        parkingStore.reserveSpot(spotNum.value);
         showPopup.value = false;
+        reserveName.value = '';
     };
 
     const isFormInvalid = computed(() => {
-    return reserveName.value.trim() === ''
-    })
+        return reserveName.value.trim() === '' || parkingStore.selectedSpot === undefined;
+    });
 
     const formattedPrice = computed(() => {
         return parkingStore.currentPrice ? parkingStore.currentPrice.toFixed(2) : '0.00';
@@ -37,8 +38,16 @@
             placeholder="Name"
         />
         <div class="font-md">
-            Current price: $<span class="font-bold">{{ formattedPrice }}</span>
-            <div class="pt-1 text-xs text-gray-500">
+            <div class="text-xs text-gray-500">
+                <p>Click on a parking spot from the map to select it.</p>
+            </div>
+            <div>
+                Selected Spot: <span class="font-bold">{{ parkingStore.selectedSpot?.id ?? 'None' }}</span>
+            </div>
+            <div class="pt-2">
+                Current price: $<span class="font-bold">{{ formattedPrice }}</span>
+            </div>
+            <div class="text-xs text-gray-500">
                 <p>Reserving a spot now locks in the above price. Click "Submit" to proceed with the reservation.</p>
             </div>
         </div>
@@ -52,7 +61,7 @@
         <ReservationPopup
             :is-open="showPopup"
             :reservation-id="reservationId"
-            :spot-num="spotNum"
+            :spot-num="parkingStore.selectedSpot?.id ?? 0"
             @confirm="handleConfirm"
         />
     </div>

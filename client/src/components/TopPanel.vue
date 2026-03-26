@@ -29,6 +29,7 @@
         </div>
         <div class="flex flex-row gap-6 ">
             <LegendItem :colour-select="0" label="Available"/>
+            <LegendItem :colour-select="3" label="Selected"/>
             <LegendItem :colour-select="2" label="Reserved"/>
             <LegendItem :colour-select="1" label="Reserved By You"/>
         </div>

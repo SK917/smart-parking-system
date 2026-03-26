@@ -5,9 +5,17 @@
     const showReservationForm = ref(false);
     const reserveName = ref('');
     const reserveId = ref('');
+    const showLookUpResults = ref(false);
 
     const toggleReservationForm = () => {
         showReservationForm.value = !showReservationForm.value;
+    }
+
+    const lookUpReservation = () => {
+        //TODO: Add actual lookup logic here- connect to parking store
+        showLookUpResults.value = true;
+        reserveName.value = '';
+        reserveId.value = '';
     }
 
     const isFormInvalid = computed(() => {
@@ -69,10 +77,31 @@
             />
             <button
                 :disabled="isFormInvalid" 
+                @click="lookUpReservation"
                 class="cursor-pointer text-center w-full bg-gray-700 text-white rounded-md p-1 hover:outline-red-300 hover:outline-2 focus:outline-red-500 focus:outline-2 disabled:opacity-50 disabled:cursor-not-allowed"
             >
                 Submit
             </button>
+            <div v-if="showLookUpResults">
+                <div class="text-md text-red-600 font-semibold">
+                    Welcome back, [Name].
+                </div>
+                <div class="text-xs text-gray-500">
+                    <p>Your reservation details are below.</p>
+                </div>
+                <div class="text=lg text-gray-700 pt-2">
+                    Spot Number: <span class="font-bold">19</span>
+                </div>
+                <div class="text=lg text-gray-700">
+                    Price Paid: $<span class="font-bold">20.00</span>
+                </div>
+                <div class="text=lg text-gray-700">
+                    Reservation Made At: <span class="font-bold">10:59 AM, 03/26/2026</span>
+                </div>
+                <div class="text=lg text-red-600">
+                    You have <span class="font-bold">12</span> more minutes to arrive.
+                </div>
+            </div>
         </div>
     </div>
 </template>

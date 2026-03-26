@@ -12,6 +12,7 @@
     const iconColourClass = computed(() => {
         if (props.colourSelect === 1) return "text-slate-500";
         else if (props.colourSelect === 2) return "text-gray-300";
+        else if (props.colourSelect === 3) return "text-blue-600";
         return "text-lime-500";
     });
 

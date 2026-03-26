@@ -1,6 +1,18 @@
 <script setup lang="ts">
-import ParkingLot from '@/components/ParkingLot.vue';
-import TopPanel from '@/components/TopPanel.vue';
+    import { onMounted, onUnmounted } from 'vue';
+    import { useParkingStore } from '@/stores/parking-store';
+    import ParkingLot from '@/components/ParkingLot.vue';
+    import TopPanel from '@/components/TopPanel.vue';
+
+    const parkingStore = useParkingStore();
+
+    onMounted(() => {
+        parkingStore.loadSpots();
+    });
+
+    onUnmounted(() => {
+        parkingStore.stopPolling();
+    })
 
 </script>
 

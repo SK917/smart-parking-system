@@ -5,9 +5,6 @@
 
     const parkingStore = useParkingStore();
 
-    onMounted(() => {
-        parkingStore.loadSpots();
-    });
 </script>
 
 <template>
