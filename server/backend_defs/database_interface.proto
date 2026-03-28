@@ -72,8 +72,9 @@ message TransGetResp {
 message spotUpdateReq {
     required int32 spotID = 1;
     required int32 lotID = 2;
+    required bool occupied = 3;
 }
 
 message spotUpdateResp {
-    required bool occupied = 1;
+    required bool success = 1;
 }

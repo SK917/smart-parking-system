@@ -59,14 +59,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         # If the user ID is filled, return transactions made by the user
         # If the resID is filled, return the transactions associated with that reservation
         pass
-
-    def updateUser(self, request, context):
-        # check if user exists already
-        # if yes, update user info
-        # if no, create new user
-        # return success/fail and error code
-        pass
-
-    def getUser(self, request, context):
-        # get requested user info and return as JSON
+    
+    def updateSpotOccupancy(self, request, context):
+        
         pass
