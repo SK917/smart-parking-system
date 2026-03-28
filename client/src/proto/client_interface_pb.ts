@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file client_interface.proto.
  */
 export const file_client_interface: GenFile = /*@__PURE__*/
-  fileDesc("ChZjbGllbnRfaW50ZXJmYWNlLnByb3RvIkUKEEF2YWlsYWJsZXNwb3RSZXESDQoFbG90SUQYASACKAkSEAoIZGF0ZXRpbWUYAiACKAkSEAoIZHVyYXRpb24YAyACKAUiKwoRQXZhaWxhYmxlc3BvdFJlc3ASFgoOYXZhaWxhYmxlc3BvdHMYASACKAkibQoGUmVzUmVxEg0KBWxvdElEGAEgAigJEg4KBnNwb3RJRBgCIAIoCRILCgN1SUQYAyACKAkSEwoLcGF5bWVudEluZm8YBCACKAkSEAoIZGF0ZXRpbWUYBSACKAkSEAoIZHVyYXRpb24YBiACKAkiKQoHUmVzUmVzcBIPCgdzdWNjZXNzGAEgAigIEg0KBXJlc0lEGAIgAigJMngKEENsaWVudF9JbnRlcmZhY2USPAoRZ2V0QXZhaWxhYmxlc3BvdHMSES5BdmFpbGFibGVzcG90UmVxGhIuQXZhaWxhYmxlc3BvdFJlc3AiABImCg9tYWtlUmVzZXJ2YXRpb24SBy5SZXNSZXEaCC5SZXNSZXNwIgA");
+  fileDesc("ChZjbGllbnRfaW50ZXJmYWNlLnByb3RvIkUKEEF2YWlsYWJsZXNwb3RSZXESDQoFbG90SUQYASACKAkSEAoIZGF0ZXRpbWUYAiACKAkSEAoIZHVyYXRpb24YAyACKAUiKwoRQXZhaWxhYmxlc3BvdFJlc3ASFgoOYXZhaWxhYmxlc3BvdHMYASACKAkicgoGUmVzUmVxEg0KBWxvdElEGAEgAigJEg4KBnNwb3RJRBgCIAIoCRIQCghwbGF0ZU51bRgDIAIoCRITCgtwYXltZW50SW5mbxgEIAIoCRIQCghkYXRldGltZRgFIAIoCRIQCghkdXJhdGlvbhgGIAIoBSI8CgdSZXNSZXNwEg8KB3N1Y2Nlc3MYASACKAgSDQoFcmVzSUQYAiACKAkSEQoJZXJyb3JDb2RlGAMgASgJIiwKCVJlc0dldFJlcRIQCghwbGF0ZU51bRgBIAIoCRINCgVyZXNJRBgCIAEoCSIiCgpSZXNHZXRSZXNwEhQKDHJlc2VydmF0aW9ucxgBIAIoCSJPCgpSZXNFZGl0UmVxEg0KBXJlc0lEGAEgAigJEhAKCGRhdGV0aW1lGAIgASgJEhAKCGR1cmF0aW9uGAMgASgFEg4KBmNhbmNlbBgEIAEoCCJACgtSZXNFZGl0UmVzcBINCgVyZXNJRBgBIAIoCRIPCgdzdWNjZXNzGAIgAigIEhEKCWVycm9yQ29kZRgDIAEoCTLOAQoQQ2xpZW50X0ludGVyZmFjZRI8ChFnZXRBdmFpbGFibGVzcG90cxIRLkF2YWlsYWJsZXNwb3RSZXEaEi5BdmFpbGFibGVzcG90UmVzcCIAEiYKD21ha2VSZXNlcnZhdGlvbhIHLlJlc1JlcRoILlJlc1Jlc3AiABIsCg9nZXRSZXNlcnZhdGlvbnMSCi5SZXNHZXRSZXEaCy5SZXNHZXRSZXNwIgASJgoHZWRpdFJlcxILLlJlc0VkaXRSZXEaDC5SZXNFZGl0UmVzcCIA");
 
 /**
  * Available spots request specifies which parking lot, time, and duration
@@ -77,9 +77,9 @@ export type ResReq = Message<"ResReq"> & {
   spotID: string;
 
   /**
-   * @generated from field: required string uID = 3;
+   * @generated from field: required string plateNum = 3;
    */
-  uID: string;
+  plateNum: string;
 
   /**
    * @generated from field: required string paymentInfo = 4;
@@ -92,9 +92,9 @@ export type ResReq = Message<"ResReq"> & {
   datetime: string;
 
   /**
-   * @generated from field: required string duration = 6;
+   * @generated from field: required int32 duration = 6;
    */
-  duration: string;
+  duration: number;
 };
 
 /**
@@ -119,6 +119,11 @@ export type ResResp = Message<"ResResp"> & {
    * @generated from field: required string resID = 2;
    */
   resID: string;
+
+  /**
+   * @generated from field: optional string errorCode = 3;
+   */
+  errorCode: string;
 };
 
 /**
@@ -127,6 +132,108 @@ export type ResResp = Message<"ResResp"> & {
  */
 export const ResRespSchema: GenMessage<ResResp> = /*@__PURE__*/
   messageDesc(file_client_interface, 3);
+
+/**
+ * UserId to filter reservations from. If resID is provided, will return just that reservation's information
+ *
+ * @generated from message ResGetReq
+ */
+export type ResGetReq = Message<"ResGetReq"> & {
+  /**
+   * @generated from field: required string plateNum = 1;
+   */
+  plateNum: string;
+
+  /**
+   * @generated from field: optional string resID = 2;
+   */
+  resID: string;
+};
+
+/**
+ * Describes the message ResGetReq.
+ * Use `create(ResGetReqSchema)` to create a new message.
+ */
+export const ResGetReqSchema: GenMessage<ResGetReq> = /*@__PURE__*/
+  messageDesc(file_client_interface, 4);
+
+/**
+ * Returns JSON formatted string
+ *
+ * @generated from message ResGetResp
+ */
+export type ResGetResp = Message<"ResGetResp"> & {
+  /**
+   * @generated from field: required string reservations = 1;
+   */
+  reservations: string;
+};
+
+/**
+ * Describes the message ResGetResp.
+ * Use `create(ResGetRespSchema)` to create a new message.
+ */
+export const ResGetRespSchema: GenMessage<ResGetResp> = /*@__PURE__*/
+  messageDesc(file_client_interface, 5);
+
+/**
+ * @generated from message ResEditReq
+ */
+export type ResEditReq = Message<"ResEditReq"> & {
+  /**
+   * @generated from field: required string resID = 1;
+   */
+  resID: string;
+
+  /**
+   * @generated from field: optional string datetime = 2;
+   */
+  datetime: string;
+
+  /**
+   * @generated from field: optional int32 duration = 3;
+   */
+  duration: number;
+
+  /**
+   * @generated from field: optional bool cancel = 4;
+   */
+  cancel: boolean;
+};
+
+/**
+ * Describes the message ResEditReq.
+ * Use `create(ResEditReqSchema)` to create a new message.
+ */
+export const ResEditReqSchema: GenMessage<ResEditReq> = /*@__PURE__*/
+  messageDesc(file_client_interface, 6);
+
+/**
+ * @generated from message ResEditResp
+ */
+export type ResEditResp = Message<"ResEditResp"> & {
+  /**
+   * @generated from field: required string resID = 1;
+   */
+  resID: string;
+
+  /**
+   * @generated from field: required bool success = 2;
+   */
+  success: boolean;
+
+  /**
+   * @generated from field: optional string errorCode = 3;
+   */
+  errorCode: string;
+};
+
+/**
+ * Describes the message ResEditResp.
+ * Use `create(ResEditRespSchema)` to create a new message.
+ */
+export const ResEditRespSchema: GenMessage<ResEditResp> = /*@__PURE__*/
+  messageDesc(file_client_interface, 7);
 
 /**
  * @generated from service Client_Interface
@@ -151,6 +258,26 @@ export const Client_Interface: GenService<{
     methodKind: "unary";
     input: typeof ResReqSchema;
     output: typeof ResRespSchema;
+  },
+  /**
+   * gets reservations made by a certain client.
+   *
+   * @generated from rpc Client_Interface.getReservations
+   */
+  getReservations: {
+    methodKind: "unary";
+    input: typeof ResGetReqSchema;
+    output: typeof ResGetRespSchema;
+  },
+  /**
+   * edits a reservation in the database
+   *
+   * @generated from rpc Client_Interface.editRes
+   */
+  editRes: {
+    methodKind: "unary";
+    input: typeof ResEditReqSchema;
+    output: typeof ResEditRespSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_client_interface, 0);

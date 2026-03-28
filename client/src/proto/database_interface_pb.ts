@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file database_interface.proto.
  */
 export const file_database_interface: GenFile = /*@__PURE__*/
-  fileDesc("ChhkYXRhYmFzZV9pbnRlcmZhY2UucHJvdG8iIgoRQXZhaWxhYmxlU3BvdHNSZXESDQoFbG90SUQYASACKAkiLAoSQXZhaWxhYmxlU3BvdHNSZXNwEhYKDmF2YWlsYWJsZVNwb3RzGAEgAigJIm0KDFVwZGF0ZVJlc1JlcRINCgVyZXNJRBgBIAEoCRINCgVsb3RJRBgCIAIoCRIOCgZzcG90SUQYAyACKAkSCwoDdUlEGAQgAigJEhAKCGRhdGV0aW1lGAUgAigJEhAKCGR1cmF0aW9uGAYgAigJIkIKDVVwZGF0ZVJlc1Jlc3ASDwoHc3VjY2VzcxgBIAIoCBINCgVyZXNJRBgCIAIoCBIRCgllcnJvckNvZGUYAyABKAkiYQoOVHJhbnNDcmVhdGVSZXESDQoFcmVzSUQYASACKAkSCwoDdUlEGAIgAigJEhUKDXBheW1lbnRNZXRob2QYAyACKAkSCwoDdmFsGAUgAigJEg8KB3N1Y2Nlc3MYBiACKAgiRgoPVHJhbnNDcmVhdGVSZXNwEg8KB3RyYW5zSUQYASACKAkSDwoHc3VjY2VzcxgCIAIoCBIRCgllcnJvckNvZGUYAyABKAkiKQoLVHJhbnNHZXRSZXESCwoDdUlEGAEgASgJEg0KBXJlc0lEGAIgASgJIiQKDFRyYW5zR2V0UmVzcBIUCgx0cmFuc2FjdGlvbnMYASACKAkiTwoNdXNlclVwZGF0ZVJlcRILCgN1SUQYASABKAkSEAoIdXNlcm5hbWUYAiABKAkSEAoIcGFzc3dvcmQYAyABKAkSDQoFZW1haWwYBCABKAkiNAoOdXNlclVwZGF0ZVJlc3ASDwoHc3VjY2VzcxgBIAIoCBIRCgllcnJvckNvZGUYAiABKAkiLQoKdXNlckdldFJlcRIQCgh1c2VybmFtZRgBIAEoCRINCgVlbWFpbBgCIAEoCSIfCgt1c2VyR2V0UmVzcBIQCgh1c2VyRGF0YRgBIAIoCTLQAgoSRGF0YWJhc2VfSW50ZXJmYWNlEj4KEWdldEF2YWlsYWJsZVNwb3RzEhIuQXZhaWxhYmxlU3BvdHNSZXEaEy5BdmFpbGFibGVTcG90c1Jlc3AiABI1ChJ1cGRhdGVSZXNlcnZhdGlvbnMSDS5VcGRhdGVSZXNSZXEaDi5VcGRhdGVSZXNSZXNwIgASOAoRY3JlYXRlVHJhbnNhY3Rpb24SDy5UcmFuc0NyZWF0ZVJlcRoQLlRyYW5zQ3JlYXRlUmVzcCIAEjAKD2dldFRyYW5zYWN0aW9ucxIMLlRyYW5zR2V0UmVxGg0uVHJhbnNHZXRSZXNwIgASLwoKdXBkYXRlVXNlchIOLnVzZXJVcGRhdGVSZXEaDy51c2VyVXBkYXRlUmVzcCIAEiYKB2dldFVzZXISCy51c2VyR2V0UmVxGgwudXNlckdldFJlc3AiAA");
+  fileDesc("ChhkYXRhYmFzZV9pbnRlcmZhY2UucHJvdG8iRgoRQXZhaWxhYmxlU3BvdHNSZXESDQoFbG90SUQYASACKAkSEAoIZGF0ZXRpbWUYAiACKAkSEAoIZHVyYXRpb24YAyACKAUiLAoSQXZhaWxhYmxlU3BvdHNSZXNwEhYKDmF2YWlsYWJsZVNwb3RzGAEgAigJInIKDFVwZGF0ZVJlc1JlcRINCgVyZXNJRBgBIAEoCRINCgVsb3RJRBgCIAEoCRIOCgZzcG90SUQYAyABKAkSEAoIcGxhdGVOdW0YBCABKAkSEAoIZGF0ZXRpbWUYBSABKAkSEAoIZHVyYXRpb24YBiABKAkiQgoNVXBkYXRlUmVzUmVzcBIPCgdzdWNjZXNzGAEgAigIEg0KBXJlc0lEGAIgAigIEhEKCWVycm9yQ29kZRgDIAEoCSJmCg5UcmFuc0NyZWF0ZVJlcRINCgVyZXNJRBgBIAIoCRIQCghwbGF0ZU51bRgCIAIoCRIVCg1wYXltZW50TWV0aG9kGAMgAigJEgsKA3ZhbBgFIAIoAhIPCgdzdWNjZXNzGAYgAigIIkYKD1RyYW5zQ3JlYXRlUmVzcBIPCgd0cmFuc0lEGAEgAigJEg8KB3N1Y2Nlc3MYAiACKAgSEQoJZXJyb3JDb2RlGAMgASgJIi4KC1RyYW5zR2V0UmVxEhAKCHBsYXRlTnVtGAEgASgJEg0KBXJlc0lEGAIgASgJIiQKDFRyYW5zR2V0UmVzcBIUCgx0cmFuc2FjdGlvbnMYASACKAky9wEKEkRhdGFiYXNlX0ludGVyZmFjZRI+ChFnZXRBdmFpbGFibGVTcG90cxISLkF2YWlsYWJsZVNwb3RzUmVxGhMuQXZhaWxhYmxlU3BvdHNSZXNwIgASNQoSdXBkYXRlUmVzZXJ2YXRpb25zEg0uVXBkYXRlUmVzUmVxGg4uVXBkYXRlUmVzUmVzcCIAEjgKEWNyZWF0ZVRyYW5zYWN0aW9uEg8uVHJhbnNDcmVhdGVSZXEaEC5UcmFuc0NyZWF0ZVJlc3AiABIwCg9nZXRUcmFuc2FjdGlvbnMSDC5UcmFuc0dldFJlcRoNLlRyYW5zR2V0UmVzcCIA");
 
 /**
  * Specifies which parking lot
@@ -22,6 +22,16 @@ export type AvailableSpotsReq = Message<"AvailableSpotsReq"> & {
    * @generated from field: required string lotID = 1;
    */
   lotID: string;
+
+  /**
+   * @generated from field: required string datetime = 2;
+   */
+  datetime: string;
+
+  /**
+   * @generated from field: required int32 duration = 3;
+   */
+  duration: number;
 };
 
 /**
@@ -62,27 +72,27 @@ export type UpdateResReq = Message<"UpdateResReq"> & {
   resID: string;
 
   /**
-   * @generated from field: required string lotID = 2;
+   * @generated from field: optional string lotID = 2;
    */
   lotID: string;
 
   /**
-   * @generated from field: required string spotID = 3;
+   * @generated from field: optional string spotID = 3;
    */
   spotID: string;
 
   /**
-   * @generated from field: required string uID = 4;
+   * @generated from field: optional string plateNum = 4;
    */
-  uID: string;
+  plateNum: string;
 
   /**
-   * @generated from field: required string datetime = 5;
+   * @generated from field: optional string datetime = 5;
    */
   datetime: string;
 
   /**
-   * @generated from field: required string duration = 6;
+   * @generated from field: optional string duration = 6;
    */
   duration: string;
 };
@@ -135,9 +145,9 @@ export type TransCreateReq = Message<"TransCreateReq"> & {
   resID: string;
 
   /**
-   * @generated from field: required string uID = 2;
+   * @generated from field: required string plateNum = 2;
    */
-  uID: string;
+  plateNum: string;
 
   /**
    * @generated from field: required string paymentMethod = 3;
@@ -145,9 +155,9 @@ export type TransCreateReq = Message<"TransCreateReq"> & {
   paymentMethod: string;
 
   /**
-   * @generated from field: required string val = 5;
+   * @generated from field: required float val = 5;
    */
-  val: string;
+  val: number;
 
   /**
    * @generated from field: required bool success = 6;
@@ -198,9 +208,9 @@ export const TransCreateRespSchema: GenMessage<TransCreateResp> = /*@__PURE__*/
  */
 export type TransGetReq = Message<"TransGetReq"> & {
   /**
-   * @generated from field: optional string uID = 1;
+   * @generated from field: optional string plateNum = 1;
    */
-  uID: string;
+  plateNum: string;
 
   /**
    * @generated from field: optional string resID = 2;
@@ -233,107 +243,6 @@ export type TransGetResp = Message<"TransGetResp"> & {
  */
 export const TransGetRespSchema: GenMessage<TransGetResp> = /*@__PURE__*/
   messageDesc(file_database_interface, 7);
-
-/**
- * contains user info to be updated
- *
- * @generated from message userUpdateReq
- */
-export type userUpdateReq = Message<"userUpdateReq"> & {
-  /**
-   * @generated from field: optional string uID = 1;
-   */
-  uID: string;
-
-  /**
-   * @generated from field: optional string username = 2;
-   */
-  username: string;
-
-  /**
-   * @generated from field: optional string password = 3;
-   */
-  password: string;
-
-  /**
-   * @generated from field: optional string email = 4;
-   */
-  email: string;
-};
-
-/**
- * Describes the message userUpdateReq.
- * Use `create(userUpdateReqSchema)` to create a new message.
- */
-export const userUpdateReqSchema: GenMessage<userUpdateReq> = /*@__PURE__*/
-  messageDesc(file_database_interface, 8);
-
-/**
- * response is success/fail
- *
- * @generated from message userUpdateResp
- */
-export type userUpdateResp = Message<"userUpdateResp"> & {
-  /**
-   * @generated from field: required bool success = 1;
-   */
-  success: boolean;
-
-  /**
-   * @generated from field: optional string errorCode = 2;
-   */
-  errorCode: string;
-};
-
-/**
- * Describes the message userUpdateResp.
- * Use `create(userUpdateRespSchema)` to create a new message.
- */
-export const userUpdateRespSchema: GenMessage<userUpdateResp> = /*@__PURE__*/
-  messageDesc(file_database_interface, 9);
-
-/**
- * get request uses username or email
- *
- * @generated from message userGetReq
- */
-export type userGetReq = Message<"userGetReq"> & {
-  /**
-   * @generated from field: optional string username = 1;
-   */
-  username: string;
-
-  /**
-   * @generated from field: optional string email = 2;
-   */
-  email: string;
-};
-
-/**
- * Describes the message userGetReq.
- * Use `create(userGetReqSchema)` to create a new message.
- */
-export const userGetReqSchema: GenMessage<userGetReq> = /*@__PURE__*/
-  messageDesc(file_database_interface, 10);
-
-/**
- * returns user info as JSON
- *
- * @generated from message userGetResp
- */
-export type userGetResp = Message<"userGetResp"> & {
-  /**
-   * @generated from field: required string userData = 1;
-   */
-  userData: string;
-};
-
-/**
- * Describes the message userGetResp.
- * Use `create(userGetRespSchema)` to create a new message.
- */
-export const userGetRespSchema: GenMessage<userGetResp> = /*@__PURE__*/
-  messageDesc(file_database_interface, 11);
 
 /**
  * @generated from service Database_Interface
@@ -378,26 +287,6 @@ export const Database_Interface: GenService<{
     methodKind: "unary";
     input: typeof TransGetReqSchema;
     output: typeof TransGetRespSchema;
-  },
-  /**
-   * Updates user info (or creates a new one)
-   *
-   * @generated from rpc Database_Interface.updateUser
-   */
-  updateUser: {
-    methodKind: "unary";
-    input: typeof userUpdateReqSchema;
-    output: typeof userUpdateRespSchema;
-  },
-  /**
-   * Returns requested user info
-   *
-   * @generated from rpc Database_Interface.getUser
-   */
-  getUser: {
-    methodKind: "unary";
-    input: typeof userGetReqSchema;
-    output: typeof userGetRespSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_database_interface, 0);

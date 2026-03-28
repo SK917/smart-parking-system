@@ -1,10 +1,14 @@
 import { defineStore } from "pinia";
 import { ref } from "vue";
-import { getAvailableSpots, makeReservation } from "@/services/parking-service";
-import type { ParkingSpot, ParkingSpotResponse } from "@/services/types";
+import { getAvailableSpots, makeReservation, getReservations } from "@/services/parking-service";
+import type { ParkingSpot, ParkingSpotResponse, ParkingSpotAvailability, MapResponse, Reservation, ReservationMakeResponse, ReservationSearchResponse } from "@/services/types";
 
 export const useParkingStore = defineStore("parking", () => {
     const currentPrice = ref(20);
+    const duration = ref(120);
+    const reservationStatus = ref<ReservationMakeResponse>({ success: true, resID: Math.random().toString(36).substring(2, 8).toUpperCase() });
+    const reservationSearchResult = ref<ReservationSearchResponse>();
+    const reservationSearchStatus = ref(false);
     const spots = ref<ParkingSpot[]>([]);
     const selectedSpot = ref<ParkingSpot>();
     const loading = ref(false);
@@ -15,7 +19,7 @@ export const useParkingStore = defineStore("parking", () => {
         try {
             loading.value = true;
             const response = await fetch("/parking-spots.json");
-            const data: ParkingSpotResponse = await response.json();
+            const data: MapResponse = await response.json();
             spots.value = data.spots;
             loading.value = false;
             // TODO: Add call to startPolling here
@@ -41,15 +45,12 @@ export const useParkingStore = defineStore("parking", () => {
     async function fetchAvailability(lotId: string) {
         try {
             const response = await getAvailableSpots(lotId, new Date().toISOString(), 1)
-
-            // TODO: Make new type for the getAvailableSpots response and update type below to match that
-            // TODO: And update the is_available checks to reflect the new type as well
             const parsed: ParkingSpotResponse = JSON.parse(response);
 
             parsed.spots.forEach(updatedSpot => {
-                const existing = spots.value.find(s => s.id === updatedSpot.id);
+                const existing = spots.value.find(s => s.id === updatedSpot.spotID);
                 if(existing) {
-                    existing.is_available = (updatedSpot.is_available as unknown as number) === 1;
+                    existing.is_available = !updatedSpot.occupied;
                 }
             })
 
@@ -59,10 +60,20 @@ export const useParkingStore = defineStore("parking", () => {
         }
     }
 
-    // TODO: Update type of input param to match updated type in fetchAvailability()
     function setCurrentPrice(response: ParkingSpotResponse) {
-        // TODO: Replace with actual logic to parse price from getAvailableSpots() response
-        currentPrice.value = 30;
+        currentPrice.value = response.price;
+    }
+
+    function setDuration(mins: number) {
+        duration.value = mins;
+    }
+
+    function setReservationStatus(status: ReservationMakeResponse) {
+        reservationStatus.value = status;
+    }
+
+    function setReservationResult(result: ReservationSearchResponse) {
+        reservationSearchResult.value = result;
     }
 
     function clearUserBookingData() {
@@ -79,12 +90,13 @@ export const useParkingStore = defineStore("parking", () => {
         selectedSpot.value = undefined;
     }
 
-    async function reserveSpot(spotId: number, lotId: string, uid: string, paymentInfo: string, datetime: string, duration: string) {
+    async function reserveSpot(spotId: number, lotId: string, uid: string, paymentInfo: string, datetime: string, duration: number) {
         clearUserBookingData();
 
         // TODO: Ensure code below properly connects to the makeReservation call
         try {
             const result = await makeReservation(String(spotId), lotId, uid, paymentInfo, datetime, duration);
+            setReservationStatus(result);
             if(result.success) {
                 const targetSpot = spots.value.find(s => s.id === spotId);
                 if (targetSpot) {
@@ -92,10 +104,6 @@ export const useParkingStore = defineStore("parking", () => {
                 } else {
                     console.warn(`Spot #${spotId} not found.`);
                 }
-                clearSelectedSpot();
-            }
-            else {
-                // TODO: Add logic here
             }
         } catch (error) {
             console.error("Failed to make a reservation: ", error);
@@ -104,23 +112,46 @@ export const useParkingStore = defineStore("parking", () => {
         
     }
 
-    function lookUpReservation(reserveId: number, name: string) {
+    async function lookUpReservation(reserveId: string, plateNum: string) {
         clearUserBookingData();
 
-        // TODO: Add logic to make call to gRPC look up reservation function (when added)
-        // TODO: Add logic to update booked_by_user value for the reserved spot if it exists
-        // TODO: Add return value to indicate if lookup was successful or not
+        // TODO: Check whether below code actually works with gRPC
+        try {
+            const result = await getReservations(plateNum, reserveId);
+            const parsed: ReservationSearchResponse = JSON.parse(result);
+            setReservationResult(parsed);
+            if(parsed.reservations.length > 0 ) {
+                reservationSearchStatus.value = true;
+                const targetSpot = spots.value.find(s => s.id === parsed.reservations[0]?.spotID );
+                if (targetSpot) {
+                    targetSpot.booked_by_user = true;
+                } else {
+                    console.warn(`Spot #${parsed.reservations[0]?.spotID} not found.`);
+                }
+            }
+            else {
+                reservationSearchStatus.value = false;
+            }
+
+        } catch (error) {
+            console.error("Failed to look up reservation: ", error);
+        }
     }
 
     return {
         currentPrice,
         spots,
         selectedSpot,
+        duration,
+        reservationStatus,
+        reservationSearchResult,
+        reservationSearchStatus,
         loadSpots,
         fetchAvailability,
         startPolling,
         stopPolling,
         setCurrentPrice,
+        setDuration,
         selectParkingSpot,
         clearSelectedSpot,
         clearUserBookingData,

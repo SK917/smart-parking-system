@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file transaction_handler.proto.
  */
 export const file_transaction_handler: GenFile = /*@__PURE__*/
-  fileDesc("Chl0cmFuc2FjdGlvbl9oYW5kbGVyLnByb3RvIkgKCHRyYW5zUmVxEg0KBXJlc0lEGAEgAigJEhMKC3BheW1lbnRJbmZvGAIgAigJEgsKA3VJRBgDIAIoCRILCgN2YWwYBCACKAkiSQoJdHJhbnNSZXNwEg0KBXJlc0lEGAEgAigJEg8KB3RyYW5zSUQYAiACKAkSCwoDdUlEGAMgAigJEg8KB3N1Y2Nlc3MYBCACKAgyPQoTVHJhbnNhY3Rpb25fSGFuZGxlchImCgttYWtlUGF5bWVudBIJLnRyYW5zUmVxGgoudHJhbnNSZXNwIgA");
+  fileDesc("Chl0cmFuc2FjdGlvbl9oYW5kbGVyLnByb3RvIk0KCHRyYW5zUmVxEg0KBXJlc0lEGAEgAigJEhMKC3BheW1lbnRJbmZvGAIgAigJEhAKCHBsYXRlTnVtGAMgAigJEgsKA3ZhbBgEIAIoAiJOCgl0cmFuc1Jlc3ASDQoFcmVzSUQYASACKAkSDwoHdHJhbnNJRBgCIAIoCRIQCghwbGF0ZU51bRgDIAIoCRIPCgdzdWNjZXNzGAQgAigIMj0KE1RyYW5zYWN0aW9uX0hhbmRsZXISJgoLbWFrZVBheW1lbnQSCS50cmFuc1JlcRoKLnRyYW5zUmVzcCIA");
 
 /**
  * Consists of IDs for the user and reservation, payment info, and the value of the transaction
@@ -29,14 +29,14 @@ export type transReq = Message<"transReq"> & {
   paymentInfo: string;
 
   /**
-   * @generated from field: required string uID = 3;
+   * @generated from field: required string plateNum = 3;
    */
-  uID: string;
+  plateNum: string;
 
   /**
-   * @generated from field: required string val = 4;
+   * @generated from field: required float val = 4;
    */
-  val: string;
+  val: number;
 };
 
 /**
@@ -63,9 +63,9 @@ export type transResp = Message<"transResp"> & {
   transID: string;
 
   /**
-   * @generated from field: required string uID = 3;
+   * @generated from field: required string plateNum = 3;
    */
-  uID: string;
+  plateNum: string;
 
   /**
    * @generated from field: required bool success = 4;
