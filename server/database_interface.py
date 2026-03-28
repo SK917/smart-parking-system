@@ -48,7 +48,8 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
     def updateReservations(self, request, context):
         # checks if the reservation already exists in the database
         # if yes, update the reservation with the info in the request
-        # if no, consider it a new reservation, make a new reservation entry with the relevant information, set payment statues to pending by default
+        # if no, consider it a new reservation, make a new reservation entry with the relevant information, set payment status to pending by default
+        # calculate endDateTime using startDateTime and duration
         pass
 
     def getReservations(self, request, context):
@@ -62,7 +63,15 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         else:
             params = {"plate": request.plateNum}
             reservations = cur.execute("SELECT * FROM reservations WHERE plateNum=:plate", params)
-        pass
+        
+        resDict = {"plateNum": request.plateNum, "reservations": []}
+
+        nextRes = reservations.fetchone()
+        while nextRes != None:
+            resDict["reservations"].append({"resID": nextRes[0], "plateNum": nextRes[1], "lotID": nextRes[2], "spotID": nextRes[3], "startDateTime": nextRes[4], "endDateTime": nextRes[5], "duration": nextRes[6], "totalPayment": nextRes[7], "paymentStatus": nextRes[8]})
+            nextRes = reservations.fetchone()
+        reply = database_interface_pb2.GetResResp(reservations=json.dumps(resDict, indent=4))
+        return reply
     
     def createTransaction(self, request, context):
         # create a new transaction entry with the relevant info
