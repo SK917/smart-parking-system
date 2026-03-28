@@ -10,20 +10,22 @@ class transReq(_message.Message):
     PAYMENTINFO_FIELD_NUMBER: _ClassVar[int]
     PLATENUM_FIELD_NUMBER: _ClassVar[int]
     VAL_FIELD_NUMBER: _ClassVar[int]
-    resID: str
+    resID: int
     paymentInfo: str
     plateNum: str
     val: float
-    def __init__(self, resID: _Optional[str] = ..., paymentInfo: _Optional[str] = ..., plateNum: _Optional[str] = ..., val: _Optional[float] = ...) -> None: ...
+    def __init__(self, resID: _Optional[int] = ..., paymentInfo: _Optional[str] = ..., plateNum: _Optional[str] = ..., val: _Optional[float] = ...) -> None: ...
 
 class transResp(_message.Message):
-    __slots__ = ("resID", "transID", "plateNum", "success")
+    __slots__ = ("resID", "transID", "plateNum", "success", "errorCode")
     RESID_FIELD_NUMBER: _ClassVar[int]
     TRANSID_FIELD_NUMBER: _ClassVar[int]
     PLATENUM_FIELD_NUMBER: _ClassVar[int]
     SUCCESS_FIELD_NUMBER: _ClassVar[int]
-    resID: str
-    transID: str
+    ERRORCODE_FIELD_NUMBER: _ClassVar[int]
+    resID: int
+    transID: int
     plateNum: str
     success: bool
-    def __init__(self, resID: _Optional[str] = ..., transID: _Optional[str] = ..., plateNum: _Optional[str] = ..., success: bool = ...) -> None: ...
+    errorCode: str
+    def __init__(self, resID: _Optional[int] = ..., transID: _Optional[int] = ..., plateNum: _Optional[str] = ..., success: bool = ..., errorCode: _Optional[str] = ...) -> None: ...

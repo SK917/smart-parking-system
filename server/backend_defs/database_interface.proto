@@ -5,6 +5,8 @@ service Database_Interface {
     rpc getAvailableSpots (AvailableSpotsReq) returns (AvailableSpotsResp) {}
     // Updates list of reservations
     rpc updateReservations (UpdateResReq) returns (UpdateResResp) {}
+    // gets a list of reservations made by the user
+    rpc getReservations (GetResReq) returns (GetResResp) {}
     // creates a new transaction, used by transaction handler
     rpc createTransaction (TransCreateReq) returns (TransCreateResp) {}
     // Returns a list of transactions for the specified reservation/user
@@ -15,7 +17,7 @@ service Database_Interface {
 
 // Specifies which parking lot
 message AvailableSpotsReq {
-    required string lotID = 1;
+    required int32 lotID = 1;
     required string datetime = 2;
     required int32 duration = 3;
 }
@@ -27,24 +29,24 @@ message AvailableSpotsResp {
 
 // Request specifies reservation to be added/changed
 message UpdateResReq {
-    optional string resID = 1;
-    optional string lotID = 2;
-    optional string spotID = 3;
+    optional int32 resID = 1;
+    optional int32 lotID = 2;
+    optional int32 spotID = 3;
     optional string plateNum = 4;
     optional string datetime = 5;
-    optional string duration = 6;
+    optional int32 duration = 6;
 }
 
 // Response returns success/fail and resID
 message UpdateResResp {
     required bool success = 1;
-    required bool resID = 2;
+    required int32 resID = 2;
     optional string errorCode = 3;
 }
 
 // Transaction create request consists of related reservation ID, user ID, payment method, and success/fail
 message TransCreateReq {
-    required string resID = 1;
+    required int32 resID = 1;
     required string plateNum = 2;
     required string paymentMethod = 3;
     required float val = 5;
@@ -53,7 +55,7 @@ message TransCreateReq {
 
 // Transaction create response consists of success/fail and transaction ID
 message TransCreateResp {
-    required string transID = 1;
+    required int32 transID = 1;
     required bool success = 2;
     optional string errorCode = 3;
 }
@@ -61,20 +63,28 @@ message TransCreateResp {
 // Transaction get request contains uID or resID, or none to get all transactions made
 message TransGetReq {
     optional string plateNum = 1;
-    optional string resID = 2;
+    optional int32 resID = 2;
 }
 
 // returned list of transactions is in JSON formatted string
 message TransGetResp {
     required string transactions = 1;
 }
-
+// updates spot's occupancy state
 message spotUpdateReq {
-    required int32 spotID = 1;
-    required int32 lotID = 2;
+    required int32 iotID = 1;
     required bool occupied = 3;
 }
-
+// returns success or fail
 message spotUpdateResp {
     required bool success = 1;
+}
+// request contains plate number and resID (optional)
+message GetResReq {
+    required string plateNum = 1;
+    optional int32 resID = 2;
+}
+// returns reservations as JSON
+message GetResResp {
+    required string reservations = 1;
 }

@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x16\x63lient_interface.proto\"E\n\x10\x41vailablespotReq\x12\r\n\x05lotID\x18\x01 \x02(\t\x12\x10\n\x08\x64\x61tetime\x18\x02 \x02(\t\x12\x10\n\x08\x64uration\x18\x03 \x02(\x05\"+\n\x11\x41vailablespotResp\x12\x16\n\x0e\x61vailablespots\x18\x01 \x02(\t\"r\n\x06ResReq\x12\r\n\x05lotID\x18\x01 \x02(\t\x12\x0e\n\x06spotID\x18\x02 \x02(\t\x12\x10\n\x08plateNum\x18\x03 \x02(\t\x12\x13\n\x0bpaymentInfo\x18\x04 \x02(\t\x12\x10\n\x08\x64\x61tetime\x18\x05 \x02(\t\x12\x10\n\x08\x64uration\x18\x06 \x02(\x05\"<\n\x07ResResp\x12\x0f\n\x07success\x18\x01 \x02(\x08\x12\r\n\x05resID\x18\x02 \x02(\t\x12\x11\n\terrorCode\x18\x03 \x01(\t\",\n\tResGetReq\x12\x10\n\x08plateNum\x18\x01 \x02(\t\x12\r\n\x05resID\x18\x02 \x01(\t\"\"\n\nResGetResp\x12\x14\n\x0creservations\x18\x01 \x02(\t\"O\n\nResEditReq\x12\r\n\x05resID\x18\x01 \x02(\t\x12\x10\n\x08\x64\x61tetime\x18\x02 \x01(\t\x12\x10\n\x08\x64uration\x18\x03 \x01(\x05\x12\x0e\n\x06\x63\x61ncel\x18\x04 \x01(\x08\"@\n\x0bResEditResp\x12\r\n\x05resID\x18\x01 \x02(\t\x12\x0f\n\x07success\x18\x02 \x02(\x08\x12\x11\n\terrorCode\x18\x03 \x01(\t2\xce\x01\n\x10\x43lient_Interface\x12<\n\x11getAvailablespots\x12\x11.AvailablespotReq\x1a\x12.AvailablespotResp\"\x00\x12&\n\x0fmakeReservation\x12\x07.ResReq\x1a\x08.ResResp\"\x00\x12,\n\x0fgetReservations\x12\n.ResGetReq\x1a\x0b.ResGetResp\"\x00\x12&\n\x07\x65\x64itRes\x12\x0b.ResEditReq\x1a\x0c.ResEditResp\"\x00')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x16\x63lient_interface.proto\"E\n\x10\x41vailablespotReq\x12\r\n\x05lotID\x18\x01 \x02(\x05\x12\x10\n\x08\x64\x61tetime\x18\x02 \x02(\t\x12\x10\n\x08\x64uration\x18\x03 \x02(\x05\"+\n\x11\x41vailablespotResp\x12\x16\n\x0e\x61vailablespots\x18\x01 \x02(\t\"\x81\x01\n\x06ResReq\x12\r\n\x05lotID\x18\x01 \x02(\x05\x12\x0e\n\x06spotID\x18\x02 \x02(\x05\x12\x10\n\x08plateNum\x18\x03 \x02(\t\x12\x13\n\x0bpaymentInfo\x18\x04 \x02(\t\x12\x10\n\x08\x64\x61tetime\x18\x05 \x02(\t\x12\x10\n\x08\x64uration\x18\x06 \x02(\x05\x12\r\n\x05price\x18\x07 \x02(\x02\"<\n\x07ResResp\x12\x0f\n\x07success\x18\x01 \x02(\x08\x12\r\n\x05resID\x18\x02 \x01(\x05\x12\x11\n\terrorCode\x18\x03 \x01(\t\",\n\tResGetReq\x12\x10\n\x08plateNum\x18\x01 \x02(\t\x12\r\n\x05resID\x18\x02 \x01(\x05\"\"\n\nResGetResp\x12\x14\n\x0creservations\x18\x01 \x02(\t\"O\n\nResEditReq\x12\r\n\x05resID\x18\x01 \x02(\x05\x12\x10\n\x08\x64\x61tetime\x18\x02 \x01(\t\x12\x10\n\x08\x64uration\x18\x03 \x01(\x05\x12\x0e\n\x06\x63\x61ncel\x18\x04 \x01(\x08\"@\n\x0bResEditResp\x12\r\n\x05resID\x18\x01 \x02(\x05\x12\x0f\n\x07success\x18\x02 \x02(\x08\x12\x11\n\terrorCode\x18\x03 \x01(\t2\xce\x01\n\x10\x43lient_Interface\x12<\n\x11getAvailablespots\x12\x11.AvailablespotReq\x1a\x12.AvailablespotResp\"\x00\x12&\n\x0fmakeReservation\x12\x07.ResReq\x1a\x08.ResResp\"\x00\x12,\n\x0fgetReservations\x12\n.ResGetReq\x1a\x0b.ResGetResp\"\x00\x12&\n\x07\x65\x64itRes\x12\x0b.ResEditReq\x1a\x0c.ResEditResp\"\x00')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -35,18 +35,18 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_AVAILABLESPOTREQ']._serialized_end=95
   _globals['_AVAILABLESPOTRESP']._serialized_start=97
   _globals['_AVAILABLESPOTRESP']._serialized_end=140
-  _globals['_RESREQ']._serialized_start=142
-  _globals['_RESREQ']._serialized_end=256
-  _globals['_RESRESP']._serialized_start=258
-  _globals['_RESRESP']._serialized_end=318
-  _globals['_RESGETREQ']._serialized_start=320
-  _globals['_RESGETREQ']._serialized_end=364
-  _globals['_RESGETRESP']._serialized_start=366
-  _globals['_RESGETRESP']._serialized_end=400
-  _globals['_RESEDITREQ']._serialized_start=402
-  _globals['_RESEDITREQ']._serialized_end=481
-  _globals['_RESEDITRESP']._serialized_start=483
-  _globals['_RESEDITRESP']._serialized_end=547
-  _globals['_CLIENT_INTERFACE']._serialized_start=550
-  _globals['_CLIENT_INTERFACE']._serialized_end=756
+  _globals['_RESREQ']._serialized_start=143
+  _globals['_RESREQ']._serialized_end=272
+  _globals['_RESRESP']._serialized_start=274
+  _globals['_RESRESP']._serialized_end=334
+  _globals['_RESGETREQ']._serialized_start=336
+  _globals['_RESGETREQ']._serialized_end=380
+  _globals['_RESGETRESP']._serialized_start=382
+  _globals['_RESGETRESP']._serialized_end=416
+  _globals['_RESEDITREQ']._serialized_start=418
+  _globals['_RESEDITREQ']._serialized_end=497
+  _globals['_RESEDITRESP']._serialized_start=499
+  _globals['_RESEDITRESP']._serialized_end=563
+  _globals['_CLIENT_INTERFACE']._serialized_start=566
+  _globals['_CLIENT_INTERFACE']._serialized_end=772
 # @@protoc_insertion_point(module_scope)

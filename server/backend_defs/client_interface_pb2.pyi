@@ -9,10 +9,10 @@ class AvailablespotReq(_message.Message):
     LOTID_FIELD_NUMBER: _ClassVar[int]
     DATETIME_FIELD_NUMBER: _ClassVar[int]
     DURATION_FIELD_NUMBER: _ClassVar[int]
-    lotID: str
+    lotID: int
     datetime: str
     duration: int
-    def __init__(self, lotID: _Optional[str] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ...) -> None: ...
+    def __init__(self, lotID: _Optional[int] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ...) -> None: ...
 
 class AvailablespotResp(_message.Message):
     __slots__ = ("availablespots",)
@@ -21,20 +21,22 @@ class AvailablespotResp(_message.Message):
     def __init__(self, availablespots: _Optional[str] = ...) -> None: ...
 
 class ResReq(_message.Message):
-    __slots__ = ("lotID", "spotID", "plateNum", "paymentInfo", "datetime", "duration")
+    __slots__ = ("lotID", "spotID", "plateNum", "paymentInfo", "datetime", "duration", "price")
     LOTID_FIELD_NUMBER: _ClassVar[int]
     SPOTID_FIELD_NUMBER: _ClassVar[int]
     PLATENUM_FIELD_NUMBER: _ClassVar[int]
     PAYMENTINFO_FIELD_NUMBER: _ClassVar[int]
     DATETIME_FIELD_NUMBER: _ClassVar[int]
     DURATION_FIELD_NUMBER: _ClassVar[int]
-    lotID: str
-    spotID: str
+    PRICE_FIELD_NUMBER: _ClassVar[int]
+    lotID: int
+    spotID: int
     plateNum: str
     paymentInfo: str
     datetime: str
     duration: int
-    def __init__(self, lotID: _Optional[str] = ..., spotID: _Optional[str] = ..., plateNum: _Optional[str] = ..., paymentInfo: _Optional[str] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ...) -> None: ...
+    price: float
+    def __init__(self, lotID: _Optional[int] = ..., spotID: _Optional[int] = ..., plateNum: _Optional[str] = ..., paymentInfo: _Optional[str] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ..., price: _Optional[float] = ...) -> None: ...
 
 class ResResp(_message.Message):
     __slots__ = ("success", "resID", "errorCode")
@@ -42,17 +44,17 @@ class ResResp(_message.Message):
     RESID_FIELD_NUMBER: _ClassVar[int]
     ERRORCODE_FIELD_NUMBER: _ClassVar[int]
     success: bool
-    resID: str
+    resID: int
     errorCode: str
-    def __init__(self, success: bool = ..., resID: _Optional[str] = ..., errorCode: _Optional[str] = ...) -> None: ...
+    def __init__(self, success: bool = ..., resID: _Optional[int] = ..., errorCode: _Optional[str] = ...) -> None: ...
 
 class ResGetReq(_message.Message):
     __slots__ = ("plateNum", "resID")
     PLATENUM_FIELD_NUMBER: _ClassVar[int]
     RESID_FIELD_NUMBER: _ClassVar[int]
     plateNum: str
-    resID: str
-    def __init__(self, plateNum: _Optional[str] = ..., resID: _Optional[str] = ...) -> None: ...
+    resID: int
+    def __init__(self, plateNum: _Optional[str] = ..., resID: _Optional[int] = ...) -> None: ...
 
 class ResGetResp(_message.Message):
     __slots__ = ("reservations",)
@@ -66,18 +68,18 @@ class ResEditReq(_message.Message):
     DATETIME_FIELD_NUMBER: _ClassVar[int]
     DURATION_FIELD_NUMBER: _ClassVar[int]
     CANCEL_FIELD_NUMBER: _ClassVar[int]
-    resID: str
+    resID: int
     datetime: str
     duration: int
     cancel: bool
-    def __init__(self, resID: _Optional[str] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ..., cancel: bool = ...) -> None: ...
+    def __init__(self, resID: _Optional[int] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ..., cancel: bool = ...) -> None: ...
 
 class ResEditResp(_message.Message):
     __slots__ = ("resID", "success", "errorCode")
     RESID_FIELD_NUMBER: _ClassVar[int]
     SUCCESS_FIELD_NUMBER: _ClassVar[int]
     ERRORCODE_FIELD_NUMBER: _ClassVar[int]
-    resID: str
+    resID: int
     success: bool
     errorCode: str
-    def __init__(self, resID: _Optional[str] = ..., success: bool = ..., errorCode: _Optional[str] = ...) -> None: ...
+    def __init__(self, resID: _Optional[int] = ..., success: bool = ..., errorCode: _Optional[str] = ...) -> None: ...

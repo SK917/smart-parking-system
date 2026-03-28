@@ -8,7 +8,7 @@ service Pricing_Calculator {
 
 // Price Request specifies which lot and number of available spots. datetime is DD/MM/YYYY HH:MM, duration is in minutes
 message PriceReq {
-    required string lotID = 1;
+    required int32 lotID = 1;
     required int32 remainingSpots = 2;
     required int32 totalSpots = 3;
     required string datetime = 4;

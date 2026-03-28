@@ -44,6 +44,11 @@ class Database_InterfaceStub(object):
                 request_serializer=database__interface__pb2.UpdateResReq.SerializeToString,
                 response_deserializer=database__interface__pb2.UpdateResResp.FromString,
                 _registered_method=True)
+        self.getReservations = channel.unary_unary(
+                '/Database_Interface/getReservations',
+                request_serializer=database__interface__pb2.GetResReq.SerializeToString,
+                response_deserializer=database__interface__pb2.GetResResp.FromString,
+                _registered_method=True)
         self.createTransaction = channel.unary_unary(
                 '/Database_Interface/createTransaction',
                 request_serializer=database__interface__pb2.TransCreateReq.SerializeToString,
@@ -73,6 +78,13 @@ class Database_InterfaceServicer(object):
 
     def updateReservations(self, request, context):
         """Updates list of reservations
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def getReservations(self, request, context):
+        """gets a list of reservations made by the user
         """
         context.set_code(grpc.StatusCode.UNIMPLEMENTED)
         context.set_details('Method not implemented!')
@@ -111,6 +123,11 @@ def add_Database_InterfaceServicer_to_server(servicer, server):
                     servicer.updateReservations,
                     request_deserializer=database__interface__pb2.UpdateResReq.FromString,
                     response_serializer=database__interface__pb2.UpdateResResp.SerializeToString,
+            ),
+            'getReservations': grpc.unary_unary_rpc_method_handler(
+                    servicer.getReservations,
+                    request_deserializer=database__interface__pb2.GetResReq.FromString,
+                    response_serializer=database__interface__pb2.GetResResp.SerializeToString,
             ),
             'createTransaction': grpc.unary_unary_rpc_method_handler(
                     servicer.createTransaction,
@@ -182,6 +199,33 @@ class Database_Interface(object):
             '/Database_Interface/updateReservations',
             database__interface__pb2.UpdateResReq.SerializeToString,
             database__interface__pb2.UpdateResResp.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def getReservations(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/Database_Interface/getReservations',
+            database__interface__pb2.GetResReq.SerializeToString,
+            database__interface__pb2.GetResResp.FromString,
             options,
             channel_credentials,
             insecure,

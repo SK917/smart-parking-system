@@ -5,6 +5,7 @@ from backend_defs import client_interface_pb2_grpc, client_interface_pb2
 from backend_defs import database_interface_pb2_grpc, database_interface_pb2
 from backend_defs import pricing_calculator_pb2_grpc, pricing_calculator_pb2
 from backend_defs import transaction_handler_pb2_grpc, transaction_handler_pb2
+import json
 
 class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
     def getAvailableSpots(self, request, context):
@@ -39,8 +40,9 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         while nextSpot != None:
             spotsDict["spots"].append({"spotID": nextSpot[0], "lotID": nextSpot[1], "occupied": nextSpot[2]})
             nextSpot = free_spots.fetchone()
+        reply = database_interface_pb2.AvailableSpotsResp(availableSpots=json.dumps(spotsDict, indent=4))
 
-        pass
+        return reply
 
     def updateReservations(self, request, context):
         # checks if the reservation already exists in the database
@@ -61,5 +63,5 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         pass
     
     def updateSpotOccupancy(self, request, context):
-        
+
         pass

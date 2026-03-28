@@ -7,7 +7,7 @@ service Transaction_Handler {
 
 // Consists of IDs for the user and reservation, payment info, and the value of the transaction
 message transReq {
-    required string resID = 1;
+    required int32 resID = 1;
     required string paymentInfo = 2;
     required string plateNum = 3;
     required float val = 4;
@@ -15,8 +15,9 @@ message transReq {
 
 // Consists of reservation and user ID, and the generated transaction ID, and a success/fail indicator
 message transResp {
-    required string resID = 1;
-    required string transID = 2;
+    required int32 resID = 1;
+    required int32 transID = 2;
     required string plateNum = 3;
     required bool success = 4;
+    optional string errorCode = 5;
 }

@@ -30,11 +30,36 @@ class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
 
     def makeReservation(self, request, context):
         # make a request to the database to check if the user already has a reservation
-        # make a request to the database to check if the user has already paid for this reservation
-        # make request to transaction handler to process transaction
+        resGetReq = database_interface_pb2.GetResReq(plateNum=request.plateNum)
+        reservations = json.loads(DB_INTERFACE.getReservations(resGetReq).reservations)
+        duplicate = False
+        for r in reservations["reservations"]:
+            date = r["startDateTime"].split(" ")[0].split("-")
+            reqDate = request.datetime.split(" ")[0].split("-")
+            if date[0] == reqDate[0] and date[1] == reqDate[1] and date[2] == reqDate[2]:
+                duplicate = True
+                error = "Error: User already has reservation today"
+                reply = client_interface_pb2.ResResp(success=False, errorCode=error)
+                return reply
         # make request to database to enter a new reservation entry or update existing entry for the requested spot
+        resMakeReq = database_interface_pb2.UpdateResReq(lotID=request.lotID, spotID=request.spotID, plateNum=request.plateNum, datetime=request.datetime, duration=request.duration)
+        resResp = DB_INTERFACE.updateReservations(resMakeReq)
+
+        # make request to transaction handler to process transaction
+        transReq = transaction_handler_pb2.transReq(resID=resResp.resID, paymentInfo=request.paymentInfo, plateNum=request.plateNum, val=request.price)
+        transResp = T_HANDLER.makePayment(transReq)
+
         # return whether or not the reservation was successful
-        pass
+        if transResp.success == True and resResp == True:
+            reply = client_interface_pb2.ResResp(success=True, resID=resResp.resID, errorCode=None)
+        elif transResp.success == False and resResp == True:
+            reply = client_interface_pb2.ResResp(success=True, resID=resResp.resID, errorCode=transResp.errorCode)
+        elif transResp.success == True and resResp == False:
+            reply = client_interface_pb2.ResResp(success=True, resID=resResp.resID, errorCode=resResp.errorCode)
+        else:
+            reply = client_interface_pb2.ResResp(success=True, resID=resResp.resID, errorCode=resResp.errorCode + "\n" + transResp.errorCode)
+        
+        return reply
     
     def getReservations(self, request, context):
         return super().getReservations(request, context)

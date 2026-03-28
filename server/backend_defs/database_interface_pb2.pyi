@@ -9,10 +9,10 @@ class AvailableSpotsReq(_message.Message):
     LOTID_FIELD_NUMBER: _ClassVar[int]
     DATETIME_FIELD_NUMBER: _ClassVar[int]
     DURATION_FIELD_NUMBER: _ClassVar[int]
-    lotID: str
+    lotID: int
     datetime: str
     duration: int
-    def __init__(self, lotID: _Optional[str] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ...) -> None: ...
+    def __init__(self, lotID: _Optional[int] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ...) -> None: ...
 
 class AvailableSpotsResp(_message.Message):
     __slots__ = ("availableSpots",)
@@ -28,13 +28,13 @@ class UpdateResReq(_message.Message):
     PLATENUM_FIELD_NUMBER: _ClassVar[int]
     DATETIME_FIELD_NUMBER: _ClassVar[int]
     DURATION_FIELD_NUMBER: _ClassVar[int]
-    resID: str
-    lotID: str
-    spotID: str
+    resID: int
+    lotID: int
+    spotID: int
     plateNum: str
     datetime: str
-    duration: str
-    def __init__(self, resID: _Optional[str] = ..., lotID: _Optional[str] = ..., spotID: _Optional[str] = ..., plateNum: _Optional[str] = ..., datetime: _Optional[str] = ..., duration: _Optional[str] = ...) -> None: ...
+    duration: int
+    def __init__(self, resID: _Optional[int] = ..., lotID: _Optional[int] = ..., spotID: _Optional[int] = ..., plateNum: _Optional[str] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ...) -> None: ...
 
 class UpdateResResp(_message.Message):
     __slots__ = ("success", "resID", "errorCode")
@@ -42,9 +42,9 @@ class UpdateResResp(_message.Message):
     RESID_FIELD_NUMBER: _ClassVar[int]
     ERRORCODE_FIELD_NUMBER: _ClassVar[int]
     success: bool
-    resID: bool
+    resID: int
     errorCode: str
-    def __init__(self, success: bool = ..., resID: bool = ..., errorCode: _Optional[str] = ...) -> None: ...
+    def __init__(self, success: bool = ..., resID: _Optional[int] = ..., errorCode: _Optional[str] = ...) -> None: ...
 
 class TransCreateReq(_message.Message):
     __slots__ = ("resID", "plateNum", "paymentMethod", "val", "success")
@@ -53,30 +53,30 @@ class TransCreateReq(_message.Message):
     PAYMENTMETHOD_FIELD_NUMBER: _ClassVar[int]
     VAL_FIELD_NUMBER: _ClassVar[int]
     SUCCESS_FIELD_NUMBER: _ClassVar[int]
-    resID: str
+    resID: int
     plateNum: str
     paymentMethod: str
     val: float
     success: bool
-    def __init__(self, resID: _Optional[str] = ..., plateNum: _Optional[str] = ..., paymentMethod: _Optional[str] = ..., val: _Optional[float] = ..., success: bool = ...) -> None: ...
+    def __init__(self, resID: _Optional[int] = ..., plateNum: _Optional[str] = ..., paymentMethod: _Optional[str] = ..., val: _Optional[float] = ..., success: bool = ...) -> None: ...
 
 class TransCreateResp(_message.Message):
     __slots__ = ("transID", "success", "errorCode")
     TRANSID_FIELD_NUMBER: _ClassVar[int]
     SUCCESS_FIELD_NUMBER: _ClassVar[int]
     ERRORCODE_FIELD_NUMBER: _ClassVar[int]
-    transID: str
+    transID: int
     success: bool
     errorCode: str
-    def __init__(self, transID: _Optional[str] = ..., success: bool = ..., errorCode: _Optional[str] = ...) -> None: ...
+    def __init__(self, transID: _Optional[int] = ..., success: bool = ..., errorCode: _Optional[str] = ...) -> None: ...
 
 class TransGetReq(_message.Message):
     __slots__ = ("plateNum", "resID")
     PLATENUM_FIELD_NUMBER: _ClassVar[int]
     RESID_FIELD_NUMBER: _ClassVar[int]
     plateNum: str
-    resID: str
-    def __init__(self, plateNum: _Optional[str] = ..., resID: _Optional[str] = ...) -> None: ...
+    resID: int
+    def __init__(self, plateNum: _Optional[str] = ..., resID: _Optional[int] = ...) -> None: ...
 
 class TransGetResp(_message.Message):
     __slots__ = ("transactions",)
@@ -85,17 +85,29 @@ class TransGetResp(_message.Message):
     def __init__(self, transactions: _Optional[str] = ...) -> None: ...
 
 class spotUpdateReq(_message.Message):
-    __slots__ = ("spotID", "lotID", "occupied")
-    SPOTID_FIELD_NUMBER: _ClassVar[int]
-    LOTID_FIELD_NUMBER: _ClassVar[int]
+    __slots__ = ("iotID", "occupied")
+    IOTID_FIELD_NUMBER: _ClassVar[int]
     OCCUPIED_FIELD_NUMBER: _ClassVar[int]
-    spotID: int
-    lotID: int
+    iotID: int
     occupied: bool
-    def __init__(self, spotID: _Optional[int] = ..., lotID: _Optional[int] = ..., occupied: bool = ...) -> None: ...
+    def __init__(self, iotID: _Optional[int] = ..., occupied: bool = ...) -> None: ...
 
 class spotUpdateResp(_message.Message):
     __slots__ = ("success",)
     SUCCESS_FIELD_NUMBER: _ClassVar[int]
     success: bool
     def __init__(self, success: bool = ...) -> None: ...
+
+class GetResReq(_message.Message):
+    __slots__ = ("plateNum", "resID")
+    PLATENUM_FIELD_NUMBER: _ClassVar[int]
+    RESID_FIELD_NUMBER: _ClassVar[int]
+    plateNum: str
+    resID: int
+    def __init__(self, plateNum: _Optional[str] = ..., resID: _Optional[int] = ...) -> None: ...
+
+class GetResResp(_message.Message):
+    __slots__ = ("reservations",)
+    RESERVATIONS_FIELD_NUMBER: _ClassVar[int]
+    reservations: str
+    def __init__(self, reservations: _Optional[str] = ...) -> None: ...

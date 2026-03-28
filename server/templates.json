@@ -105,5 +105,32 @@
                 "method": "Visa"
             }
         ]
+    },
+    "dbGetResRespFormat": {
+        "plateNum": "ABC 123",
+        "reservations": [
+            {
+                "resID": 1,
+                "plateNum": "ABC 123",
+                "lotID": 1,
+                "spotID": 2,
+                "startDateTime": "YYYY-MM-DD HH:MM:SS",
+                "endDateTime": "YYYY-MM-DD HH:MM:SS",
+                "duration": 120,
+                "totalPayment": 12.00,
+                "paymentStatus": "paid"
+            },
+            {
+                "resID": 2,
+                "plateNum": "ABC 123",
+                "lotID": 1,
+                "spotID": 3,
+                "startDateTime": "YYYY-MM-DD HH:MM:SS",
+                "endDateTime": "YYYY-MM-DD HH:MM:SS",
+                "duration": 180,
+                "totalPayment": 15.00,
+                "paymentStatus": "pending"
+            }
+        ]
     }
 }

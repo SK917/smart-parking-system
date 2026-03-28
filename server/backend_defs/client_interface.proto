@@ -15,7 +15,7 @@ service Client_Interface {
 
 // Available spots request specifies which parking lot, time, and duration
 message AvailablespotReq {
-    required string lotID = 1;
+    required int32 lotID = 1;
     required string datetime = 2;
     required int32 duration = 3;
 }
@@ -27,24 +27,25 @@ message AvailablespotResp {
 
 // Reservation request specifies which parking lot and spot, userID, date and time, duration, and payment info
 message ResReq {
-    required string lotID = 1;
-    required string spotID = 2;
+    required int32 lotID = 1;
+    required int32 spotID = 2;
     required string plateNum = 3;
     required string paymentInfo = 4;
     required string datetime = 5;
     required int32 duration = 6;
+    required float price = 7;
 }
 
 // Reservation response is success/fail
 message ResResp {
     required bool success = 1;
-    required string resID = 2;
+    optional int32 resID = 2;
     optional string errorCode = 3;
 }
 // UserId to filter reservations from. If resID is provided, will return just that reservation's information
 message ResGetReq{
     required string plateNum = 1;
-    optional string resID = 2;
+    optional int32 resID = 2;
 }
 // Returns JSON formatted string
 message ResGetResp{
@@ -52,14 +53,14 @@ message ResGetResp{
 }
 
 message ResEditReq{
-    required string resID = 1;
+    required int32 resID = 1;
     optional string datetime = 2;
     optional int32 duration = 3;
     optional bool cancel = 4;
 }
 
 message ResEditResp{
-    required string resID = 1;
+    required int32 resID = 1;
     required bool success = 2;
     optional string errorCode = 3;
 }

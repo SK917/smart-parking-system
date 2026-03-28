@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19transaction_handler.proto\"M\n\x08transReq\x12\r\n\x05resID\x18\x01 \x02(\t\x12\x13\n\x0bpaymentInfo\x18\x02 \x02(\t\x12\x10\n\x08plateNum\x18\x03 \x02(\t\x12\x0b\n\x03val\x18\x04 \x02(\x02\"N\n\ttransResp\x12\r\n\x05resID\x18\x01 \x02(\t\x12\x0f\n\x07transID\x18\x02 \x02(\t\x12\x10\n\x08plateNum\x18\x03 \x02(\t\x12\x0f\n\x07success\x18\x04 \x02(\x08\x32=\n\x13Transaction_Handler\x12&\n\x0bmakePayment\x12\t.transReq\x1a\n.transResp\"\x00')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x19transaction_handler.proto\"M\n\x08transReq\x12\r\n\x05resID\x18\x01 \x02(\x05\x12\x13\n\x0bpaymentInfo\x18\x02 \x02(\t\x12\x10\n\x08plateNum\x18\x03 \x02(\t\x12\x0b\n\x03val\x18\x04 \x02(\x02\"a\n\ttransResp\x12\r\n\x05resID\x18\x01 \x02(\x05\x12\x0f\n\x07transID\x18\x02 \x02(\x05\x12\x10\n\x08plateNum\x18\x03 \x02(\t\x12\x0f\n\x07success\x18\x04 \x02(\x08\x12\x11\n\terrorCode\x18\x05 \x01(\t2=\n\x13Transaction_Handler\x12&\n\x0bmakePayment\x12\t.transReq\x1a\n.transResp\"\x00')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -34,7 +34,7 @@ if not _descriptor._USE_C_DESCRIPTORS:
   _globals['_TRANSREQ']._serialized_start=29
   _globals['_TRANSREQ']._serialized_end=106
   _globals['_TRANSRESP']._serialized_start=108
-  _globals['_TRANSRESP']._serialized_end=186
-  _globals['_TRANSACTION_HANDLER']._serialized_start=188
-  _globals['_TRANSACTION_HANDLER']._serialized_end=249
+  _globals['_TRANSRESP']._serialized_end=205
+  _globals['_TRANSACTION_HANDLER']._serialized_start=207
+  _globals['_TRANSACTION_HANDLER']._serialized_end=268
 # @@protoc_insertion_point(module_scope)
