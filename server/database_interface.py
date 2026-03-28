@@ -1,3 +1,4 @@
+from concurrent import futures
 import grpc
 import sqlite3
 import math
@@ -8,11 +9,14 @@ from backend_defs import transaction_handler_pb2_grpc, transaction_handler_pb2
 import json
 
 class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
+    def __init__(self):
+        self.db_path = "Project/database/parkinglot.db"
+
     def getAvailableSpots(self, request, context):
         # returns a list of spots in a lot that have not been reserved and are not currently occupied as a JSON
         
         # sql stuff
-        conn = sqlite3.connect("Project/database/parkinglot.db")
+        conn = sqlite3.connect(self.db_path)
         cur = conn.cursor()
         
         date = request.startDateTime.split(" ")[0].split("-")
@@ -61,7 +65,44 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         # If the user ID is filled, return transactions made by the user
         # If the resID is filled, return the transactions associated with that reservation
         pass
-    
-    def updateSpotOccupancy(self, request, context):
 
-        pass
+    def updateSpotOccupancy(self, request, context):
+        conn = sqlite3.connect(self.db_path)
+        cur = conn.cursor()
+
+        sensor_col = "sensorID"
+
+        print(f"Received updateSpotOccupancy request from IOT({request.iotID}) setting occupancy to {request.occupied}")
+
+        row = cur.execute(f"SELECT spotID, lotID, occupied FROM spots WHERE {sensor_col}=?", (request.iotID,)).fetchone()
+
+        if row is None:
+            context.set_code(grpc.StatusCode.NOT_FOUND)
+            conn.close()
+            return database_interface_pb2.spotUpdateResp(success=False)
+
+        spot, lot, currently_occupied = row
+        new_occupied = bool(request.occupied)
+
+        old_occupied = bool(currently_occupied)
+
+        if old_occupied == new_occupied:
+            conn.close()
+            return database_interface_pb2.spotUpdateResp(success=True)
+
+        cur.execute(f"UPDATE spots SET occupied=? WHERE {sensor_col}=?", (new_occupied, request.iotID))
+        conn.commit()
+        conn.close()
+
+        return database_interface_pb2.spotUpdateResp(success=True)
+
+def serve(host="0.0.0.0", port=50051):
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    database_interface_pb2_grpc.add_Database_InterfaceServicer_to_server(databaseInterface(), server)
+    server.add_insecure_port(f"{host}:{port}")
+    server.start()
+    print(f"DB Interface running on {host}:{port}")
+    server.wait_for_termination()
+
+if __name__ == "__main__":
+    serve()
