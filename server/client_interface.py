@@ -19,11 +19,11 @@ class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
         spots_dict = json.loads(spots)
         # get number of spots
         remainingSpots = len(spots_dict["spots"])
-        
+
         # make request to pricing calculator for prices for those spots
         priceReq = pricing_calculator_pb2.PriceReq(lotID=request.lotID, spots=remainingSpots, totalSpots=spots_dict["totalSpots"], datetime=request.datetime, duration=request.duration)
         spots_dict["price"] = PRICE_CALC.getPrice(priceReq).price
-        
+
         # return spots with their prices
         availableSpots = client_interface_pb2.AvailablespotResp(availablespots=json.dumps(spots_dict, indent=4))
         return availableSpots
@@ -58,16 +58,16 @@ class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
             reply = client_interface_pb2.ResResp(success=True, resID=resResp.resID, errorCode=resResp.errorCode)
         else:
             reply = client_interface_pb2.ResResp(success=True, resID=resResp.resID, errorCode=resResp.errorCode + "\n" + transResp.errorCode)
-        
+
         return reply
-    
+
     def getReservations(self, request, context):
         resReq = database_interface_pb2.GetResReq(request.plateNum, request.resID)
         reservations = DB_INTERFACE.getReservations(resReq).reservations
         reply = client_interface_pb2.ResGetResp(reservations=reservations)
 
         return reply
-    
+
     def editRes(self, request, context):
         editReq = database_interface_pb2.UpdateResReq(resID=request.resID, datetime=request.datetime, duration=request.duration, delete=request.cancel)
         editResp = DB_INTERFACE.updateReservations(editReq)
