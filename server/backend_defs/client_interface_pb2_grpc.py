@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import client_interface_pb2 as client__interface__pb2
+from . import client_interface_pb2 as client__interface__pb2
 
 GRPC_GENERATED_VERSION = '1.78.0'
 GRPC_VERSION = grpc.__version__

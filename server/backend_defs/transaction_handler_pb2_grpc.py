@@ -3,7 +3,7 @@
 import grpc
 import warnings
 
-import transaction_handler_pb2 as transaction__handler__pb2
+from . import transaction_handler_pb2 as transaction__handler__pb2
 
 GRPC_GENERATED_VERSION = '1.78.0'
 GRPC_VERSION = grpc.__version__
