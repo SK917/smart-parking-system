@@ -5,15 +5,9 @@
         "lotID": 1,
         "occupied": true
     },
-    "userFormat": {
-        "uID": 1,
-        "username": "testUser",
-        "password": "testPW",
-        "email": "test@email.com"
-    },
     "reservationFormat": {
         "resID": 1,
-        "uID": 1,
+        "plateNum": "ABC 123",
         "lotID": 1,
         "spotID": 2,
         "startDateTime": "DD/MM/YYYY HH:MM",
@@ -24,7 +18,7 @@
     "transactionFormat": {
         "transID": 1,
         "value": 15.00,
-        "uID": 1,
+        "plateNum": "ABC 123",
         "resID": 1,
         "success": false,
         "method": "MasterCard"
@@ -47,27 +41,27 @@
         ]
     },
     "getResRespFormat": {
-        "uID": 1,
+        "plateNum": "ABC 123",
         "reservations": [
             {
                 "resID": 1,
-                "uID": 1,
+                "plateNum": "ABC 123",
                 "lotID": 1,
                 "spotID": 2,
                 "startDateTime": "DD/MM/YYYY HH:MM",
                 "duration": 120,
-                "total payment": 12.00,
-                "payment status": "paid"
+                "totalPayment": 12.00,
+                "paymentStatus": "paid"
             },
             {
                 "resID": 2,
-                "uID": 1,
+                "plateNum": "ABC 123",
                 "lotID": 1,
                 "spotID": 3,
                 "startDateTime": "DD/MM/YYYY HH:MM",
                 "duration": 180,
-                "total payment": 15.00,
-                "payment status": "pending"
+                "totalPayment": 15.00,
+                "paymentStatus": "pending"
             }
         ]
     },
@@ -88,13 +82,13 @@
         ]
     },
     "dbTransactionGetRespFormat": {
-        "uID": 1,
+        "plateNum": "ABC 123",
         "resID": null,
         "transactions": [
             {
                 "transID": 1,
                 "value": 12.00,
-                "uID": 1,
+                "plateNum": "ABC 123",
                 "resID": 1,
                 "success": false,
                 "method": "MasterCard"
@@ -102,20 +96,10 @@
             {
                 "transID": 2,
                 "value": 12.00,
-                "uID": 1,
+                "plateNum": "ABC 123",
                 "resID": 1,
                 "success": true,
                 "method": "Visa"
-            }
-        ]
-    },
-    "dbUserGetRespFormat": {
-        "users": [
-            {
-                "uID": 1,
-                "username": "testUser",
-                "password": "testPW",
-                "email": "test@email.com"
             }
         ]
     }

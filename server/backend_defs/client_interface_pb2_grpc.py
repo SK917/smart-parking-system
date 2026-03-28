@@ -44,6 +44,16 @@ class Client_InterfaceStub(object):
                 request_serializer=client__interface__pb2.ResReq.SerializeToString,
                 response_deserializer=client__interface__pb2.ResResp.FromString,
                 _registered_method=True)
+        self.getReservations = channel.unary_unary(
+                '/Client_Interface/getReservations',
+                request_serializer=client__interface__pb2.ResGetReq.SerializeToString,
+                response_deserializer=client__interface__pb2.ResGetResp.FromString,
+                _registered_method=True)
+        self.editRes = channel.unary_unary(
+                '/Client_Interface/editRes',
+                request_serializer=client__interface__pb2.ResEditReq.SerializeToString,
+                response_deserializer=client__interface__pb2.ResEditResp.FromString,
+                _registered_method=True)
 
 
 class Client_InterfaceServicer(object):
@@ -63,6 +73,20 @@ class Client_InterfaceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def getReservations(self, request, context):
+        """gets reservations made by a certain client.
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
+    def editRes(self, request, context):
+        """edits a reservation in the database
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_Client_InterfaceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -75,6 +99,16 @@ def add_Client_InterfaceServicer_to_server(servicer, server):
                     servicer.makeReservation,
                     request_deserializer=client__interface__pb2.ResReq.FromString,
                     response_serializer=client__interface__pb2.ResResp.SerializeToString,
+            ),
+            'getReservations': grpc.unary_unary_rpc_method_handler(
+                    servicer.getReservations,
+                    request_deserializer=client__interface__pb2.ResGetReq.FromString,
+                    response_serializer=client__interface__pb2.ResGetResp.SerializeToString,
+            ),
+            'editRes': grpc.unary_unary_rpc_method_handler(
+                    servicer.editRes,
+                    request_deserializer=client__interface__pb2.ResEditReq.FromString,
+                    response_serializer=client__interface__pb2.ResEditResp.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -131,6 +165,60 @@ class Client_Interface(object):
             '/Client_Interface/makeReservation',
             client__interface__pb2.ResReq.SerializeToString,
             client__interface__pb2.ResResp.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def getReservations(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/Client_Interface/getReservations',
+            client__interface__pb2.ResGetReq.SerializeToString,
+            client__interface__pb2.ResGetResp.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def editRes(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/Client_Interface/editRes',
+            client__interface__pb2.ResEditReq.SerializeToString,
+            client__interface__pb2.ResEditResp.FromString,
             options,
             channel_credentials,
             insecure,

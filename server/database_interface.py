@@ -1,4 +1,5 @@
 import grpc
+import sqlite3
 from backend_defs import client_interface_pb2_grpc, client_interface_pb2
 from backend_defs import database_interface_pb2_grpc, database_interface_pb2
 from backend_defs import pricing_calculator_pb2_grpc, pricing_calculator_pb2
@@ -6,7 +7,13 @@ from backend_defs import transaction_handler_pb2_grpc, transaction_handler_pb2
 
 class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
     def getAvailableSpots(self, request, context):
-        # returns a list of spots that have not been reserved and are not currently occupied
+        # returns a list of spots in a lot that have not been reserved and are not currently occupied as a JSON
+        
+        # sql stuff
+        conn = sqlite3.connect("Project/database/parkinglot.db")
+        cur = conn.cursor()
+        free_spots = cur.execute("SELECT * FROM spots WHERE lotID=? AND occupied=false AND spotID NOT IN (SELECT spotID FROM reservations WHERE day=? AND month=? AND year=? AND )")
+        
         pass
 
     def updateReservations(self, request, context):

@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x18pricing_calculator.proto\"L\n\x08PriceReq\x12\r\n\x05lotID\x18\x01 \x02(\t\x12\r\n\x05spots\x18\x02 \x03(\t\x12\x10\n\x08\x64\x61tetime\x18\x03 \x02(\t\x12\x10\n\x08\x64uration\x18\x04 \x02(\x05\"\x1b\n\tPriceResp\x12\x0e\n\x06prices\x18\x01 \x02(\t29\n\x12Pricing_Calculator\x12#\n\x08getPrice\x12\t.PriceReq\x1a\n.PriceResp\"\x00')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x18pricing_calculator.proto\"i\n\x08PriceReq\x12\r\n\x05lotID\x18\x01 \x02(\t\x12\x16\n\x0eremainingSpots\x18\x02 \x02(\x05\x12\x12\n\ntotalSpots\x18\x03 \x02(\x05\x12\x10\n\x08\x64\x61tetime\x18\x04 \x02(\t\x12\x10\n\x08\x64uration\x18\x05 \x02(\x05\"\x1a\n\tPriceResp\x12\r\n\x05price\x18\x01 \x01(\x02\x32\x39\n\x12Pricing_Calculator\x12#\n\x08getPrice\x12\t.PriceReq\x1a\n.PriceResp\"\x00')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,9 +32,9 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'pricing_calculator_pb2', _g
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_PRICEREQ']._serialized_start=28
-  _globals['_PRICEREQ']._serialized_end=104
-  _globals['_PRICERESP']._serialized_start=106
-  _globals['_PRICERESP']._serialized_end=133
-  _globals['_PRICING_CALCULATOR']._serialized_start=135
-  _globals['_PRICING_CALCULATOR']._serialized_end=192
+  _globals['_PRICEREQ']._serialized_end=133
+  _globals['_PRICERESP']._serialized_start=135
+  _globals['_PRICERESP']._serialized_end=161
+  _globals['_PRICING_CALCULATOR']._serialized_start=163
+  _globals['_PRICING_CALCULATOR']._serialized_end=220
 # @@protoc_insertion_point(module_scope)

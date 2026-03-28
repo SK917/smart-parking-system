@@ -17,7 +17,7 @@ service Client_Interface {
 message AvailablespotReq {
     required string lotID = 1;
     required string datetime = 2;
-    optional int32 duration = 3;
+    required int32 duration = 3;
 }
 
 // Available spot response returns list of available spots in that parking lot as JSON
@@ -29,7 +29,7 @@ message AvailablespotResp {
 message ResReq {
     required string lotID = 1;
     required string spotID = 2;
-    required string uID = 3;
+    required string plateNum = 3;
     required string paymentInfo = 4;
     required string datetime = 5;
     required int32 duration = 6;
@@ -43,7 +43,7 @@ message ResResp {
 }
 // UserId to filter reservations from. If resID is provided, will return just that reservation's information
 message ResGetReq{
-    required string uID = 1;
+    required string plateNum = 1;
     optional string resID = 2;
 }
 // Returns JSON formatted string

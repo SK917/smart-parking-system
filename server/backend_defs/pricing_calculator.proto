@@ -10,11 +10,12 @@ service Pricing_Calculator {
 message PriceReq {
     required string lotID = 1;
     required int32 remainingSpots = 2;
-    required string datetime = 3;
-    required int32 duration = 4;
+    required int32 totalSpots = 3;
+    required string datetime = 4;
+    required int32 duration = 5;
 }
 
 // Price Response returns a single price for the whole lot
 message PriceResp {
-    required float price = 1;
+    optional float price = 1;
 }

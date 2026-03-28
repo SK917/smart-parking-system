@@ -9,16 +9,13 @@ service Database_Interface {
     rpc createTransaction (TransCreateReq) returns (TransCreateResp) {}
     // Returns a list of transactions for the specified reservation/user
     rpc getTransactions (TransGetReq) returns (TransGetResp) {}
-    // Updates user info (or creates a new one)
-    rpc updateUser (userUpdateReq) returns (userUpdateResp) {}
-    // Returns requested user info
-    rpc getUser (userGetReq) returns (userGetResp) {}
 }
 
 // Specifies which parking lot
 message AvailableSpotsReq {
     required string lotID = 1;
-    
+    required string datetime = 2;
+    required int32 duration = 3;
 }
 
 // Returns list of parking spots in JSON format
@@ -29,11 +26,11 @@ message AvailableSpotsResp {
 // Request specifies reservation to be added/changed
 message UpdateResReq {
     optional string resID = 1;
-    required string lotID = 2;
-    required string spotID = 3;
-    required string uID = 4;
-    required string datetime = 5;
-    required string duration = 6;
+    optional string lotID = 2;
+    optional string spotID = 3;
+    optional string plateNum = 4;
+    optional string datetime = 5;
+    optional string duration = 6;
 }
 
 // Response returns success/fail and resID
@@ -46,7 +43,7 @@ message UpdateResResp {
 // Transaction create request consists of related reservation ID, user ID, payment method, and success/fail
 message TransCreateReq {
     required string resID = 1;
-    required string uID = 2;
+    required string plateNum = 2;
     required string paymentMethod = 3;
     required float val = 5;
     required bool success = 6;
@@ -61,36 +58,11 @@ message TransCreateResp {
 
 // Transaction get request contains uID or resID, or none to get all transactions made
 message TransGetReq {
-    optional string uID = 1;
+    optional string plateNum = 1;
     optional string resID = 2;
 }
 
 // returned list of transactions is in JSON formatted string
 message TransGetResp {
     required string transactions = 1;
-}
-
-// contains user info to be updated
-message userUpdateReq {
-    optional string uID = 1;
-    optional string username = 2;
-    optional string password = 3;
-    optional string email = 4;
-}
-
-// response is success/fail
-message userUpdateResp {
-    required bool success = 1;
-    optional string errorCode = 2;
-}
-
-// get request uses username or email
-message userGetReq {
-    optional string username = 1;
-    optional string email = 2;
-}
-
-// returns user info as JSON
-message userGetResp {
-    required string userData = 1;
 }

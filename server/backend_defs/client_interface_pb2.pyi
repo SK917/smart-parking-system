@@ -21,25 +21,63 @@ class AvailablespotResp(_message.Message):
     def __init__(self, availablespots: _Optional[str] = ...) -> None: ...
 
 class ResReq(_message.Message):
-    __slots__ = ("lotID", "spotID", "uID", "paymentInfo", "datetime", "duration")
+    __slots__ = ("lotID", "spotID", "plateNum", "paymentInfo", "datetime", "duration")
     LOTID_FIELD_NUMBER: _ClassVar[int]
     SPOTID_FIELD_NUMBER: _ClassVar[int]
-    UID_FIELD_NUMBER: _ClassVar[int]
+    PLATENUM_FIELD_NUMBER: _ClassVar[int]
     PAYMENTINFO_FIELD_NUMBER: _ClassVar[int]
     DATETIME_FIELD_NUMBER: _ClassVar[int]
     DURATION_FIELD_NUMBER: _ClassVar[int]
     lotID: str
     spotID: str
-    uID: str
+    plateNum: str
     paymentInfo: str
     datetime: str
-    duration: str
-    def __init__(self, lotID: _Optional[str] = ..., spotID: _Optional[str] = ..., uID: _Optional[str] = ..., paymentInfo: _Optional[str] = ..., datetime: _Optional[str] = ..., duration: _Optional[str] = ...) -> None: ...
+    duration: int
+    def __init__(self, lotID: _Optional[str] = ..., spotID: _Optional[str] = ..., plateNum: _Optional[str] = ..., paymentInfo: _Optional[str] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ...) -> None: ...
 
 class ResResp(_message.Message):
-    __slots__ = ("success", "resID")
+    __slots__ = ("success", "resID", "errorCode")
     SUCCESS_FIELD_NUMBER: _ClassVar[int]
     RESID_FIELD_NUMBER: _ClassVar[int]
+    ERRORCODE_FIELD_NUMBER: _ClassVar[int]
     success: bool
     resID: str
-    def __init__(self, success: bool = ..., resID: _Optional[str] = ...) -> None: ...
+    errorCode: str
+    def __init__(self, success: bool = ..., resID: _Optional[str] = ..., errorCode: _Optional[str] = ...) -> None: ...
+
+class ResGetReq(_message.Message):
+    __slots__ = ("plateNum", "resID")
+    PLATENUM_FIELD_NUMBER: _ClassVar[int]
+    RESID_FIELD_NUMBER: _ClassVar[int]
+    plateNum: str
+    resID: str
+    def __init__(self, plateNum: _Optional[str] = ..., resID: _Optional[str] = ...) -> None: ...
+
+class ResGetResp(_message.Message):
+    __slots__ = ("reservations",)
+    RESERVATIONS_FIELD_NUMBER: _ClassVar[int]
+    reservations: str
+    def __init__(self, reservations: _Optional[str] = ...) -> None: ...
+
+class ResEditReq(_message.Message):
+    __slots__ = ("resID", "datetime", "duration", "cancel")
+    RESID_FIELD_NUMBER: _ClassVar[int]
+    DATETIME_FIELD_NUMBER: _ClassVar[int]
+    DURATION_FIELD_NUMBER: _ClassVar[int]
+    CANCEL_FIELD_NUMBER: _ClassVar[int]
+    resID: str
+    datetime: str
+    duration: int
+    cancel: bool
+    def __init__(self, resID: _Optional[str] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ..., cancel: bool = ...) -> None: ...
+
+class ResEditResp(_message.Message):
+    __slots__ = ("resID", "success", "errorCode")
+    RESID_FIELD_NUMBER: _ClassVar[int]
+    SUCCESS_FIELD_NUMBER: _ClassVar[int]
+    ERRORCODE_FIELD_NUMBER: _ClassVar[int]
+    resID: str
+    success: bool
+    errorCode: str
+    def __init__(self, resID: _Optional[str] = ..., success: bool = ..., errorCode: _Optional[str] = ...) -> None: ...

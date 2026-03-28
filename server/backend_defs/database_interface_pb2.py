@@ -24,7 +24,7 @@ _sym_db = _symbol_database.Default()
 
 
 
-DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x18\x64\x61tabase_interface.proto\"\"\n\x11\x41vailableSpotsReq\x12\r\n\x05lotID\x18\x01 \x02(\t\",\n\x12\x41vailableSpotsResp\x12\x16\n\x0e\x61vailableSpots\x18\x01 \x02(\t\"m\n\x0cUpdateResReq\x12\r\n\x05resID\x18\x01 \x02(\t\x12\r\n\x05lotID\x18\x02 \x02(\t\x12\x0e\n\x06spotID\x18\x03 \x02(\t\x12\x0b\n\x03uID\x18\x04 \x02(\t\x12\x10\n\x08\x64\x61tetime\x18\x05 \x02(\t\x12\x10\n\x08\x64uration\x18\x06 \x02(\t\"B\n\rUpdateResResp\x12\x0f\n\x07success\x18\x01 \x02(\x08\x12\r\n\x05resID\x18\x02 \x02(\x08\x12\x11\n\terrorCode\x18\x03 \x01(\t\"a\n\x0eTransCreateReq\x12\r\n\x05resID\x18\x01 \x02(\t\x12\x0b\n\x03uID\x18\x02 \x02(\t\x12\x15\n\rpaymentMethod\x18\x03 \x02(\t\x12\x0b\n\x03val\x18\x05 \x02(\t\x12\x0f\n\x07success\x18\x06 \x02(\x08\"F\n\x0fTransCreateResp\x12\x0f\n\x07transID\x18\x01 \x02(\t\x12\x0f\n\x07success\x18\x02 \x02(\x08\x12\x11\n\terrorCode\x18\x03 \x01(\t\")\n\x0bTransGetReq\x12\x0b\n\x03uID\x18\x01 \x01(\t\x12\r\n\x05resID\x18\x02 \x01(\t\"$\n\x0cTransGetResp\x12\x14\n\x0ctransactions\x18\x01 \x02(\t\"O\n\ruserUpdateReq\x12\x0b\n\x03uID\x18\x01 \x01(\t\x12\x10\n\x08username\x18\x02 \x01(\t\x12\x10\n\x08password\x18\x03 \x01(\t\x12\r\n\x05\x65mail\x18\x04 \x01(\t\"4\n\x0euserUpdateResp\x12\x0f\n\x07success\x18\x01 \x02(\x08\x12\x11\n\terrorCode\x18\x02 \x01(\t\"-\n\nuserGetReq\x12\x10\n\x08username\x18\x01 \x01(\t\x12\r\n\x05\x65mail\x18\x02 \x01(\t\"\x1f\n\x0buserGetResp\x12\x10\n\x08userData\x18\x01 \x02(\t2\xd0\x02\n\x12\x44\x61tabase_Interface\x12>\n\x11getAvailableSpots\x12\x12.AvailableSpotsReq\x1a\x13.AvailableSpotsResp\"\x00\x12\x35\n\x12updateReservations\x12\r.UpdateResReq\x1a\x0e.UpdateResResp\"\x00\x12\x38\n\x11\x63reateTransaction\x12\x0f.TransCreateReq\x1a\x10.TransCreateResp\"\x00\x12\x30\n\x0fgetTransactions\x12\x0c.TransGetReq\x1a\r.TransGetResp\"\x00\x12/\n\nupdateUser\x12\x0e.userUpdateReq\x1a\x0f.userUpdateResp\"\x00\x12&\n\x07getUser\x12\x0b.userGetReq\x1a\x0c.userGetResp\"\x00')
+DESCRIPTOR = _descriptor_pool.Default().AddSerializedFile(b'\n\x18\x64\x61tabase_interface.proto\"F\n\x11\x41vailableSpotsReq\x12\r\n\x05lotID\x18\x01 \x02(\t\x12\x10\n\x08\x64\x61tetime\x18\x02 \x02(\t\x12\x10\n\x08\x64uration\x18\x03 \x02(\x05\",\n\x12\x41vailableSpotsResp\x12\x16\n\x0e\x61vailableSpots\x18\x01 \x02(\t\"r\n\x0cUpdateResReq\x12\r\n\x05resID\x18\x01 \x01(\t\x12\r\n\x05lotID\x18\x02 \x01(\t\x12\x0e\n\x06spotID\x18\x03 \x01(\t\x12\x10\n\x08plateNum\x18\x04 \x01(\t\x12\x10\n\x08\x64\x61tetime\x18\x05 \x01(\t\x12\x10\n\x08\x64uration\x18\x06 \x01(\t\"B\n\rUpdateResResp\x12\x0f\n\x07success\x18\x01 \x02(\x08\x12\r\n\x05resID\x18\x02 \x02(\x08\x12\x11\n\terrorCode\x18\x03 \x01(\t\"f\n\x0eTransCreateReq\x12\r\n\x05resID\x18\x01 \x02(\t\x12\x10\n\x08plateNum\x18\x02 \x02(\t\x12\x15\n\rpaymentMethod\x18\x03 \x02(\t\x12\x0b\n\x03val\x18\x05 \x02(\x02\x12\x0f\n\x07success\x18\x06 \x02(\x08\"F\n\x0fTransCreateResp\x12\x0f\n\x07transID\x18\x01 \x02(\t\x12\x0f\n\x07success\x18\x02 \x02(\x08\x12\x11\n\terrorCode\x18\x03 \x01(\t\".\n\x0bTransGetReq\x12\x10\n\x08plateNum\x18\x01 \x01(\t\x12\r\n\x05resID\x18\x02 \x01(\t\"$\n\x0cTransGetResp\x12\x14\n\x0ctransactions\x18\x01 \x02(\t2\xf7\x01\n\x12\x44\x61tabase_Interface\x12>\n\x11getAvailableSpots\x12\x12.AvailableSpotsReq\x1a\x13.AvailableSpotsResp\"\x00\x12\x35\n\x12updateReservations\x12\r.UpdateResReq\x1a\x0e.UpdateResResp\"\x00\x12\x38\n\x11\x63reateTransaction\x12\x0f.TransCreateReq\x1a\x10.TransCreateResp\"\x00\x12\x30\n\x0fgetTransactions\x12\x0c.TransGetReq\x1a\r.TransGetResp\"\x00')
 
 _globals = globals()
 _builder.BuildMessageAndEnumDescriptors(DESCRIPTOR, _globals)
@@ -32,29 +32,21 @@ _builder.BuildTopDescriptorsAndMessages(DESCRIPTOR, 'database_interface_pb2', _g
 if not _descriptor._USE_C_DESCRIPTORS:
   DESCRIPTOR._loaded_options = None
   _globals['_AVAILABLESPOTSREQ']._serialized_start=28
-  _globals['_AVAILABLESPOTSREQ']._serialized_end=62
-  _globals['_AVAILABLESPOTSRESP']._serialized_start=64
-  _globals['_AVAILABLESPOTSRESP']._serialized_end=108
-  _globals['_UPDATERESREQ']._serialized_start=110
-  _globals['_UPDATERESREQ']._serialized_end=219
-  _globals['_UPDATERESRESP']._serialized_start=221
-  _globals['_UPDATERESRESP']._serialized_end=287
-  _globals['_TRANSCREATEREQ']._serialized_start=289
-  _globals['_TRANSCREATEREQ']._serialized_end=386
-  _globals['_TRANSCREATERESP']._serialized_start=388
-  _globals['_TRANSCREATERESP']._serialized_end=458
-  _globals['_TRANSGETREQ']._serialized_start=460
-  _globals['_TRANSGETREQ']._serialized_end=501
-  _globals['_TRANSGETRESP']._serialized_start=503
-  _globals['_TRANSGETRESP']._serialized_end=539
-  _globals['_USERUPDATEREQ']._serialized_start=541
-  _globals['_USERUPDATEREQ']._serialized_end=620
-  _globals['_USERUPDATERESP']._serialized_start=622
-  _globals['_USERUPDATERESP']._serialized_end=674
-  _globals['_USERGETREQ']._serialized_start=676
-  _globals['_USERGETREQ']._serialized_end=721
-  _globals['_USERGETRESP']._serialized_start=723
-  _globals['_USERGETRESP']._serialized_end=754
-  _globals['_DATABASE_INTERFACE']._serialized_start=757
-  _globals['_DATABASE_INTERFACE']._serialized_end=1093
+  _globals['_AVAILABLESPOTSREQ']._serialized_end=98
+  _globals['_AVAILABLESPOTSRESP']._serialized_start=100
+  _globals['_AVAILABLESPOTSRESP']._serialized_end=144
+  _globals['_UPDATERESREQ']._serialized_start=146
+  _globals['_UPDATERESREQ']._serialized_end=260
+  _globals['_UPDATERESRESP']._serialized_start=262
+  _globals['_UPDATERESRESP']._serialized_end=328
+  _globals['_TRANSCREATEREQ']._serialized_start=330
+  _globals['_TRANSCREATEREQ']._serialized_end=432
+  _globals['_TRANSCREATERESP']._serialized_start=434
+  _globals['_TRANSCREATERESP']._serialized_end=504
+  _globals['_TRANSGETREQ']._serialized_start=506
+  _globals['_TRANSGETREQ']._serialized_end=552
+  _globals['_TRANSGETRESP']._serialized_start=554
+  _globals['_TRANSGETRESP']._serialized_end=590
+  _globals['_DATABASE_INTERFACE']._serialized_start=593
+  _globals['_DATABASE_INTERFACE']._serialized_end=840
 # @@protoc_insertion_point(module_scope)
