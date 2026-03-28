@@ -14,32 +14,29 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
 
     def getAvailableSpots(self, request, context):
         # returns a list of spots in a lot that have not been reserved and are not currently occupied as a JSON
-        
+
         # sql stuff
         conn = sqlite3.connect(self.db_path)
         cur = conn.cursor()
-        
+
         date = request.startDateTime.split(" ")[0].split("-")
         startHour = int(request.startDateTime.split(" ")[1].split(":")[0])
         startMin = int(request.startDateTime.split(" ")[1].split(":")[1])
         endHour = startHour + math.floor(request.duration/60)
         endMin = startMin + request.duration % 60
-        
+
         if endHour > 23:
             endDay = int(date.split("-")[2]) + 1
             endHour = endHour - 23
         else:
             endDay = date[2]
         endDateTime = f"{date[0]}-{date[1]}-{endDay} {endHour}:{endMin}:00"
-        
+
         data = {"lID": request.lotID, "sDT": request.startDateTime, "eDT": endDateTime}
         free_spots = cur.execute("SELECT * FROM spots WHERE lotID=:lID AND occupied=false AND spotID NOT IN (SELECT spotID FROM reservations WHERE startDateTime>:eDT OR endDateTime<:sDT)", data)
         totalSpots = cur.execute("SELECT totalSpots FROM parkingLots WHERE lotID=?", (request.lotID,))
-        spotsDict = {"lotID": request.lotID,
-                     "totalSpots": totalSpots.fetchone(),
-                     "spots": []
-                     }
-        
+        spotsDict = {"lotID": request.lotID, "totalSpots": totalSpots.fetchone(), "spots": []}
+
         nextSpot = free_spots.fetchone()
         while nextSpot != None:
             spotsDict["spots"].append({"spotID": nextSpot[0], "lotID": nextSpot[1], "occupied": nextSpot[2]})
@@ -53,7 +50,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         # if yes, update the reservation with the info in the request
         # if no, consider it a new reservation, make a new reservation entry with the relevant information, set payment statues to pending by default
         pass
-    
+
     def getReservations(self, request, context):
         conn = sqlite3.connect(self.db_path)
         cur = conn.cursor()
@@ -85,7 +82,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
 
         sensor_col = "sensorID"
 
-        print(f"Received updateSpotOccupancy request from IOT({request.iotID}) setting occupancy to {request.occupied}")
+        print(f"Received updateSpotOccupancy request from IoT({request.iotID}) setting occupancy to {request.occupied}")
 
         row = cur.execute(f"SELECT spotID, lotID, occupied FROM spots WHERE {sensor_col}=?", (request.iotID,)).fetchone()
 

@@ -15,7 +15,7 @@ def send_message(stub, sensor_id, args):
         change = "occupied"
 
     if response.success:
-        print(f"Serial({response.serialNumber}) has been set to {change} successfully.")
+        print(f"IoT({response.serialNumber}) has been set to {change} successfully.")
     else:
         print(f"Failed to set Serial({response.serialNumber}) to {change}. Error: {response.error}")
 
@@ -24,7 +24,7 @@ def main():
     parser.add_argument("--serial", type=int, required=True, help="sensor serial number")
     parser.add_argument("--occupied", action="store_true", help="change the spot to occupied")
     parser.add_argument("--free", action="store_true", help="change the spot to free")
-    parser.add_argument("--iotService", type=str, default="localhost:50053", help="target address for IoT interface gRPC server (default: localhost:50053)")
+    parser.add_argument("--iotService", type=str, default="localhost:50053", help="target address for IoT service (default: localhost:50053)")
     args = parser.parse_args()
 
     target = args.iotService

@@ -17,8 +17,7 @@ class transactionHandler(transaction_handler_pb2_grpc.Transaction_HandlerService
             # already been paid, return an error.
             reply = transaction_handler_pb2.transResp(resID=request.resID, transID=None, plateNum=request.plateNum, success=False, errorCode="Error: Reservation already paid for")
             return reply
-        
-        
+
         # send request to database interface to create new transaction entry
         errCode = ""
         if request.paymentInfo == "American Express":
