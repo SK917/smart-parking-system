@@ -16,7 +16,7 @@ message transReq {
 // Consists of reservation and user ID, and the generated transaction ID, and a success/fail indicator
 message transResp {
     required int32 resID = 1;
-    required int32 transID = 2;
+    optional int32 transID = 2;
     required string plateNum = 3;
     required bool success = 4;
     optional string errorCode = 5;

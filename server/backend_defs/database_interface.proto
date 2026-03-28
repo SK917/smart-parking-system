@@ -35,6 +35,7 @@ message UpdateResReq {
     optional string plateNum = 4;
     optional string datetime = 5;
     optional int32 duration = 6;
+    optional bool delete = 7;
 }
 
 // Response returns success/fail and resID

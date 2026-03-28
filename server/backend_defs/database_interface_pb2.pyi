@@ -21,20 +21,22 @@ class AvailableSpotsResp(_message.Message):
     def __init__(self, availableSpots: _Optional[str] = ...) -> None: ...
 
 class UpdateResReq(_message.Message):
-    __slots__ = ("resID", "lotID", "spotID", "plateNum", "datetime", "duration")
+    __slots__ = ("resID", "lotID", "spotID", "plateNum", "datetime", "duration", "delete")
     RESID_FIELD_NUMBER: _ClassVar[int]
     LOTID_FIELD_NUMBER: _ClassVar[int]
     SPOTID_FIELD_NUMBER: _ClassVar[int]
     PLATENUM_FIELD_NUMBER: _ClassVar[int]
     DATETIME_FIELD_NUMBER: _ClassVar[int]
     DURATION_FIELD_NUMBER: _ClassVar[int]
+    DELETE_FIELD_NUMBER: _ClassVar[int]
     resID: int
     lotID: int
     spotID: int
     plateNum: str
     datetime: str
     duration: int
-    def __init__(self, resID: _Optional[int] = ..., lotID: _Optional[int] = ..., spotID: _Optional[int] = ..., plateNum: _Optional[str] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ...) -> None: ...
+    delete: bool
+    def __init__(self, resID: _Optional[int] = ..., lotID: _Optional[int] = ..., spotID: _Optional[int] = ..., plateNum: _Optional[str] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ..., delete: bool = ...) -> None: ...
 
 class UpdateResResp(_message.Message):
     __slots__ = ("success", "resID", "errorCode")

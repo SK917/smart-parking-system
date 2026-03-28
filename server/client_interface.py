@@ -7,7 +7,7 @@ from backend_defs import transaction_handler_pb2_grpc, transaction_handler_pb2
 import json
 
 T_HANDLER = None
-DB_INTERFACE = None
+DB_INTERFACE: database_interface_pb2_grpc.Database_InterfaceStub = None
 PRICE_CALC = None
 
 
@@ -62,10 +62,17 @@ class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
         return reply
     
     def getReservations(self, request, context):
-        return super().getReservations(request, context)
+        resReq = database_interface_pb2.GetResReq(request.plateNum, request.resID)
+        reservations = DB_INTERFACE.getReservations(resReq).reservations
+        reply = client_interface_pb2.ResGetResp(reservations=reservations)
+
+        return reply
     
     def editRes(self, request, context):
-        return super().editRes(request, context)
+        editReq = database_interface_pb2.UpdateResReq(resID=request.resID, datetime=request.datetime, duration=request.duration, delete=request.cancel)
+        editResp = DB_INTERFACE.updateReservations(editReq)
+        reply = client_interface_pb2.ResEditResp(resID=editResp.resID, success=editResp.success, errorCode=editResp.errorCode)
+        return reply
 
 # TODO: combine the launching of all backend code into one start script
 if __name__ == '__main__':
