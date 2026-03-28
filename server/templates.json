@@ -32,18 +32,17 @@
     "availableSpotsReplyFormat": {
         "lotID": 1,
         "totalSpots": 15,
+        "price": 15.00,
         "spots": [
             {
                 "spotID": 1,
                 "lotID": 1,
-                "occupied": false,
-                "hourlyRate": 2.2
+                "occupied": false
             },
             {
                 "spotID": 2,
                 "lotID": 1,
-                "occupied": false,
-                "hourlyRate": 2.5
+                "occupied": false
             }
         ]
     },
@@ -69,36 +68,6 @@
                 "duration": 180,
                 "total payment": 15.00,
                 "payment status": "pending"
-            }
-        ]
-    },
-    "pricingCalcSpotsReqFormat": {
-        "spots": [
-            {
-                "spotID": 1,
-                "lotID": 1,
-                "occupied": false
-            },
-            {
-                "spotID": 2,
-                "lotID": 1,
-                "occupied": false
-            }
-        ]
-    },
-    "pricingCalcReplyFormat": {
-        "spots": [
-            {
-                "spotID": 1,
-                "lotID": 1,
-                "occupied": false,
-                "hourlyRate": 2.2
-            },
-            {
-                "spotID": 2,
-                "lotID": 1,
-                "occupied": false,
-                "hourlyRate": 2.5
             }
         ]
     },

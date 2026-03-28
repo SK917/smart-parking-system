@@ -6,15 +6,15 @@ service Pricing_Calculator {
 
 }
 
-// Price Request specifies which lot and available spots. Spots is formatted as JSON, datetime is DD/MM/YYYY HH:MM, duration is in minutes
+// Price Request specifies which lot and number of available spots. datetime is DD/MM/YYYY HH:MM, duration is in minutes
 message PriceReq {
     required string lotID = 1;
-    repeated string spots = 2;
+    required int32 remainingSpots = 2;
     required string datetime = 3;
     required int32 duration = 4;
 }
 
-// Price Response returns the price for each available spot in the lot as a JSON
+// Price Response returns a single price for the whole lot
 message PriceResp {
-    required string prices = 1;
+    required float price = 1;
 }
