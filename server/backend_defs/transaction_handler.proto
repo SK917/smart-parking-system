@@ -10,7 +10,7 @@ message transReq {
     required string resID = 1;
     required string paymentInfo = 2;
     required string uID = 3;
-    required string val = 4;
+    required float val = 4;
 }
 
 // Consists of reservation and user ID, and the generated transaction ID, and a success/fail indicator

@@ -48,7 +48,7 @@ message TransCreateReq {
     required string resID = 1;
     required string uID = 2;
     required string paymentMethod = 3;
-    required string val = 5;
+    required float val = 5;
     required bool success = 6;
 }
 

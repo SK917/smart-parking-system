@@ -5,6 +5,10 @@ service Client_Interface {
     rpc getAvailablespots (AvailablespotReq) returns (AvailablespotResp) {}
     // Client makes a reservation for a specific parking spot in a specific lot
     rpc makeReservation (ResReq) returns (ResResp) {}
+    // gets reservations made by a certain client.
+    rpc getReservations (ResGetReq) returns (ResGetResp) {}
+    // edits a reservation in the database
+    rpc editRes (ResEditReq) returns (ResEditResp) {}
 
 }
 
@@ -27,11 +31,34 @@ message ResReq {
     required string uID = 3;
     required string paymentInfo = 4;
     required string datetime = 5;
-    required string duration = 6;
+    required int32 duration = 6;
 }
 
 // Reservation response is success/fail
 message ResResp {
     required bool success = 1;
     required string resID = 2;
+    optional string errorCode = 3;
+}
+// UserId to filter reservations from. If resID is provided, will return just that reservation's information
+message ResGetReq{
+    required string uID = 1;
+    optional string resID = 2;
+}
+// Returns JSON formatted string
+message ResGetResp{
+    required string reservations = 1;
+}
+
+message ResEditReq{
+    required string resID = 1;
+    optional string datetime = 2;
+    optional int32 duration = 3;
+    optional bool cancel = 4;
+}
+
+message ResEditResp{
+    required string resID = 1;
+    required bool success = 2;
+    optional string errorCode = 3;
 }
