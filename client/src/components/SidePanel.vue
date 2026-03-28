@@ -1,26 +1,42 @@
 <script setup lang="ts">
-    import { ref, computed } from 'vue';
+    import { ref, computed, watch } from 'vue';
     import ReservationForm from './ReservationForm.vue';
+    import { useParkingStore } from '@/stores/parking-store';
+    import { ChevronDown, ChevronUp } from 'lucide-vue-next';
 
+    const parkingStore = useParkingStore();
     const showReservationForm = ref(false);
-    const reserveName = ref('');
+    const reservePlateNum = ref('');
     const reserveId = ref('');
-    const showLookUpResults = ref(false);
+    const durationInput = ref(parkingStore.duration);
 
     const toggleReservationForm = () => {
         showReservationForm.value = !showReservationForm.value;
     }
 
     const lookUpReservation = () => {
-        //TODO: Add actual lookup logic here- connect to parking store
-        showLookUpResults.value = true;
-        reserveName.value = '';
+        parkingStore.lookUpReservation(reserveId.value, reservePlateNum.value);
+        reservePlateNum.value = '';
         reserveId.value = '';
     }
 
     const isFormInvalid = computed(() => {
-    return reserveName.value.trim() === '' || reserveId.value.trim() === ''
+        return reservePlateNum.value.trim() === '' || reserveId.value.trim() === ''
     })
+
+    watch(durationInput, (newDuration) => {
+        if (newDuration) {
+            if(newDuration < 30) {
+                durationInput.value = 30;
+            }
+            else if(newDuration > 1080) {
+                durationInput.value = 1080;
+            }
+            else {
+                parkingStore.setDuration(newDuration);
+            }
+        }
+    });
 
 </script>
 
@@ -36,8 +52,42 @@
             <div class="w-full h-1 bg-gray-500">
             </div>
         </div>
+            
         <div class="flex flex-col p-4 gap-4">
             <div class="text-md text-red-600 font-semibold">
+                <p>The price represents the stay duration below.</p>
+            </div>
+            <div class="flex flex-row gap-2 items-end">
+                <div class="relative flex items-center bg-gray-200 border border-gray-700 rounded-sm min-h-9 group w-20 outline-2 outline-transparent
+                    has-[:focus]:outline-red-500 hover:not-has-[:focus]:outline-red-300 focus-within:outline-yellow-600 transition-all">
+                    <input 
+                        type="number" 
+                        v-model.number="durationInput"
+                        min="30" 
+                        max="1080" 
+                        step="1"
+                        class="bg-transparent text-gray-700 h-full w-16 focus:outline-none font-orbit no-spinner pl-2 text-md"
+                    />
+                    <div class="flex flex-col border-0 h-full w-6">
+                        <button 
+                            @click="durationInput = Math.min(1080, +(durationInput + 1))"
+                            class="flex items-center justify-center flex-1 hover:bg-gray-300 text-gray-400 hover:text-red-500"
+                        >
+                            <ChevronUp :size="16"/>
+                        </button>
+                        <button 
+                            @click="durationInput = Math.max(30, +(durationInput - 1))"
+                            class="flex items-center justify-center flex-1 hover:bg-gray-300 text-gray-400 hover:text-red-500"
+                        >
+                            <ChevronDown :size="16"/>
+                        </button>
+                    </div>
+                </div>
+                <div class="text-md text-gray-700 font-semibold">
+                    minutes
+                </div>
+            </div>
+            <div class="text-md text-red-600 font-semibold pt-4">
                 <p>Want to reserve a spot?</p>
                 <p>Click the button below to get started.</p>
             </div>
@@ -53,7 +103,7 @@
                 <ReservationForm/>
             </div>
             <div class="pt-2 text-xs text-gray-500">
-                <p>Note: By reserving a spot, you agree that you will show up within 20 minutes of booking.</p>
+                <p>Note: By reserving a spot, you agree that you will show up at your reserved time.</p>
                 <p>
                     Failure to do so will have your reservation 
                     <span class="text-red-400 font-bold">revoked</span>.
@@ -63,12 +113,12 @@
         <div class="flex flex-col p-4 gap-4">
             <div class="text-md text-red-600 font-semibold">
                 <p>Need to check your reservation?</p>
-                <p>Enter your name and reservation ID below.</p>
+                <p>Enter your license plate number and reservation ID below.</p>
             </div>
             <input
-                v-model="reserveName"
+                v-model="reservePlateNum"
                 class="border bg-gray-100 outline-0 border-gray-700 p-1 rounded-md focus:outline-red-500 focus:outline-2 hover:outline-red-300 hover:outline-2"
-                placeholder="Name"
+                placeholder="License Plate"
             />
             <input
                 v-model="reserveId"
@@ -82,24 +132,24 @@
             >
                 Submit
             </button>
-            <div v-if="showLookUpResults">
+            <div v-if="parkingStore.reservationSearchStatus">
                 <div class="text-md text-red-600 font-semibold">
-                    Welcome back, [Name].
+                    Welcome back! You have a spot booked with license plate #{{ parkingStore.reservationSearchResult?.plateNum }}.
                 </div>
                 <div class="text-xs text-gray-500">
                     <p>Your reservation details are below.</p>
                 </div>
                 <div class="text=lg text-gray-700 pt-2">
-                    Spot Number: <span class="font-bold">19</span>
+                    Spot Number: <span class="font-bold">{{ parkingStore.reservationSearchResult?.reservations[0]?.spotID }}</span>
                 </div>
                 <div class="text=lg text-gray-700">
-                    Price Paid: $<span class="font-bold">20.00</span>
+                    Price Paid: $<span class="font-bold">{{ parkingStore.reservationSearchResult?.reservations[0]?.totalPayment }}</span>
                 </div>
                 <div class="text=lg text-gray-700">
-                    Reservation Made At: <span class="font-bold">10:59 AM, 03/26/2026</span>
+                    Reservation Made For: <span class="font-bold">{{ parkingStore.reservationSearchResult?.reservations[0]?.startDateTime }}</span>
                 </div>
                 <div class="text=lg text-red-600">
-                    You have <span class="font-bold">12</span> more minutes to arrive.
+                    Duration: <span class="font-bold">{{ parkingStore.reservationSearchResult?.reservations[0]?.duration }}</span> minutes.
                 </div>
             </div>
         </div>

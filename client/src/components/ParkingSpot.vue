@@ -37,7 +37,7 @@
         return "border-lime-500 text-lime-500 hover:border-blue-400 hover:text-blue-400 cursor-pointer";
     });
 
-    // watch the store's selectedSpot - whenever it changes, update isSelected
+    // update selectedSpot when new spot is selected
     watch(
         () => parkingStore.selectedSpot,
         (newSelectedSpot) => {
@@ -46,7 +46,6 @@
     );
 
     const selectSpot = () => {
-        // if this spot is already selected, deselect it
         if (isSelected.value) {
             parkingStore.clearSelectedSpot();
         } else {

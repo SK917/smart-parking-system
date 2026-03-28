@@ -10,10 +10,10 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file pricing_calculator.proto.
  */
 export const file_pricing_calculator: GenFile = /*@__PURE__*/
-  fileDesc("ChhwcmljaW5nX2NhbGN1bGF0b3IucHJvdG8iTAoIUHJpY2VSZXESDQoFbG90SUQYASACKAkSDQoFc3BvdHMYAiADKAkSEAoIZGF0ZXRpbWUYAyACKAkSEAoIZHVyYXRpb24YBCACKAUiGwoJUHJpY2VSZXNwEg4KBnByaWNlcxgBIAIoCTI5ChJQcmljaW5nX0NhbGN1bGF0b3ISIwoIZ2V0UHJpY2USCS5QcmljZVJlcRoKLlByaWNlUmVzcCIA");
+  fileDesc("ChhwcmljaW5nX2NhbGN1bGF0b3IucHJvdG8iaQoIUHJpY2VSZXESDQoFbG90SUQYASACKAkSFgoOcmVtYWluaW5nU3BvdHMYAiACKAUSEgoKdG90YWxTcG90cxgDIAIoBRIQCghkYXRldGltZRgEIAIoCRIQCghkdXJhdGlvbhgFIAIoBSIaCglQcmljZVJlc3ASDQoFcHJpY2UYASABKAIyOQoSUHJpY2luZ19DYWxjdWxhdG9yEiMKCGdldFByaWNlEgkuUHJpY2VSZXEaCi5QcmljZVJlc3AiAA");
 
 /**
- * Price Request specifies which lot and available spots. Spots is formatted as JSON, datetime is DD/MM/YYYY HH:MM, duration is in minutes
+ * Price Request specifies which lot and number of available spots. datetime is DD/MM/YYYY HH:MM, duration is in minutes
  *
  * @generated from message PriceReq
  */
@@ -24,17 +24,22 @@ export type PriceReq = Message<"PriceReq"> & {
   lotID: string;
 
   /**
-   * @generated from field: repeated string spots = 2;
+   * @generated from field: required int32 remainingSpots = 2;
    */
-  spots: string[];
+  remainingSpots: number;
 
   /**
-   * @generated from field: required string datetime = 3;
+   * @generated from field: required int32 totalSpots = 3;
+   */
+  totalSpots: number;
+
+  /**
+   * @generated from field: required string datetime = 4;
    */
   datetime: string;
 
   /**
-   * @generated from field: required int32 duration = 4;
+   * @generated from field: required int32 duration = 5;
    */
   duration: number;
 };
@@ -47,15 +52,15 @@ export const PriceReqSchema: GenMessage<PriceReq> = /*@__PURE__*/
   messageDesc(file_pricing_calculator, 0);
 
 /**
- * Price Response returns the price for each available spot in the lot as a JSON
+ * Price Response returns a single price for the whole lot
  *
  * @generated from message PriceResp
  */
 export type PriceResp = Message<"PriceResp"> & {
   /**
-   * @generated from field: required string prices = 1;
+   * @generated from field: optional float price = 1;
    */
-  prices: string;
+  price: number;
 };
 
 /**
