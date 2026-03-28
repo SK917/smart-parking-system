@@ -9,6 +9,8 @@ service Database_Interface {
     rpc createTransaction (TransCreateReq) returns (TransCreateResp) {}
     // Returns a list of transactions for the specified reservation/user
     rpc getTransactions (TransGetReq) returns (TransGetResp) {}
+    // Updates the occupancy of a spot given spotID and lotID
+    rpc updateSpotOccupancy (spotUpdateReq) returns (spotUpdateResp) {}
 }
 
 // Specifies which parking lot
@@ -65,4 +67,13 @@ message TransGetReq {
 // returned list of transactions is in JSON formatted string
 message TransGetResp {
     required string transactions = 1;
+}
+
+message spotUpdateReq {
+    required int32 spotID = 1;
+    required int32 lotID = 2;
+}
+
+message spotUpdateResp {
+    required bool occupied = 1;
 }

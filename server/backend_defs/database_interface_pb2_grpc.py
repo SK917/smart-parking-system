@@ -54,6 +54,11 @@ class Database_InterfaceStub(object):
                 request_serializer=database__interface__pb2.TransGetReq.SerializeToString,
                 response_deserializer=database__interface__pb2.TransGetResp.FromString,
                 _registered_method=True)
+        self.updateSpotOccupancy = channel.unary_unary(
+                '/Database_Interface/updateSpotOccupancy',
+                request_serializer=database__interface__pb2.spotUpdateReq.SerializeToString,
+                response_deserializer=database__interface__pb2.spotUpdateResp.FromString,
+                _registered_method=True)
 
 
 class Database_InterfaceServicer(object):
@@ -87,6 +92,13 @@ class Database_InterfaceServicer(object):
         context.set_details('Method not implemented!')
         raise NotImplementedError('Method not implemented!')
 
+    def updateSpotOccupancy(self, request, context):
+        """Updates the occupancy of a spot given spotID and lotID
+        """
+        context.set_code(grpc.StatusCode.UNIMPLEMENTED)
+        context.set_details('Method not implemented!')
+        raise NotImplementedError('Method not implemented!')
+
 
 def add_Database_InterfaceServicer_to_server(servicer, server):
     rpc_method_handlers = {
@@ -109,6 +121,11 @@ def add_Database_InterfaceServicer_to_server(servicer, server):
                     servicer.getTransactions,
                     request_deserializer=database__interface__pb2.TransGetReq.FromString,
                     response_serializer=database__interface__pb2.TransGetResp.SerializeToString,
+            ),
+            'updateSpotOccupancy': grpc.unary_unary_rpc_method_handler(
+                    servicer.updateSpotOccupancy,
+                    request_deserializer=database__interface__pb2.spotUpdateReq.FromString,
+                    response_serializer=database__interface__pb2.spotUpdateResp.SerializeToString,
             ),
     }
     generic_handler = grpc.method_handlers_generic_handler(
@@ -219,6 +236,33 @@ class Database_Interface(object):
             '/Database_Interface/getTransactions',
             database__interface__pb2.TransGetReq.SerializeToString,
             database__interface__pb2.TransGetResp.FromString,
+            options,
+            channel_credentials,
+            insecure,
+            call_credentials,
+            compression,
+            wait_for_ready,
+            timeout,
+            metadata,
+            _registered_method=True)
+
+    @staticmethod
+    def updateSpotOccupancy(request,
+            target,
+            options=(),
+            channel_credentials=None,
+            call_credentials=None,
+            insecure=False,
+            compression=None,
+            wait_for_ready=None,
+            timeout=None,
+            metadata=None):
+        return grpc.experimental.unary_unary(
+            request,
+            target,
+            '/Database_Interface/updateSpotOccupancy',
+            database__interface__pb2.spotUpdateReq.SerializeToString,
+            database__interface__pb2.spotUpdateResp.FromString,
             options,
             channel_credentials,
             insecure,

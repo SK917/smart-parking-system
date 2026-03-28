@@ -83,3 +83,17 @@ class TransGetResp(_message.Message):
     TRANSACTIONS_FIELD_NUMBER: _ClassVar[int]
     transactions: str
     def __init__(self, transactions: _Optional[str] = ...) -> None: ...
+
+class spotUpdateReq(_message.Message):
+    __slots__ = ("spotID", "lotID")
+    SPOTID_FIELD_NUMBER: _ClassVar[int]
+    LOTID_FIELD_NUMBER: _ClassVar[int]
+    spotID: int
+    lotID: int
+    def __init__(self, spotID: _Optional[int] = ..., lotID: _Optional[int] = ...) -> None: ...
+
+class spotUpdateResp(_message.Message):
+    __slots__ = ("occupied",)
+    OCCUPIED_FIELD_NUMBER: _ClassVar[int]
+    occupied: bool
+    def __init__(self, occupied: bool = ...) -> None: ...
