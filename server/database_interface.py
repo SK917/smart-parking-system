@@ -72,7 +72,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
 
         sensor_col = "sensorID"
 
-        print(f"Received updateSpotOccupancy request from IOT({request.iotID}) setting occupancy to {request.occupied}")
+        print(f"Received updateSpotOccupancy request from IoT({request.iotID}) setting occupancy to {request.occupied}")
 
         row = cur.execute(f"SELECT spotID, lotID, occupied FROM spots WHERE {sensor_col}=?", (request.iotID,)).fetchone()
 
