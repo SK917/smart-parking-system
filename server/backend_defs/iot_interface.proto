@@ -1,0 +1,23 @@
+syntax = "proto2";
+
+service IoT_Interface {
+	// Sensor reports a spot became free
+	rpc reportFree (FreeMsg) returns (IoTAck) {}
+	// Sensor reports a spot became occupied
+	rpc reportOccupied (OccupiedMsg) returns (IoTAck) {}
+}
+
+message FreeMsg {
+	required int32 serialNumber = 1;
+}
+
+message OccupiedMsg {
+	required int32 serialNumber = 1;
+}
+
+message IoTAck {
+	required bool success = 1;
+	required int32 serialNumber = 2;
+	required bool stateChanged = 3;
+	optional string error = 4;
+}
