@@ -11,6 +11,7 @@
         "lotID": 1,
         "spotID": 2,
         "startDateTime": "YYYY-MM-DD HH:MM:SS",
+        "endDateTime": "YYYY-MM-DD HH:MM:SS",
         "duration": 180,
         "total payment": 15.00,
         "payment status": "pending"
@@ -49,6 +50,7 @@
                 "lotID": 1,
                 "spotID": 2,
                 "startDateTime": "YYYY-MM-DD HH:MM:SS",
+                "endDateTime": "YYYY-MM-DD HH:MM:SS",
                 "duration": 120,
                 "totalPayment": 12.00,
                 "paymentStatus": "paid"
@@ -59,6 +61,7 @@
                 "lotID": 1,
                 "spotID": 3,
                 "startDateTime": "YYYY-MM-DD HH:MM:SS",
+                "endDateTime": "YYYY-MM-DD HH:MM:SS",
                 "duration": 180,
                 "totalPayment": 15.00,
                 "paymentStatus": "pending"
