@@ -54,6 +54,19 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         # if no, consider it a new reservation, make a new reservation entry with the relevant information, set payment statues to pending by default
         pass
     
+    def getReservations(self, request, context):
+        conn = sqlite3.connect(self.db_path)
+        cur = conn.cursor()
+        # gets reservations made under the platnumber
+        # if resID is filled, returns just that reservation.
+        if request.resID != None:
+            params = {"res": request.resID, "plate": request.plateNum}
+            reservations = cur.execute("SELECT * FROM reservations WHERE resID=:res and plateNum=:plate", params)
+        else:
+            params = {"plate": request.plateNum}
+            reservations = cur.execute("SELECT * FROM reservations WHERE plateNum=:plate", params)
+        pass
+    
     def createTransaction(self, request, context):
         # create a new transaction entry with the relevant info
         # if the transaction is a success, go to the associated reservation and update its payment status to complete
@@ -62,7 +75,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
 
     def getTransactions(self, request, context):
         # check which entries are filled in the request
-        # If the user ID is filled, return transactions made by the user
+        # If the user ID is filled, return all transactions made by the user
         # If the resID is filled, return the transactions associated with that reservation
         pass
 
