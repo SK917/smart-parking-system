@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file transaction_handler.proto.
  */
 export const file_transaction_handler: GenFile = /*@__PURE__*/
-  fileDesc("Chl0cmFuc2FjdGlvbl9oYW5kbGVyLnByb3RvIk0KCHRyYW5zUmVxEg0KBXJlc0lEGAEgAigJEhMKC3BheW1lbnRJbmZvGAIgAigJEhAKCHBsYXRlTnVtGAMgAigJEgsKA3ZhbBgEIAIoAiJOCgl0cmFuc1Jlc3ASDQoFcmVzSUQYASACKAkSDwoHdHJhbnNJRBgCIAIoCRIQCghwbGF0ZU51bRgDIAIoCRIPCgdzdWNjZXNzGAQgAigIMj0KE1RyYW5zYWN0aW9uX0hhbmRsZXISJgoLbWFrZVBheW1lbnQSCS50cmFuc1JlcRoKLnRyYW5zUmVzcCIA");
+  fileDesc("Chl0cmFuc2FjdGlvbl9oYW5kbGVyLnByb3RvIk0KCHRyYW5zUmVxEg0KBXJlc0lEGAEgAigFEhMKC3BheW1lbnRJbmZvGAIgAigJEhAKCHBsYXRlTnVtGAMgAigJEgsKA3ZhbBgEIAIoAiJhCgl0cmFuc1Jlc3ASDQoFcmVzSUQYASACKAUSDwoHdHJhbnNJRBgCIAEoBRIQCghwbGF0ZU51bRgDIAIoCRIPCgdzdWNjZXNzGAQgAigIEhEKCWVycm9yQ29kZRgFIAEoCTI9ChNUcmFuc2FjdGlvbl9IYW5kbGVyEiYKC21ha2VQYXltZW50EgkudHJhbnNSZXEaCi50cmFuc1Jlc3AiAA");
 
 /**
  * Consists of IDs for the user and reservation, payment info, and the value of the transaction
@@ -19,9 +19,9 @@ export const file_transaction_handler: GenFile = /*@__PURE__*/
  */
 export type transReq = Message<"transReq"> & {
   /**
-   * @generated from field: required string resID = 1;
+   * @generated from field: required int32 resID = 1;
    */
-  resID: string;
+  resID: number;
 
   /**
    * @generated from field: required string paymentInfo = 2;
@@ -53,14 +53,14 @@ export const transReqSchema: GenMessage<transReq> = /*@__PURE__*/
  */
 export type transResp = Message<"transResp"> & {
   /**
-   * @generated from field: required string resID = 1;
+   * @generated from field: required int32 resID = 1;
    */
-  resID: string;
+  resID: number;
 
   /**
-   * @generated from field: required string transID = 2;
+   * @generated from field: optional int32 transID = 2;
    */
-  transID: string;
+  transID: number;
 
   /**
    * @generated from field: required string plateNum = 3;
@@ -71,6 +71,11 @@ export type transResp = Message<"transResp"> & {
    * @generated from field: required bool success = 4;
    */
   success: boolean;
+
+  /**
+   * @generated from field: optional string errorCode = 5;
+   */
+  errorCode: string;
 };
 
 /**

@@ -3,7 +3,7 @@ import { create } from "@bufbuild/protobuf";
 import { AvailablespotReqSchema, ResReqSchema, ResGetReqSchema, ResEditReqSchema } from "@/proto/client_interface_pb.js";
 
 export const getAvailableSpots = (
-    lotID: string,
+    lotID: number,
     datetime: string,
     duration: number
 ): Promise<string> => {
@@ -13,15 +13,16 @@ export const getAvailableSpots = (
 };
 
 export const makeReservation = (
-    lotID: string,
-    spotID: string,
+    lotID: number,
+    spotID: number,
     plateNum: string,
     paymentInfo: string,
     datetime: string,
-    duration: number
-): Promise<{ success: boolean; resID: string; errorCode?: string }> => {
+    duration: number,
+    price: number
+): Promise<{ success: boolean; resID: number; errorCode?: string }> => {
     return parkingClient.makeReservation(
-        create(ResReqSchema, { lotID, spotID, plateNum, paymentInfo, datetime, duration })
+        create(ResReqSchema, { lotID, spotID, plateNum, paymentInfo, datetime, duration, price })
     ).then(response => ({
         success: response.success,
         resID: response.resID,
@@ -31,7 +32,7 @@ export const makeReservation = (
 
 export const getReservations = (
     plateNum: string,
-    resID?: string
+    resID?: number
 ): Promise<string> => {
     return parkingClient.getReservations(
         create(ResGetReqSchema, { plateNum, resID })
@@ -39,11 +40,11 @@ export const getReservations = (
 };
 
 export const editReservation = (
-    resID: string,
+    resID: number,
     datetime?: string,
     duration?: number,
     cancel?: boolean
-): Promise<{ resID: string; success: boolean; errorCode?: string }> => {
+): Promise<{ resID: number; success: boolean; errorCode?: string }> => {
     return parkingClient.editRes(
         create(ResEditReqSchema, { resID, datetime, duration, cancel })
     ).then(response => ({

@@ -7,7 +7,7 @@
     const parkingStore = useParkingStore();
     const showReservationForm = ref(false);
     const reservePlateNum = ref('');
-    const reserveId = ref('');
+    const reserveId = ref<number | null>(null);
     const durationInput = ref(parkingStore.duration);
 
     const toggleReservationForm = () => {
@@ -15,13 +15,17 @@
     }
 
     const lookUpReservation = () => {
-        parkingStore.lookUpReservation(reserveId.value, reservePlateNum.value);
+        if (reserveId.value === null || isNaN(reserveId.value)) {
+            reserveId.value = null;
+            return;
+        }
+        parkingStore.lookUpReservation(reserveId.value ?? 0, reservePlateNum.value);
         reservePlateNum.value = '';
-        reserveId.value = '';
+        reserveId.value = null;
     }
 
     const isFormInvalid = computed(() => {
-        return reservePlateNum.value.trim() === '' || reserveId.value.trim() === ''
+        return reservePlateNum.value.trim() === '' || reserveId.value === null
     })
 
     watch(durationInput, (newDuration) => {

@@ -7,7 +7,7 @@
 
     interface Props {
         isOpen: boolean;
-        reservationId: string;
+        reservationId: number;
         spotNum: number;
     }
     const props = defineProps<Props>();
@@ -18,9 +18,8 @@
 
     const copyToClipboard = async () => {
         try {
-            await navigator.clipboard.writeText(props.reservationId);
+            await navigator.clipboard.writeText(String(props.reservationId));
             copied.value = true;
-            // Reset the icon back to "Copy" after 2 seconds
             setTimeout(() => {
                 copied.value = false;
             }, 2000);

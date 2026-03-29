@@ -11,7 +11,7 @@
     const selectedDate = ref();
 
     const handleSubmit = () => {
-        parkingStore.reserveSpot(parkingStore.selectedSpot?.id ?? 0, "1", reservePlateNum.value, "Paid", selectedDate.value, parkingStore.duration);
+        parkingStore.reserveSpot(parkingStore.selectedSpot?.id ?? 0, 1, reservePlateNum.value, "Paid", selectedDate.value, parkingStore.duration, parkingStore.currentPrice);
         showPopup.value = true;
     };
 

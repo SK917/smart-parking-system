@@ -6,7 +6,7 @@ import type { ParkingSpot, ParkingSpotResponse, ParkingSpotAvailability, MapResp
 export const useParkingStore = defineStore("parking", () => {
     const currentPrice = ref(20);
     const duration = ref(120);
-    const reservationStatus = ref<ReservationMakeResponse>({ success: true, resID: Math.random().toString(36).substring(2, 8).toUpperCase() });
+    const reservationStatus = ref<ReservationMakeResponse>({ success: true, resID: Math.floor(100000 + Math.random() * 900000) });
     const reservationSearchResult = ref<ReservationSearchResponse>();
     const reservationSearchStatus = ref(false);
     const spots = ref<ParkingSpot[]>([]);
@@ -29,7 +29,7 @@ export const useParkingStore = defineStore("parking", () => {
     }
 
     // Polling functions
-    function startPolling(lotId: string) {
+    function startPolling(lotId: number) {
         if (pollingInterval) return;
         pollingInterval = setInterval(() => fetchAvailability(lotId), 200);
     }
@@ -42,7 +42,7 @@ export const useParkingStore = defineStore("parking", () => {
     }
 
     // Communicates with gRPC getAvailableSpots() function
-    async function fetchAvailability(lotId: string) {
+    async function fetchAvailability(lotId: number) {
         try {
             const response = await getAvailableSpots(lotId, new Date().toISOString(), 1)
             const parsed: ParkingSpotResponse = JSON.parse(response);
@@ -90,12 +90,12 @@ export const useParkingStore = defineStore("parking", () => {
         selectedSpot.value = undefined;
     }
 
-    async function reserveSpot(spotId: number, lotId: string, uid: string, paymentInfo: string, datetime: string, duration: number) {
+    async function reserveSpot(spotId: number, lotId: number, plateNum: string, paymentInfo: string, datetime: string, duration: number, price: number) {
         clearUserBookingData();
 
         // TODO: Ensure code below properly connects to the makeReservation call
         try {
-            const result = await makeReservation(String(spotId), lotId, uid, paymentInfo, datetime, duration);
+            const result = await makeReservation(lotId, spotId, plateNum, paymentInfo, datetime, duration, price);
             setReservationStatus(result);
             if(result.success) {
                 const targetSpot = spots.value.find(s => s.id === spotId);
@@ -112,7 +112,7 @@ export const useParkingStore = defineStore("parking", () => {
         
     }
 
-    async function lookUpReservation(reserveId: string, plateNum: string) {
+    async function lookUpReservation(reserveId: number, plateNum: string) {
         clearUserBookingData();
 
         // TODO: Check whether below code actually works with gRPC

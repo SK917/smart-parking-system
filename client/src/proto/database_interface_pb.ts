@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file database_interface.proto.
  */
 export const file_database_interface: GenFile = /*@__PURE__*/
-  fileDesc("ChhkYXRhYmFzZV9pbnRlcmZhY2UucHJvdG8iRgoRQXZhaWxhYmxlU3BvdHNSZXESDQoFbG90SUQYASACKAkSEAoIZGF0ZXRpbWUYAiACKAkSEAoIZHVyYXRpb24YAyACKAUiLAoSQXZhaWxhYmxlU3BvdHNSZXNwEhYKDmF2YWlsYWJsZVNwb3RzGAEgAigJInIKDFVwZGF0ZVJlc1JlcRINCgVyZXNJRBgBIAEoCRINCgVsb3RJRBgCIAEoCRIOCgZzcG90SUQYAyABKAkSEAoIcGxhdGVOdW0YBCABKAkSEAoIZGF0ZXRpbWUYBSABKAkSEAoIZHVyYXRpb24YBiABKAkiQgoNVXBkYXRlUmVzUmVzcBIPCgdzdWNjZXNzGAEgAigIEg0KBXJlc0lEGAIgAigIEhEKCWVycm9yQ29kZRgDIAEoCSJmCg5UcmFuc0NyZWF0ZVJlcRINCgVyZXNJRBgBIAIoCRIQCghwbGF0ZU51bRgCIAIoCRIVCg1wYXltZW50TWV0aG9kGAMgAigJEgsKA3ZhbBgFIAIoAhIPCgdzdWNjZXNzGAYgAigIIkYKD1RyYW5zQ3JlYXRlUmVzcBIPCgd0cmFuc0lEGAEgAigJEg8KB3N1Y2Nlc3MYAiACKAgSEQoJZXJyb3JDb2RlGAMgASgJIi4KC1RyYW5zR2V0UmVxEhAKCHBsYXRlTnVtGAEgASgJEg0KBXJlc0lEGAIgASgJIiQKDFRyYW5zR2V0UmVzcBIUCgx0cmFuc2FjdGlvbnMYASACKAky9wEKEkRhdGFiYXNlX0ludGVyZmFjZRI+ChFnZXRBdmFpbGFibGVTcG90cxISLkF2YWlsYWJsZVNwb3RzUmVxGhMuQXZhaWxhYmxlU3BvdHNSZXNwIgASNQoSdXBkYXRlUmVzZXJ2YXRpb25zEg0uVXBkYXRlUmVzUmVxGg4uVXBkYXRlUmVzUmVzcCIAEjgKEWNyZWF0ZVRyYW5zYWN0aW9uEg8uVHJhbnNDcmVhdGVSZXEaEC5UcmFuc0NyZWF0ZVJlc3AiABIwCg9nZXRUcmFuc2FjdGlvbnMSDC5UcmFuc0dldFJlcRoNLlRyYW5zR2V0UmVzcCIA");
+  fileDesc("ChhkYXRhYmFzZV9pbnRlcmZhY2UucHJvdG8iRgoRQXZhaWxhYmxlU3BvdHNSZXESDQoFbG90SUQYASACKAUSEAoIZGF0ZXRpbWUYAiACKAkSEAoIZHVyYXRpb24YAyACKAUiLAoSQXZhaWxhYmxlU3BvdHNSZXNwEhYKDmF2YWlsYWJsZVNwb3RzGAEgAigJIoIBCgxVcGRhdGVSZXNSZXESDQoFcmVzSUQYASABKAUSDQoFbG90SUQYAiABKAUSDgoGc3BvdElEGAMgASgFEhAKCHBsYXRlTnVtGAQgASgJEhAKCGRhdGV0aW1lGAUgASgJEhAKCGR1cmF0aW9uGAYgASgFEg4KBmRlbGV0ZRgHIAEoCCJCCg1VcGRhdGVSZXNSZXNwEg8KB3N1Y2Nlc3MYASACKAgSDQoFcmVzSUQYAiACKAUSEQoJZXJyb3JDb2RlGAMgASgJImYKDlRyYW5zQ3JlYXRlUmVxEg0KBXJlc0lEGAEgAigFEhAKCHBsYXRlTnVtGAIgAigJEhUKDXBheW1lbnRNZXRob2QYAyACKAkSCwoDdmFsGAUgAigCEg8KB3N1Y2Nlc3MYBiACKAgiRgoPVHJhbnNDcmVhdGVSZXNwEg8KB3RyYW5zSUQYASACKAUSDwoHc3VjY2VzcxgCIAIoCBIRCgllcnJvckNvZGUYAyABKAkiLgoLVHJhbnNHZXRSZXESEAoIcGxhdGVOdW0YASABKAkSDQoFcmVzSUQYAiABKAUiJAoMVHJhbnNHZXRSZXNwEhQKDHRyYW5zYWN0aW9ucxgBIAIoCSIwCg1zcG90VXBkYXRlUmVxEg0KBWlvdElEGAEgAigFEhAKCG9jY3VwaWVkGAMgAigIIiEKDnNwb3RVcGRhdGVSZXNwEg8KB3N1Y2Nlc3MYASACKAgiLAoJR2V0UmVzUmVxEhAKCHBsYXRlTnVtGAEgAigJEg0KBXJlc0lEGAIgASgFIiIKCkdldFJlc1Jlc3ASFAoMcmVzZXJ2YXRpb25zGAEgAigJMt8CChJEYXRhYmFzZV9JbnRlcmZhY2USPgoRZ2V0QXZhaWxhYmxlU3BvdHMSEi5BdmFpbGFibGVTcG90c1JlcRoTLkF2YWlsYWJsZVNwb3RzUmVzcCIAEjUKEnVwZGF0ZVJlc2VydmF0aW9ucxINLlVwZGF0ZVJlc1JlcRoOLlVwZGF0ZVJlc1Jlc3AiABIsCg9nZXRSZXNlcnZhdGlvbnMSCi5HZXRSZXNSZXEaCy5HZXRSZXNSZXNwIgASOAoRY3JlYXRlVHJhbnNhY3Rpb24SDy5UcmFuc0NyZWF0ZVJlcRoQLlRyYW5zQ3JlYXRlUmVzcCIAEjAKD2dldFRyYW5zYWN0aW9ucxIMLlRyYW5zR2V0UmVxGg0uVHJhbnNHZXRSZXNwIgASOAoTdXBkYXRlU3BvdE9jY3VwYW5jeRIOLnNwb3RVcGRhdGVSZXEaDy5zcG90VXBkYXRlUmVzcCIA");
 
 /**
  * Specifies which parking lot
@@ -19,9 +19,9 @@ export const file_database_interface: GenFile = /*@__PURE__*/
  */
 export type AvailableSpotsReq = Message<"AvailableSpotsReq"> & {
   /**
-   * @generated from field: required string lotID = 1;
+   * @generated from field: required int32 lotID = 1;
    */
-  lotID: string;
+  lotID: number;
 
   /**
    * @generated from field: required string datetime = 2;
@@ -67,19 +67,19 @@ export const AvailableSpotsRespSchema: GenMessage<AvailableSpotsResp> = /*@__PUR
  */
 export type UpdateResReq = Message<"UpdateResReq"> & {
   /**
-   * @generated from field: optional string resID = 1;
+   * @generated from field: optional int32 resID = 1;
    */
-  resID: string;
+  resID: number;
 
   /**
-   * @generated from field: optional string lotID = 2;
+   * @generated from field: optional int32 lotID = 2;
    */
-  lotID: string;
+  lotID: number;
 
   /**
-   * @generated from field: optional string spotID = 3;
+   * @generated from field: optional int32 spotID = 3;
    */
-  spotID: string;
+  spotID: number;
 
   /**
    * @generated from field: optional string plateNum = 4;
@@ -92,9 +92,14 @@ export type UpdateResReq = Message<"UpdateResReq"> & {
   datetime: string;
 
   /**
-   * @generated from field: optional string duration = 6;
+   * @generated from field: optional int32 duration = 6;
    */
-  duration: string;
+  duration: number;
+
+  /**
+   * @generated from field: optional bool delete = 7;
+   */
+  delete: boolean;
 };
 
 /**
@@ -116,9 +121,9 @@ export type UpdateResResp = Message<"UpdateResResp"> & {
   success: boolean;
 
   /**
-   * @generated from field: required bool resID = 2;
+   * @generated from field: required int32 resID = 2;
    */
-  resID: boolean;
+  resID: number;
 
   /**
    * @generated from field: optional string errorCode = 3;
@@ -140,9 +145,9 @@ export const UpdateResRespSchema: GenMessage<UpdateResResp> = /*@__PURE__*/
  */
 export type TransCreateReq = Message<"TransCreateReq"> & {
   /**
-   * @generated from field: required string resID = 1;
+   * @generated from field: required int32 resID = 1;
    */
-  resID: string;
+  resID: number;
 
   /**
    * @generated from field: required string plateNum = 2;
@@ -179,9 +184,9 @@ export const TransCreateReqSchema: GenMessage<TransCreateReq> = /*@__PURE__*/
  */
 export type TransCreateResp = Message<"TransCreateResp"> & {
   /**
-   * @generated from field: required string transID = 1;
+   * @generated from field: required int32 transID = 1;
    */
-  transID: string;
+  transID: number;
 
   /**
    * @generated from field: required bool success = 2;
@@ -213,9 +218,9 @@ export type TransGetReq = Message<"TransGetReq"> & {
   plateNum: string;
 
   /**
-   * @generated from field: optional string resID = 2;
+   * @generated from field: optional int32 resID = 2;
    */
-  resID: string;
+  resID: number;
 };
 
 /**
@@ -245,6 +250,92 @@ export const TransGetRespSchema: GenMessage<TransGetResp> = /*@__PURE__*/
   messageDesc(file_database_interface, 7);
 
 /**
+ * updates spot's occupancy state
+ *
+ * @generated from message spotUpdateReq
+ */
+export type spotUpdateReq = Message<"spotUpdateReq"> & {
+  /**
+   * @generated from field: required int32 iotID = 1;
+   */
+  iotID: number;
+
+  /**
+   * @generated from field: required bool occupied = 3;
+   */
+  occupied: boolean;
+};
+
+/**
+ * Describes the message spotUpdateReq.
+ * Use `create(spotUpdateReqSchema)` to create a new message.
+ */
+export const spotUpdateReqSchema: GenMessage<spotUpdateReq> = /*@__PURE__*/
+  messageDesc(file_database_interface, 8);
+
+/**
+ * returns success or fail
+ *
+ * @generated from message spotUpdateResp
+ */
+export type spotUpdateResp = Message<"spotUpdateResp"> & {
+  /**
+   * @generated from field: required bool success = 1;
+   */
+  success: boolean;
+};
+
+/**
+ * Describes the message spotUpdateResp.
+ * Use `create(spotUpdateRespSchema)` to create a new message.
+ */
+export const spotUpdateRespSchema: GenMessage<spotUpdateResp> = /*@__PURE__*/
+  messageDesc(file_database_interface, 9);
+
+/**
+ * request contains plate number and resID (optional)
+ *
+ * @generated from message GetResReq
+ */
+export type GetResReq = Message<"GetResReq"> & {
+  /**
+   * @generated from field: required string plateNum = 1;
+   */
+  plateNum: string;
+
+  /**
+   * @generated from field: optional int32 resID = 2;
+   */
+  resID: number;
+};
+
+/**
+ * Describes the message GetResReq.
+ * Use `create(GetResReqSchema)` to create a new message.
+ */
+export const GetResReqSchema: GenMessage<GetResReq> = /*@__PURE__*/
+  messageDesc(file_database_interface, 10);
+
+/**
+ * returns reservations as JSON
+ *
+ * @generated from message GetResResp
+ */
+export type GetResResp = Message<"GetResResp"> & {
+  /**
+   * @generated from field: required string reservations = 1;
+   */
+  reservations: string;
+};
+
+/**
+ * Describes the message GetResResp.
+ * Use `create(GetResRespSchema)` to create a new message.
+ */
+export const GetResRespSchema: GenMessage<GetResResp> = /*@__PURE__*/
+  messageDesc(file_database_interface, 11);
+
+/**
  * @generated from service Database_Interface
  */
 export const Database_Interface: GenService<{
@@ -269,6 +360,16 @@ export const Database_Interface: GenService<{
     output: typeof UpdateResRespSchema;
   },
   /**
+   * gets a list of reservations made by the user
+   *
+   * @generated from rpc Database_Interface.getReservations
+   */
+  getReservations: {
+    methodKind: "unary";
+    input: typeof GetResReqSchema;
+    output: typeof GetResRespSchema;
+  },
+  /**
    * creates a new transaction, used by transaction handler
    *
    * @generated from rpc Database_Interface.createTransaction
@@ -287,6 +388,16 @@ export const Database_Interface: GenService<{
     methodKind: "unary";
     input: typeof TransGetReqSchema;
     output: typeof TransGetRespSchema;
+  },
+  /**
+   * Updates the occupancy of a spot given spotID and lotID
+   *
+   * @generated from rpc Database_Interface.updateSpotOccupancy
+   */
+  updateSpotOccupancy: {
+    methodKind: "unary";
+    input: typeof spotUpdateReqSchema;
+    output: typeof spotUpdateRespSchema;
   },
 }> = /*@__PURE__*/
   serviceDesc(file_database_interface, 0);

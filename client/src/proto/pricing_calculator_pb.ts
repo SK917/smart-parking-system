@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file pricing_calculator.proto.
  */
 export const file_pricing_calculator: GenFile = /*@__PURE__*/
-  fileDesc("ChhwcmljaW5nX2NhbGN1bGF0b3IucHJvdG8iaQoIUHJpY2VSZXESDQoFbG90SUQYASACKAkSFgoOcmVtYWluaW5nU3BvdHMYAiACKAUSEgoKdG90YWxTcG90cxgDIAIoBRIQCghkYXRldGltZRgEIAIoCRIQCghkdXJhdGlvbhgFIAIoBSIaCglQcmljZVJlc3ASDQoFcHJpY2UYASABKAIyOQoSUHJpY2luZ19DYWxjdWxhdG9yEiMKCGdldFByaWNlEgkuUHJpY2VSZXEaCi5QcmljZVJlc3AiAA");
+  fileDesc("ChhwcmljaW5nX2NhbGN1bGF0b3IucHJvdG8iaQoIUHJpY2VSZXESDQoFbG90SUQYASACKAUSFgoOcmVtYWluaW5nU3BvdHMYAiACKAUSEgoKdG90YWxTcG90cxgDIAIoBRIQCghkYXRldGltZRgEIAIoCRIQCghkdXJhdGlvbhgFIAIoBSIaCglQcmljZVJlc3ASDQoFcHJpY2UYASABKAIyOQoSUHJpY2luZ19DYWxjdWxhdG9yEiMKCGdldFByaWNlEgkuUHJpY2VSZXEaCi5QcmljZVJlc3AiAA");
 
 /**
  * Price Request specifies which lot and number of available spots. datetime is DD/MM/YYYY HH:MM, duration is in minutes
@@ -19,9 +19,9 @@ export const file_pricing_calculator: GenFile = /*@__PURE__*/
  */
 export type PriceReq = Message<"PriceReq"> & {
   /**
-   * @generated from field: required string lotID = 1;
+   * @generated from field: required int32 lotID = 1;
    */
-  lotID: string;
+  lotID: number;
 
   /**
    * @generated from field: required int32 remainingSpots = 2;

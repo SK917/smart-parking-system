@@ -43,5 +43,5 @@ export interface ReservationSearchResponse {
 
 export interface ReservationMakeResponse {
     success: boolean
-    resID: string
+    resID: number
 }

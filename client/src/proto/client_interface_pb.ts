@@ -10,7 +10,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file client_interface.proto.
  */
 export const file_client_interface: GenFile = /*@__PURE__*/
-  fileDesc("ChZjbGllbnRfaW50ZXJmYWNlLnByb3RvIkUKEEF2YWlsYWJsZXNwb3RSZXESDQoFbG90SUQYASACKAkSEAoIZGF0ZXRpbWUYAiACKAkSEAoIZHVyYXRpb24YAyACKAUiKwoRQXZhaWxhYmxlc3BvdFJlc3ASFgoOYXZhaWxhYmxlc3BvdHMYASACKAkicgoGUmVzUmVxEg0KBWxvdElEGAEgAigJEg4KBnNwb3RJRBgCIAIoCRIQCghwbGF0ZU51bRgDIAIoCRITCgtwYXltZW50SW5mbxgEIAIoCRIQCghkYXRldGltZRgFIAIoCRIQCghkdXJhdGlvbhgGIAIoBSI8CgdSZXNSZXNwEg8KB3N1Y2Nlc3MYASACKAgSDQoFcmVzSUQYAiACKAkSEQoJZXJyb3JDb2RlGAMgASgJIiwKCVJlc0dldFJlcRIQCghwbGF0ZU51bRgBIAIoCRINCgVyZXNJRBgCIAEoCSIiCgpSZXNHZXRSZXNwEhQKDHJlc2VydmF0aW9ucxgBIAIoCSJPCgpSZXNFZGl0UmVxEg0KBXJlc0lEGAEgAigJEhAKCGRhdGV0aW1lGAIgASgJEhAKCGR1cmF0aW9uGAMgASgFEg4KBmNhbmNlbBgEIAEoCCJACgtSZXNFZGl0UmVzcBINCgVyZXNJRBgBIAIoCRIPCgdzdWNjZXNzGAIgAigIEhEKCWVycm9yQ29kZRgDIAEoCTLOAQoQQ2xpZW50X0ludGVyZmFjZRI8ChFnZXRBdmFpbGFibGVzcG90cxIRLkF2YWlsYWJsZXNwb3RSZXEaEi5BdmFpbGFibGVzcG90UmVzcCIAEiYKD21ha2VSZXNlcnZhdGlvbhIHLlJlc1JlcRoILlJlc1Jlc3AiABIsCg9nZXRSZXNlcnZhdGlvbnMSCi5SZXNHZXRSZXEaCy5SZXNHZXRSZXNwIgASJgoHZWRpdFJlcxILLlJlc0VkaXRSZXEaDC5SZXNFZGl0UmVzcCIA");
+  fileDesc("ChZjbGllbnRfaW50ZXJmYWNlLnByb3RvIkUKEEF2YWlsYWJsZXNwb3RSZXESDQoFbG90SUQYASACKAUSEAoIZGF0ZXRpbWUYAiACKAkSEAoIZHVyYXRpb24YAyACKAUiKwoRQXZhaWxhYmxlc3BvdFJlc3ASFgoOYXZhaWxhYmxlc3BvdHMYASACKAkigQEKBlJlc1JlcRINCgVsb3RJRBgBIAIoBRIOCgZzcG90SUQYAiACKAUSEAoIcGxhdGVOdW0YAyACKAkSEwoLcGF5bWVudEluZm8YBCACKAkSEAoIZGF0ZXRpbWUYBSACKAkSEAoIZHVyYXRpb24YBiACKAUSDQoFcHJpY2UYByACKAIiPAoHUmVzUmVzcBIPCgdzdWNjZXNzGAEgAigIEg0KBXJlc0lEGAIgASgFEhEKCWVycm9yQ29kZRgDIAEoCSIsCglSZXNHZXRSZXESEAoIcGxhdGVOdW0YASACKAkSDQoFcmVzSUQYAiABKAUiIgoKUmVzR2V0UmVzcBIUCgxyZXNlcnZhdGlvbnMYASACKAkiTwoKUmVzRWRpdFJlcRINCgVyZXNJRBgBIAIoBRIQCghkYXRldGltZRgCIAEoCRIQCghkdXJhdGlvbhgDIAEoBRIOCgZjYW5jZWwYBCABKAgiQAoLUmVzRWRpdFJlc3ASDQoFcmVzSUQYASACKAUSDwoHc3VjY2VzcxgCIAIoCBIRCgllcnJvckNvZGUYAyABKAkyzgEKEENsaWVudF9JbnRlcmZhY2USPAoRZ2V0QXZhaWxhYmxlc3BvdHMSES5BdmFpbGFibGVzcG90UmVxGhIuQXZhaWxhYmxlc3BvdFJlc3AiABImCg9tYWtlUmVzZXJ2YXRpb24SBy5SZXNSZXEaCC5SZXNSZXNwIgASLAoPZ2V0UmVzZXJ2YXRpb25zEgouUmVzR2V0UmVxGgsuUmVzR2V0UmVzcCIAEiYKB2VkaXRSZXMSCy5SZXNFZGl0UmVxGgwuUmVzRWRpdFJlc3AiAA");
 
 /**
  * Available spots request specifies which parking lot, time, and duration
@@ -19,9 +19,9 @@ export const file_client_interface: GenFile = /*@__PURE__*/
  */
 export type AvailablespotReq = Message<"AvailablespotReq"> & {
   /**
-   * @generated from field: required string lotID = 1;
+   * @generated from field: required int32 lotID = 1;
    */
-  lotID: string;
+  lotID: number;
 
   /**
    * @generated from field: required string datetime = 2;
@@ -67,14 +67,14 @@ export const AvailablespotRespSchema: GenMessage<AvailablespotResp> = /*@__PURE_
  */
 export type ResReq = Message<"ResReq"> & {
   /**
-   * @generated from field: required string lotID = 1;
+   * @generated from field: required int32 lotID = 1;
    */
-  lotID: string;
+  lotID: number;
 
   /**
-   * @generated from field: required string spotID = 2;
+   * @generated from field: required int32 spotID = 2;
    */
-  spotID: string;
+  spotID: number;
 
   /**
    * @generated from field: required string plateNum = 3;
@@ -95,6 +95,11 @@ export type ResReq = Message<"ResReq"> & {
    * @generated from field: required int32 duration = 6;
    */
   duration: number;
+
+  /**
+   * @generated from field: required float price = 7;
+   */
+  price: number;
 };
 
 /**
@@ -116,9 +121,9 @@ export type ResResp = Message<"ResResp"> & {
   success: boolean;
 
   /**
-   * @generated from field: required string resID = 2;
+   * @generated from field: optional int32 resID = 2;
    */
-  resID: string;
+  resID: number;
 
   /**
    * @generated from field: optional string errorCode = 3;
@@ -145,9 +150,9 @@ export type ResGetReq = Message<"ResGetReq"> & {
   plateNum: string;
 
   /**
-   * @generated from field: optional string resID = 2;
+   * @generated from field: optional int32 resID = 2;
    */
-  resID: string;
+  resID: number;
 };
 
 /**
@@ -181,9 +186,9 @@ export const ResGetRespSchema: GenMessage<ResGetResp> = /*@__PURE__*/
  */
 export type ResEditReq = Message<"ResEditReq"> & {
   /**
-   * @generated from field: required string resID = 1;
+   * @generated from field: required int32 resID = 1;
    */
-  resID: string;
+  resID: number;
 
   /**
    * @generated from field: optional string datetime = 2;
@@ -213,9 +218,9 @@ export const ResEditReqSchema: GenMessage<ResEditReq> = /*@__PURE__*/
  */
 export type ResEditResp = Message<"ResEditResp"> & {
   /**
-   * @generated from field: required string resID = 1;
+   * @generated from field: required int32 resID = 1;
    */
-  resID: string;
+  resID: number;
 
   /**
    * @generated from field: required bool success = 2;
