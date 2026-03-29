@@ -1,4 +1,5 @@
 import grpc
+from concurrent import futures
 from backend_defs import client_interface_pb2_grpc, client_interface_pb2
 from backend_defs import database_interface_pb2_grpc, database_interface_pb2
 from backend_defs import pricing_calculator_pb2_grpc, pricing_calculator_pb2
@@ -32,3 +33,19 @@ class transactionHandler(transaction_handler_pb2_grpc.Transaction_HandlerService
         reply = transaction_handler_pb2.transResp(resID=request.resID, transID=transCreateResp.transID, plateNum=request.plateNum, success=(transCreateResp.success and suc), errorCode=errCode+"\n"+transCreateResp.errorCode)
 
         return reply
+
+
+def serve(host="0.0.0.0", port=50055, db_target="localhost:50051"):
+    global DB_INTERFACE
+    DB_INTERFACE = database_interface_pb2_grpc.Database_InterfaceStub(grpc.insecure_channel(db_target))
+
+    server = grpc.server(futures.ThreadPoolExecutor(max_workers=10))
+    transaction_handler_pb2_grpc.add_Transaction_HandlerServicer_to_server(transactionHandler(), server)
+    server.add_insecure_port(f"{host}:{port}")
+    server.start()
+    print(f"Transaction Handler running on {host}:{port}")
+    server.wait_for_termination()
+
+
+if __name__ == "__main__":
+    serve()
