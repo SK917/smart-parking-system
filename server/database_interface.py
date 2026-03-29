@@ -2,6 +2,7 @@ from concurrent import futures
 import grpc
 import sqlite3
 import math
+import datetime
 from backend_defs import client_interface_pb2_grpc, client_interface_pb2
 from backend_defs import database_interface_pb2_grpc, database_interface_pb2
 from backend_defs import pricing_calculator_pb2_grpc, pricing_calculator_pb2
@@ -19,31 +20,20 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         conn = sqlite3.connect(self.db_path)
         cur = conn.cursor()
 
-        date = request.datetime.split(" ")[0].split("-")
-        startHour = int(request.datetime.split(" ")[1].split(":")[0])
-        startMin = int(request.datetime.split(" ")[1].split(":")[1])
-        endHour = startHour + math.floor(request.duration/60)
-        endMin = startMin + request.duration % 60
+        cur.execute(
+            "DELETE FROM reservations WHERE endDateTime<=? AND payment_status!='complete' AND spotID IN (SELECT spotID FROM spots WHERE occupied=false)",
+            (request.datetime,)
+        )
+        conn.commit()
 
-        if endHour > 23:
-            endDay = int(date.split("-")[2]) + 1
-            # endDay = int(date[2]) + 1 potential fix if above line doesnt work
-            endHour = endHour - 23
-        else:
-            endDay = date[2]
-        endDateTime = f"{date[0]}-{date[1]}-{endDay} {endHour}:{endMin}:00"
-        print("hello")
-        data = {"lID": request.lotID, "sDT": request.datetime, "eDT": endDateTime}
-        free_spots = cur.execute("SELECT * FROM spots WHERE lotID=:lID AND occupied=false AND spotID NOT IN (SELECT spotID FROM reservations WHERE startDateTime>:eDT OR endDateTime<:sDT)", data)
-        totalSpots = cur.execute("SELECT total_spots FROM parkinglots WHERE lotID=?", (request.lotID,))
-        spotsDict = {"lotID": request.lotID, "totalSpots": totalSpots.fetchone(), "spots": []}
+        data = {"lID": request.lotID, "now": request.datetime}
+        free_spots = cur.execute("SELECT * FROM spots WHERE lotID=:lID AND occupied=false AND spotID NOT IN (SELECT spotID FROM reservations WHERE endDateTime>:now AND payment_status!='complete')", data).fetchall()
+        totalSpotsRow = cur.execute("SELECT total_spots FROM parkinglots WHERE lotID=?", (request.lotID,)).fetchone()
+        spotsDict = {"lotID": request.lotID, "totalSpots": totalSpotsRow[0] if totalSpotsRow else 0, "spots": []}
 
-        nextSpot = free_spots.fetchone()
-        while nextSpot != None:
+        for nextSpot in free_spots:
             spotsDict["spots"].append({"spotID": nextSpot[0], "occupied": nextSpot[1], "lotID": nextSpot[2]})
-            nextSpot = free_spots.fetchone()
         reply = database_interface_pb2.AvailableSpotsResp(availableSpots=json.dumps(spotsDict, indent=4))
-        print(reply)
         return reply
 
     def updateReservations(self, request, context):
@@ -66,6 +56,11 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
                 resID=request.resID
             )
 
+        cur.execute(
+            "DELETE FROM reservations WHERE endDateTime<=? AND payment_status!='complete' AND spotID IN (SELECT spotID FROM spots WHERE occupied=false)",
+            (request.datetime,)
+        )
+
         # parse datetime
         date = request.datetime.split(" ")[0].split("-")
         startHour = int(request.datetime.split(" ")[1].split(":")[0])
@@ -87,12 +82,13 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         endDateTime = f"{date[0]}-{date[1]}-{endDay} {endHour}:{endMin}:00"
 
         # check if reservation exists
-        existing = cur.execute(
-            "SELECT resID FROM reservations WHERE resID=:res",
-            {"res": request.resID}
-        )
-
-        row = existing.fetchone()
+        row = None
+        if request.HasField("resID"):
+            existing = cur.execute(
+                "SELECT resID FROM reservations WHERE resID=:res",
+                {"res": request.resID}
+            )
+            row = existing.fetchone()
 
         if row is not None:
             # UPDATE
@@ -103,52 +99,85 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
                 "sDT": request.datetime,
                 "eDT": endDateTime,
                 "dur": request.duration,
-                "res": request.resID
+                "res": request.resID,
+                "price": request.price if request.HasField("price") else 0
             }
 
-            cur.execute("""
-                UPDATE reservations
-                SET plateNum=:plate,
-                    lotID=:lot,
-                    spotID=:spot,
-                    startDateTime=:sDT,
-                    endDateTime=:eDT,
-                    duration_min=:dur
-                WHERE resID=:res
-            """, data)
+            if request.HasField("price"):
+                cur.execute("""
+                    UPDATE reservations
+                    SET plateNum=:plate,
+                        lotID=:lot,
+                        spotID=:spot,
+                        startDateTime=:sDT,
+                        endDateTime=:eDT,
+                        duration_min=:dur,
+                        totalPayment=:price
+                    WHERE resID=:res
+                """, data)
+            else:
+                cur.execute("""
+                    UPDATE reservations
+                    SET plateNum=:plate,
+                        lotID=:lot,
+                        spotID=:spot,
+                        startDateTime=:sDT,
+                        endDateTime=:eDT,
+                        duration_min=:dur
+                    WHERE resID=:res
+                """, data)
+
+            saved_res_id = request.resID
 
         else:
             # INSERT
             data = {
-                "res": request.resID,
                 "plate": request.plateNum,
                 "lot": request.lotID,
                 "spot": request.spotID,
                 "sDT": request.datetime,
                 "eDT": endDateTime,
                 "dur": request.duration,
-                "status": "pending"
+                "status": "pending",
+                "price": request.price if request.HasField("price") else 0
             }
 
-            cur.execute("""
-                INSERT INTO reservations (
-                    resID, plateNum, lotID, spotID,
-                    startDateTime, endDateTime,
-                    duration_min, payment_status
-                )
-                VALUES (
-                    :res, :plate, :lot, :spot,
-                    :sDT, :eDT,
-                    :dur, :status
-                )
-            """, data)
+            if request.HasField("resID"):
+                data["res"] = request.resID
+                cur.execute("""
+                    INSERT INTO reservations (
+                        resID, plateNum, lotID, spotID,
+                        startDateTime, endDateTime,
+                        duration_min, totalPayment, payment_status
+                    )
+                    VALUES (
+                        :res, :plate, :lot, :spot,
+                        :sDT, :eDT,
+                        :dur, :price, :status
+                    )
+                """, data)
+                saved_res_id = request.resID
+            else:
+                cur.execute("""
+                    INSERT INTO reservations (
+                        plateNum, lotID, spotID,
+                        startDateTime, endDateTime,
+                        duration_min, totalPayment, payment_status
+                    )
+                    VALUES (
+                        :plate, :lot, :spot,
+                        :sDT, :eDT,
+                        :dur, :price, :status
+                    )
+                """, data)
+                saved_res_id = cur.lastrowid
 
         conn.commit()
         conn.close()
 
         return database_interface_pb2.UpdateResResp(
             success=True,
-            resID=request.resID
+            resID=saved_res_id
         )
 
     def getReservations(self, request, context):
@@ -156,7 +185,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         cur = conn.cursor()
         # gets reservations made under the platnumber
         # if resID is filled, returns just that reservation.
-        if request.resID != None:
+        if request.HasField("resID"):
             params = {"res": request.resID, "plate": request.plateNum}
             reservations = cur.execute("SELECT * FROM reservations WHERE resID=:res and plateNum=:plate", params)
         else:
@@ -202,7 +231,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
                 SET payment_status = :status
                 WHERE resID = :res
             """, {
-                "status": "complete",
+                "status": "paid",
                 "res": request.resID
             })
 
@@ -290,6 +319,13 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         if old_occupied == new_occupied:
             conn.close()
             return database_interface_pb2.spotUpdateResp(success=True)
+
+        if new_occupied:
+            now_string = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
+            cur.execute(
+                "UPDATE reservations SET payment_status='complete' WHERE spotID=? AND endDateTime>=? AND payment_status!='complete'",
+                (spot, now_string)
+            )
 
         cur.execute(f"UPDATE spots SET occupied=? WHERE {sensor_col}=?", (new_occupied, request.iotID))
         conn.commit()

@@ -1,29 +1,25 @@
 <script setup lang="ts">
-    import { ref, computed, watch } from 'vue';
+    import { ref, computed } from 'vue';
     import { useParkingStore } from '@/stores/parking-store';
     import ReservationPopup from './ReservationPopup.vue';
-    import { VueDatePicker } from '@vuepic/vue-datepicker';
 
     const reservePlateNum = ref('');
     const parkingStore = useParkingStore();
     const showPopup = ref(false);
-    const date = ref();
-    const selectedDate = ref();
 
     const handleSubmit = () => {
-        parkingStore.reserveSpot(parkingStore.selectedSpot?.id ?? 0, 1, reservePlateNum.value, "Paid", selectedDate.value, parkingStore.duration, parkingStore.currentPrice);
+        parkingStore.reserveSpot(parkingStore.selectedSpot?.id ?? 0, 1, reservePlateNum.value, "Paid", formatDateTime(new Date()), parkingStore.duration, parkingStore.currentPrice);
         showPopup.value = true;
     };
 
     const handleConfirm = () => {
         showPopup.value = false;
-        date.value = null
         parkingStore.clearSelectedSpot();
         reservePlateNum.value = '';
     };
 
     const isFormInvalid = computed(() => {
-        return reservePlateNum.value.trim() === '' || parkingStore.selectedSpot === undefined || !date.value;
+        return reservePlateNum.value.trim() === '' || parkingStore.selectedSpot === undefined;
     });
 
     const formattedPrice = computed(() => {
@@ -39,12 +35,6 @@
         const ss = String(date.getSeconds()).padStart(2, '0');
         return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
     };
-
-    watch(date, (newDate) => {
-        if (newDate) {
-            selectedDate.value = formatDateTime(newDate);
-        }
-    });
 </script>
 
 <template>
@@ -54,7 +44,6 @@
             class="border bg-gray-100 outline-0 border-gray-700 p-1 rounded-md focus:outline-red-500 focus:outline-2 hover:outline-red-300 hover:outline-2"
             placeholder="License Plate"
         />
-        <VueDatePicker v-model="date" class="font-chakra"/>
         <div class="font-md">
             <div class="text-xs text-gray-500">
                 <p>Click on a parking spot from the map to select it.</p>
@@ -63,13 +52,13 @@
                 Selected Spot: <span class="font-bold">{{ parkingStore.selectedSpot?.id ?? 'None' }}</span>
             </div>
             <div class="pt-2">
-                Selected Duration: <span class="font-bold">{{ parkingStore.duration }}</span> minutes
+                Selected Stay: <span class="font-bold">{{ parkingStore.duration }}</span> hour blocks
             </div>
             <div class="pt-2">
                 Current price: $<span class="font-bold">{{ formattedPrice }}</span>
             </div>
             <div class="text-xs text-gray-500">
-                <p>Reserving a spot now locks in the above price. Click "Submit" to proceed with the reservation.</p>
+                <p>Reserving a spot starts right away. You will have 2 minutes to get there before it is released.</p>
             </div>
         </div>
         <button

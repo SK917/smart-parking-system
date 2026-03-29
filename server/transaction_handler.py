@@ -13,8 +13,8 @@ class transactionHandler(transaction_handler_pb2_grpc.Transaction_HandlerService
         # simulate an actual payment
         # check database for info
         checkResReq = database_interface_pb2.GetResReq(plateNum=request.plateNum, resID=request.resID)
-        reservation = json.dumps(DB_INTERFACE.getReservations(checkResReq).reservations)
-        if reservation["reservations"][0]["paymentStatus"] == "paid":
+        reservations = json.loads(DB_INTERFACE.getReservations(checkResReq).reservations)
+        if reservations["reservations"] and reservations["reservations"][0]["paymentStatus"] in ["paid", "complete"]:
             # already been paid, return an error.
             reply = transaction_handler_pb2.transResp(resID=request.resID, transID=None, plateNum=request.plateNum, success=False, errorCode="Error: Reservation already paid for")
             return reply
@@ -28,9 +28,15 @@ class transactionHandler(transaction_handler_pb2_grpc.Transaction_HandlerService
             suc = True
         transCreateReq = database_interface_pb2.TransCreateReq(resID=request.resID, plateNum=request.plateNum, paymentMethod=request.paymentInfo, val=request.val, success=suc)
         transCreateResp = DB_INTERFACE.createTransaction(transCreateReq)
+        db_error = transCreateResp.errorCode if transCreateResp.errorCode else ""
+        full_error = errCode
+        if db_error:
+            if full_error:
+                full_error += "\n"
+            full_error += db_error
 
         # return with success/fail indicator and relevant transaction details
-        reply = transaction_handler_pb2.transResp(resID=request.resID, transID=transCreateResp.transID, plateNum=request.plateNum, success=(transCreateResp.success and suc), errorCode=errCode+"\n"+transCreateResp.errorCode)
+        reply = transaction_handler_pb2.transResp(resID=request.resID, transID=transCreateResp.transID, plateNum=request.plateNum, success=(transCreateResp.success and suc), errorCode=full_error)
 
         return reply
 

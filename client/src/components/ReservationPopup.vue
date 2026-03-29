@@ -77,7 +77,7 @@
                         <div class="text-gray-500 text-xs flex flex-col gap-2">
                             <p>Please make sure to save this information. </p>
                             <p>Click <span class="text-lime-700 font-bold">CONFIRM</span> below once you have saved both your Reservation ID and Parking Spot Number.</p> 
-                            <p>You will need your <b>Name</b> and <b>Reservation ID</b> to check your booking.</p>
+                            <p>You will need your <b>License Plate</b> and <b>Reservation ID</b> to check your booking.</p>
                         </div>
                     </div>
 
@@ -89,7 +89,7 @@
                     </button>
 
                     <div class="text-xs text-red-400 text-center pt-4 leading-tight">
-                        <b>Failure to arrive</b> at your reserved parking spot <b>within 20 minutes</b> of making your reservation <b>forfeits your reservation</b>.
+                        <b>Failure to arrive</b> at your reserved parking spot <b>within 2 minutes</b> of making your reservation <b>forfeits your reservation</b>.
                     </div>
                 </div>
             </div>

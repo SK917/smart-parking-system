@@ -30,11 +30,11 @@
 
     watch(durationInput, (newDuration) => {
         if (newDuration) {
-            if(newDuration < 30) {
-                durationInput.value = 30;
+            if(newDuration < 1) {
+                durationInput.value = 1;
             }
-            else if(newDuration > 1080) {
-                durationInput.value = 1080;
+            else if(newDuration > 24) {
+                durationInput.value = 24;
             }
             else {
                 parkingStore.setDuration(newDuration);
@@ -59,7 +59,7 @@
             
         <div class="flex flex-col p-4 gap-4">
             <div class="text-md text-red-600 font-semibold">
-                <p>The price represents the stay duration below.</p>
+                <p>The price represents the number of 1-hour blocks below.</p>
             </div>
             <div class="flex flex-row gap-2 items-end">
                 <div class="relative flex items-center bg-gray-200 border border-gray-700 rounded-sm min-h-9 group w-20 outline-2 outline-transparent
@@ -67,20 +67,20 @@
                     <input 
                         type="number" 
                         v-model.number="durationInput"
-                        min="30" 
-                        max="1080" 
+                        min="1" 
+                        max="24" 
                         step="1"
                         class="bg-transparent text-gray-700 h-full w-16 focus:outline-none font-orbit no-spinner pl-2 text-md"
                     />
                     <div class="flex flex-col border-0 h-full w-6">
                         <button 
-                            @click="durationInput = Math.min(1080, +(durationInput + 1))"
+                            @click="durationInput = Math.min(24, +(durationInput + 1))"
                             class="flex items-center justify-center flex-1 hover:bg-gray-300 text-gray-400 hover:text-red-500"
                         >
                             <ChevronUp :size="16"/>
                         </button>
                         <button 
-                            @click="durationInput = Math.max(30, +(durationInput - 1))"
+                            @click="durationInput = Math.max(1, +(durationInput - 1))"
                             class="flex items-center justify-center flex-1 hover:bg-gray-300 text-gray-400 hover:text-red-500"
                         >
                             <ChevronDown :size="16"/>
@@ -88,7 +88,7 @@
                     </div>
                 </div>
                 <div class="text-md text-gray-700 font-semibold">
-                    minutes
+                    hour blocks
                 </div>
             </div>
             <div class="text-md text-red-600 font-semibold pt-4">
@@ -107,7 +107,7 @@
                 <ReservationForm/>
             </div>
             <div class="pt-2 text-xs text-gray-500">
-                <p>Note: By reserving a spot, you agree that you will show up at your reserved time.</p>
+                <p>Note: By reserving a spot, you agree that you will show up right away.</p>
                 <p>
                     Failure to do so will have your reservation 
                     <span class="text-red-400 font-bold">revoked</span>.

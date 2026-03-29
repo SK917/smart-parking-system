@@ -21,7 +21,7 @@ class AvailableSpotsResp(_message.Message):
     def __init__(self, availableSpots: _Optional[str] = ...) -> None: ...
 
 class UpdateResReq(_message.Message):
-    __slots__ = ("resID", "lotID", "spotID", "plateNum", "datetime", "duration", "delete")
+    __slots__ = ("resID", "lotID", "spotID", "plateNum", "datetime", "duration", "delete", "price")
     RESID_FIELD_NUMBER: _ClassVar[int]
     LOTID_FIELD_NUMBER: _ClassVar[int]
     SPOTID_FIELD_NUMBER: _ClassVar[int]
@@ -29,6 +29,7 @@ class UpdateResReq(_message.Message):
     DATETIME_FIELD_NUMBER: _ClassVar[int]
     DURATION_FIELD_NUMBER: _ClassVar[int]
     DELETE_FIELD_NUMBER: _ClassVar[int]
+    PRICE_FIELD_NUMBER: _ClassVar[int]
     resID: int
     lotID: int
     spotID: int
@@ -36,7 +37,8 @@ class UpdateResReq(_message.Message):
     datetime: str
     duration: int
     delete: bool
-    def __init__(self, resID: _Optional[int] = ..., lotID: _Optional[int] = ..., spotID: _Optional[int] = ..., plateNum: _Optional[str] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ..., delete: bool = ...) -> None: ...
+    price: float
+    def __init__(self, resID: _Optional[int] = ..., lotID: _Optional[int] = ..., spotID: _Optional[int] = ..., plateNum: _Optional[str] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ..., delete: bool = ..., price: _Optional[float] = ...) -> None: ...
 
 class UpdateResResp(_message.Message):
     __slots__ = ("success", "resID", "errorCode")

@@ -11,12 +11,12 @@ class PriceReq(_message.Message):
     TOTALSPOTS_FIELD_NUMBER: _ClassVar[int]
     DATETIME_FIELD_NUMBER: _ClassVar[int]
     DURATION_FIELD_NUMBER: _ClassVar[int]
-    lotID: str
+    lotID: int
     remainingSpots: int
     totalSpots: int
     datetime: str
     duration: int
-    def __init__(self, lotID: _Optional[str] = ..., remainingSpots: _Optional[int] = ..., totalSpots: _Optional[int] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ...) -> None: ...
+    def __init__(self, lotID: _Optional[int] = ..., remainingSpots: _Optional[int] = ..., totalSpots: _Optional[int] = ..., datetime: _Optional[str] = ..., duration: _Optional[int] = ...) -> None: ...
 
 class PriceResp(_message.Message):
     __slots__ = ("price",)

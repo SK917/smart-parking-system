@@ -5,7 +5,7 @@ import type { ParkingSpot, ParkingSpotResponse, ParkingSpotAvailability, MapResp
 
 export const useParkingStore = defineStore("parking", () => {
     const currentPrice = ref(20);
-    const duration = ref(120);
+    const duration = ref(2);
     const reservationStatus = ref<ReservationMakeResponse>({ success: true, resID: Math.floor(100000 + Math.random() * 900000) });
     const reservationSearchResult = ref<ReservationSearchResponse>();
     const reservationSearchStatus = ref(false);
@@ -21,6 +21,7 @@ export const useParkingStore = defineStore("parking", () => {
             const response = await fetch("/parking-spots.json");
             const data: MapResponse = await response.json();
             spots.value = data.spots;
+            await fetchAvailability(1);
             loading.value = false;
             startPolling(1)
         } catch (error) {
@@ -48,12 +49,11 @@ export const useParkingStore = defineStore("parking", () => {
             const parsed: ParkingSpotResponse = JSON.parse(response);
             console.log(parsed);
 
-            parsed.spots.forEach(updatedSpot => {
-                const existing = spots.value.find(s => s.id === updatedSpot.spotID);
-                if(existing) {
-                    existing.is_available = !updatedSpot.occupied;
-                }
-            })
+            const availableSpotIds = new Set(parsed.spots.map(spot => spot.spotID));
+
+            spots.value.forEach(spot => {
+                spot.is_available = availableSpotIds.has(spot.id);
+            });
 
             setCurrentPrice(parsed);
         } catch (error) {
