@@ -10,7 +10,7 @@ import json
 
 class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
     def __init__(self):
-        self.db_path = "Project/database/parkinglot.db"
+        self.db_path = "../database/parkinglot.db"
 
     def getAvailableSpots(self, request, context):
         # returns a list of spots in a lot that have not been reserved and are not currently occupied as a JSON
@@ -63,7 +63,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         else:
             params = {"plate": request.plateNum}
             reservations = cur.execute("SELECT * FROM reservations WHERE plateNum=:plate", params)
-        
+
         resDict = {"plateNum": request.plateNum, "reservations": []}
 
         nextRes = reservations.fetchone()
@@ -72,7 +72,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
             nextRes = reservations.fetchone()
         reply = database_interface_pb2.GetResResp(reservations=json.dumps(resDict, indent=4))
         return reply
-    
+
     def createTransaction(self, request, context):
         # create a new transaction entry with the relevant info
         # if the transaction is a success, go to the associated reservation and update its payment status to complete
@@ -111,7 +111,16 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
 
         cur.execute(f"UPDATE spots SET occupied=? WHERE {sensor_col}=?", (new_occupied, request.iotID))
         conn.commit()
+
+        # For debug purposes I added this print that reads back the data
+        try:
+            row = cur.execute(f"SELECT * FROM spots WHERE {sensor_col}=?", (request.iotID,)).fetchone()
+            print(f"Updated spot occupancy in database. Current state for IoT({request.iotID}): {row}")
+        except Exception as e:
+            print(f"Error fetching updated spot occupancy for IoT({request.iotID}): {e}")
+
         conn.close()
+
 
         return database_interface_pb2.spotUpdateResp(success=True)
 
