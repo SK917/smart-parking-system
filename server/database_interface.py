@@ -34,15 +34,21 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
 
         data = {"lID": request.lotID, "sDT": request.startDateTime, "eDT": endDateTime}
         free_spots = cur.execute("SELECT * FROM spots WHERE lotID=:lID AND occupied=false AND spotID NOT IN (SELECT spotID FROM reservations WHERE startDateTime>:eDT OR endDateTime<:sDT)", data)
-        totalSpots = cur.execute("SELECT totalSpots FROM parkingLots WHERE lotID=?", (request.lotID,))
-        spotsDict = {"lotID": request.lotID, "totalSpots": totalSpots.fetchone(), "spots": []}
+        
+        totalSpots = cur.execute("SELECT total_spots FROM parkinglots WHERE lotID=?", (request.lotID,))
+        
+        spotsDict = {"lotID": request.lotID, "totalSpots": totalSpots.fetchone()[0], "spots": []}
 
         nextSpot = free_spots.fetchone()
         while nextSpot != None:
-            spotsDict["spots"].append({"spotID": nextSpot[0], "lotID": nextSpot[1], "occupied": nextSpot[2]})
+            spotsDict["spots"].append({
+                "spotID": nextSpot[0],
+                "lotID": nextSpot[2],
+                "occupied": nextSpot[1]
+            })
             nextSpot = free_spots.fetchone()
-        reply = database_interface_pb2.AvailableSpotsResp(availableSpots=json.dumps(spotsDict, indent=4))
 
+        reply = database_interface_pb2.AvailableSpotsResp(availableSpots=json.dumps(spotsDict, indent=4))
         return reply
 
     def updateReservations(self, request, context):
@@ -68,8 +74,19 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
 
         nextRes = reservations.fetchone()
         while nextRes != None:
-            resDict["reservations"].append({"resID": nextRes[0], "plateNum": nextRes[1], "lotID": nextRes[2], "spotID": nextRes[3], "startDateTime": nextRes[4], "endDateTime": nextRes[5], "duration": nextRes[6], "totalPayment": nextRes[7], "paymentStatus": nextRes[8]})
+            resDict["reservations"].append({
+                "resID": nextRes[0],
+                "plateNum": nextRes[1],
+                "lotID": nextRes[2],
+                "spotID": nextRes[3],
+                "startDateTime": nextRes[4],
+                "endDateTime": nextRes[5],
+                "duration": nextRes[6],          # duration_min
+                "totalPayment": nextRes[7],
+                "paymentStatus": nextRes[8]      # payment_status
+            })
             nextRes = reservations.fetchone()
+
         reply = database_interface_pb2.GetResResp(reservations=json.dumps(resDict, indent=4))
         return reply
     
