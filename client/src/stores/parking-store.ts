@@ -22,7 +22,7 @@ export const useParkingStore = defineStore("parking", () => {
             const data: MapResponse = await response.json();
             spots.value = data.spots;
             loading.value = false;
-            // TODO: Add call to startPolling here
+            startPolling(1)
         } catch (error) {
             console.error("Failed to load parking spots: ", error);
         }
@@ -44,7 +44,7 @@ export const useParkingStore = defineStore("parking", () => {
     // Communicates with gRPC getAvailableSpots() function
     async function fetchAvailability(lotId: number) {
         try {
-            const response = await getAvailableSpots(lotId, new Date().toISOString(), 1)
+            const response = await getAvailableSpots(lotId, formatDateTime(new Date()), duration.value)
             const parsed: ParkingSpotResponse = JSON.parse(response);
 
             parsed.spots.forEach(updatedSpot => {
@@ -58,6 +58,16 @@ export const useParkingStore = defineStore("parking", () => {
         } catch (error) {
             console.error("Failed to fetch latest parking spot details: ", error)
         }
+    }
+
+    function formatDateTime(date: Date): string {
+        const dd = String(date.getDate()).padStart(2, '0');
+        const mm = String(date.getMonth() + 1).padStart(2, '0');
+        const yyyy = date.getFullYear();
+        const hh = String(date.getHours()).padStart(2, '0');
+        const min = String(date.getMinutes()).padStart(2, '0');
+        const ss = String(date.getSeconds()).padStart(2, '0');
+        return `${yyyy}-${mm}-${dd} ${hh}:${min}:${ss}`;
     }
 
     function setCurrentPrice(response: ParkingSpotResponse) {
