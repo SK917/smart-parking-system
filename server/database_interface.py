@@ -27,6 +27,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
 
         if endHour > 23:
             endDay = int(date.split("-")[2]) + 1
+            # endDay = int(date[2]) + 1 potential fix if above line doesnt work
             endHour = endHour - 23
         else:
             endDay = date[2]
@@ -34,12 +35,12 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
 
         data = {"lID": request.lotID, "sDT": request.startDateTime, "eDT": endDateTime}
         free_spots = cur.execute("SELECT * FROM spots WHERE lotID=:lID AND occupied=false AND spotID NOT IN (SELECT spotID FROM reservations WHERE startDateTime>:eDT OR endDateTime<:sDT)", data)
-        totalSpots = cur.execute("SELECT totalSpots FROM parkingLots WHERE lotID=?", (request.lotID,))
+        totalSpots = cur.execute("SELECT total_spots FROM parkinglots WHERE lotID=?", (request.lotID,))
         spotsDict = {"lotID": request.lotID, "totalSpots": totalSpots.fetchone(), "spots": []}
 
         nextSpot = free_spots.fetchone()
         while nextSpot != None:
-            spotsDict["spots"].append({"spotID": nextSpot[0], "lotID": nextSpot[1], "occupied": nextSpot[2]})
+            spotsDict["spots"].append({"spotID": nextSpot[0], "occupied": nextSpot[1], "lotID": nextSpot[2]})
             nextSpot = free_spots.fetchone()
         reply = database_interface_pb2.AvailableSpotsResp(availableSpots=json.dumps(spotsDict, indent=4))
 
@@ -50,7 +51,95 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         # if yes, update the reservation with the info in the request
         # if no, consider it a new reservation, make a new reservation entry with the relevant information, set payment status to pending by default
         # calculate endDateTime using startDateTime and duration
-        pass
+        conn = sqlite3.connect(self.db_path)
+        cur = conn.cursor()
+
+        # compute endDateTime 
+        date = request.startDateTime.split(" ")[0].split("-")
+        startHour = int(request.startDateTime.split(" ")[1].split(":")[0])
+        startMin = int(request.startDateTime.split(" ")[1].split(":")[1])
+
+        endHour = startHour + math.floor(request.duration / 60)
+        endMin = startMin + request.duration % 60
+
+        if endMin >= 60:
+            endHour += 1
+            endMin -= 60
+
+        if endHour > 23:
+            endDay = int(date[2]) + 1
+            endHour = endHour - 23
+        else:
+            endDay = date[2]
+    
+        endDateTime = f"{date[0]}-{date[1]}-{endDay} {endHour}:{endMin}:00"
+
+        # check if reservation exists 
+        existing = cur.execute(
+            "SELECT resID FROM reservations WHERE resID=:res",
+            {"res": request.resID}
+        )
+
+        row = existing.fetchone()
+
+        if row != None:
+            # UPDATE
+            data = {
+                "plate": request.plateNum,
+                "lot": request.lotID,
+                "spot": request.spotID,
+                "sDT": request.startDateTime,
+                "eDT": endDateTime,
+                "dur": request.duration,
+                "pay": request.totalPayment,
+                "status": request.paymentStatus,
+                "res": request.resID
+            }
+
+            cur.execute("""
+                UPDATE reservations
+                SET plateNum=:plate,
+                    lotID=:lot,
+                    spotID=:spot,
+                    startDateTime=:sDT,
+                    endDateTime=:eDT,
+                    duration_min=:dur,
+                    totalPayment=:pay,
+                    payment_status=:status
+                WHERE resID=:res
+            """, data)
+    
+        else:
+            # INSERT (new reservation → pending)
+            data = {
+                "res": request.resID,
+                "plate": request.plateNum,
+                "lot": request.lotID,
+                "spot": request.spotID,
+                "sDT": request.startDateTime,
+                "eDT": endDateTime,
+                "dur": request.duration,
+                "pay": request.totalPayment,
+                "status": "pending"
+            }
+    
+            cur.execute("""
+                INSERT INTO reservations (
+                    resID, plateNum, lotID, spotID,
+                    startDateTime, endDateTime,
+                    duration_min, totalPayment, payment_status
+                )
+                VALUES (
+                    :res, :plate, :lot, :spot,
+                    :sDT, :eDT,
+                    :dur, :pay, :status
+                )
+            """, data)
+    
+        conn.commit()
+        conn.close()
+
+        return database_interface_pb2.updateResResp(success=True)
 
     def getReservations(self, request, context):
         conn = sqlite3.connect(self.db_path)
@@ -77,13 +166,91 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         # create a new transaction entry with the relevant info
         # if the transaction is a success, go to the associated reservation and update its payment status to complete
         # return success/fail
-        pass
+        conn = sqlite3.connect(self.db_path)
+        cur = conn.cursor()
+    
+        data = {
+            "val": request.value,
+            "plate": request.plateNum,
+            "res": request.resID,
+            "success": int(request.success),
+            "method": request.method
+        }
+    
+        # insert transaction
+        cur.execute("""
+            INSERT INTO transactions (value, plate_number, resID, success, method)
+            VALUES (:val, :plate, :res, :success, :method)
+        """, data)
+    
+        # if successful, update reservation payment status
+        if request.success:
+            cur.execute("""
+                UPDATE reservations
+                SET payment_status = :status
+                WHERE resID = :res
+            """, {
+                "status": "complete",
+                "res": request.resID
+            })
+    
+        conn.commit()
+        conn.close()
+    
+        return database_interface_pb2.transactionResp(success=True)
 
     def getTransactions(self, request, context):
         # check which entries are filled in the request
         # If the user ID is filled, return all transactions made by the user
         # If the resID is filled, return the transactions associated with that reservation
-        pass
+        conn = sqlite3.connect(self.db_path)
+        cur = conn.cursor()
+    
+        if request.resID != None and request.plateNum:
+            params = {"res": request.resID, "plate": request.plateNum}
+            results = cur.execute(
+                "SELECT * FROM transactions WHERE resID=:res AND plate_number=:plate",
+                params
+            )
+    
+        elif request.resID != None:
+            params = {"res": request.resID}
+            results = cur.execute(
+                "SELECT * FROM transactions WHERE resID=:res",
+                params
+            )
+    
+        elif request.plateNum:
+            params = {"plate": request.plateNum}
+            results = cur.execute(
+                "SELECT * FROM transactions WHERE plate_number=:plate",
+                params
+            )
+    
+        else:
+            results = cur.execute("SELECT * FROM transactions")
+    
+        transDict = {"transactions": []}
+    
+        nextTrans = results.fetchone()
+        while nextTrans != None:
+            transDict["transactions"].append({
+                "transactionID": nextTrans[0],
+                "value": nextTrans[1],
+                "plateNum": nextTrans[2],
+                "resID": nextTrans[3],
+                "success": nextTrans[4],
+                "method": nextTrans[5]
+            })
+            nextTrans = results.fetchone()
+    
+        conn.close()
+    
+        reply = database_interface_pb2.GetTransactionsResp(
+            transactions=json.dumps(transDict, indent=4)
+        )
+    
+        return reply
 
     def updateSpotOccupancy(self, request, context):
         conn = sqlite3.connect(self.db_path)
