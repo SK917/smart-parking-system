@@ -47,20 +47,32 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         return reply
 
     def updateReservations(self, request, context):
-        # checks if the reservation already exists in the database
-        # if yes, update the reservation with the info in the request
-        # if no, consider it a new reservation, make a new reservation entry with the relevant information, set payment status to pending by default
-        # calculate endDateTime using startDateTime and duration
+
         conn = sqlite3.connect(self.db_path)
         cur = conn.cursor()
 
-        # compute endDateTime 
-        date = request.startDateTime.split(" ")[0].split("-")
-        startHour = int(request.startDateTime.split(" ")[1].split(":")[0])
-        startMin = int(request.startDateTime.split(" ")[1].split(":")[1])
+        # handle delete request
+        if request.delete:
+            cur.execute(
+                "DELETE FROM reservations WHERE resID=:res",
+                {"res": request.resID}
+            )
 
-        endHour = startHour + math.floor(request.duration / 60)
-        endMin = startMin + request.duration % 60
+            conn.commit()
+            conn.close()
+
+            return database_interface_pb2.UpdateResResp(
+                success=True,
+                resID=request.resID
+            )
+
+        # parse datetime
+        date = request.datetime.split(" ")[0].split("-")
+        startHour = int(request.datetime.split(" ")[1].split(":")[0])
+        startMin = int(request.datetime.split(" ")[1].split(":")[1])
+
+        endHour = startHour + (request.duration // 60)
+        endMin = startMin + (request.duration % 60)
 
         if endMin >= 60:
             endHour += 1
@@ -68,13 +80,13 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
 
         if endHour > 23:
             endDay = int(date[2]) + 1
-            endHour = endHour - 23
+            endHour -= 24
         else:
             endDay = date[2]
-    
+
         endDateTime = f"{date[0]}-{date[1]}-{endDay} {endHour}:{endMin}:00"
 
-        # check if reservation exists 
+        # check if reservation exists
         existing = cur.execute(
             "SELECT resID FROM reservations WHERE resID=:res",
             {"res": request.resID}
@@ -82,17 +94,15 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
 
         row = existing.fetchone()
 
-        if row != None:
+        if row is not None:
             # UPDATE
             data = {
                 "plate": request.plateNum,
                 "lot": request.lotID,
                 "spot": request.spotID,
-                "sDT": request.startDateTime,
+                "sDT": request.datetime,
                 "eDT": endDateTime,
                 "dur": request.duration,
-                "pay": request.totalPayment,
-                "status": request.paymentStatus,
                 "res": request.resID
             }
 
@@ -103,43 +113,43 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
                     spotID=:spot,
                     startDateTime=:sDT,
                     endDateTime=:eDT,
-                    duration_min=:dur,
-                    totalPayment=:pay,
-                    payment_status=:status
+                    duration_min=:dur
                 WHERE resID=:res
             """, data)
-    
+
         else:
-            # INSERT (new reservation → pending)
+            # INSERT
             data = {
                 "res": request.resID,
                 "plate": request.plateNum,
                 "lot": request.lotID,
                 "spot": request.spotID,
-                "sDT": request.startDateTime,
+                "sDT": request.datetime,
                 "eDT": endDateTime,
                 "dur": request.duration,
-                "pay": request.totalPayment,
                 "status": "pending"
             }
-    
+
             cur.execute("""
                 INSERT INTO reservations (
                     resID, plateNum, lotID, spotID,
                     startDateTime, endDateTime,
-                    duration_min, totalPayment, payment_status
+                    duration_min, payment_status
                 )
                 VALUES (
                     :res, :plate, :lot, :spot,
                     :sDT, :eDT,
-                    :dur, :pay, :status
+                    :dur, :status
                 )
             """, data)
-    
+
         conn.commit()
         conn.close()
 
-        return database_interface_pb2.updateResResp(success=True)
+        return database_interface_pb2.UpdateResResp(
+            success=True,
+            resID=request.resID
+        )
 
     def getReservations(self, request, context):
         conn = sqlite3.connect(self.db_path)
@@ -170,11 +180,11 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         cur = conn.cursor()
     
         data = {
-            "val": request.value,
+            "val": request.val,
             "plate": request.plateNum,
             "res": request.resID,
             "success": int(request.success),
-            "method": request.method
+            "method": request.paymentMethod
         }
     
         # insert transaction
@@ -183,6 +193,8 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
             VALUES (:val, :plate, :res, :success, :method)
         """, data)
     
+        trans_id = cur.lastrowid
+
         # if successful, update reservation payment status
         if request.success:
             cur.execute("""
@@ -193,11 +205,14 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
                 "status": "complete",
                 "res": request.resID
             })
-    
+
         conn.commit()
         conn.close()
-    
-        return database_interface_pb2.transactionResp(success=True)
+
+        return database_interface_pb2.TransCreateResp(
+            transID=trans_id,
+            success=True
+        )
 
     def getTransactions(self, request, context):
         # check which entries are filled in the request
@@ -246,7 +261,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
     
         conn.close()
     
-        reply = database_interface_pb2.GetTransactionsResp(
+        reply = database_interface_pb2.TransGetResp(
             transactions=json.dumps(transDict, indent=4)
         )
     
