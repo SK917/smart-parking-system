@@ -19,9 +19,9 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         conn = sqlite3.connect(self.db_path)
         cur = conn.cursor()
 
-        date = request.startDateTime.split(" ")[0].split("-")
-        startHour = int(request.startDateTime.split(" ")[1].split(":")[0])
-        startMin = int(request.startDateTime.split(" ")[1].split(":")[1])
+        date = request.datetime.split(" ")[0].split("-")
+        startHour = int(request.datetime.split(" ")[1].split(":")[0])
+        startMin = int(request.datetime.split(" ")[1].split(":")[1])
         endHour = startHour + math.floor(request.duration/60)
         endMin = startMin + request.duration % 60
 
@@ -32,8 +32,8 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         else:
             endDay = date[2]
         endDateTime = f"{date[0]}-{date[1]}-{endDay} {endHour}:{endMin}:00"
-
-        data = {"lID": request.lotID, "sDT": request.startDateTime, "eDT": endDateTime}
+        print("hello")
+        data = {"lID": request.lotID, "sDT": request.datetime, "eDT": endDateTime}
         free_spots = cur.execute("SELECT * FROM spots WHERE lotID=:lID AND occupied=false AND spotID NOT IN (SELECT spotID FROM reservations WHERE startDateTime>:eDT OR endDateTime<:sDT)", data)
         totalSpots = cur.execute("SELECT total_spots FROM parkinglots WHERE lotID=?", (request.lotID,))
         spotsDict = {"lotID": request.lotID, "totalSpots": totalSpots.fetchone(), "spots": []}
@@ -43,7 +43,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
             spotsDict["spots"].append({"spotID": nextSpot[0], "occupied": nextSpot[1], "lotID": nextSpot[2]})
             nextSpot = free_spots.fetchone()
         reply = database_interface_pb2.AvailableSpotsResp(availableSpots=json.dumps(spotsDict, indent=4))
-
+        print(reply)
         return reply
 
     def updateReservations(self, request, context):

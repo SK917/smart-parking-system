@@ -13,6 +13,7 @@ PRICE_CALC = None
 
 class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
     def getAvailablespots(self, request, context):
+        print(f"getAvailableSpots called: {request}")
         # make request to database for open spots with no reservation
         spotsReq = database_interface_pb2.AvailableSpotsReq(lotID=request.lotID)
         spots = DB_INTERFACE.getAvailableSpots(spotsReq).availableSpots
@@ -26,9 +27,11 @@ class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
 
         # return spots with their prices
         availableSpots = client_interface_pb2.AvailablespotResp(availablespots=json.dumps(spots_dict, indent=4))
+        print(availableSpots)
         return availableSpots
 
     def makeReservation(self, request, context):
+        print(f"makeReservation called: {request}")
         # make a request to the database to check if the user already has a reservation
         resGetReq = database_interface_pb2.GetResReq(plateNum=request.plateNum)
         reservations = json.loads(DB_INTERFACE.getReservations(resGetReq).reservations)
@@ -62,6 +65,7 @@ class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
         return reply
 
     def getReservations(self, request, context):
+        print(f"getReservations called: {request}")
         resReq = database_interface_pb2.GetResReq(request.plateNum, request.resID)
         reservations = DB_INTERFACE.getReservations(resReq).reservations
         reply = client_interface_pb2.ResGetResp(reservations=reservations)
@@ -69,6 +73,7 @@ class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
         return reply
 
     def editRes(self, request, context):
+        print(f"editRes called: {request}")
         editReq = database_interface_pb2.UpdateResReq(resID=request.resID, datetime=request.datetime, duration=request.duration, delete=request.cancel)
         editResp = DB_INTERFACE.updateReservations(editReq)
         reply = client_interface_pb2.ResEditResp(resID=editResp.resID, success=editResp.success, errorCode=editResp.errorCode)

@@ -46,6 +46,7 @@ export const useParkingStore = defineStore("parking", () => {
         try {
             const response = await getAvailableSpots(lotId, formatDateTime(new Date()), duration.value)
             const parsed: ParkingSpotResponse = JSON.parse(response);
+            console.log(parsed);
 
             parsed.spots.forEach(updatedSpot => {
                 const existing = spots.value.find(s => s.id === updatedSpot.spotID);
