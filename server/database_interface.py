@@ -24,6 +24,9 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         # delete reservations that have expired (L + ratio)
         now_string = request.datetime.replace("'", "''")
         cur.execute(f"DELETE FROM reservations WHERE graceTime<='{now_string}' AND payment_status!='complete' AND spotID IN (SELECT spotID FROM spots WHERE occupied=false)")
+        expired_count = cur.rowcount
+        if expired_count > 0:
+            print(f"[getAvailableSpots] auto-delete: Removed({expired_count}) reservation(s) for missed arrival window")
         conn.commit()
 
         free_spots = cur.execute(f"SELECT * FROM spots WHERE lotID={request.lotID} AND occupied=false AND spotID NOT IN (SELECT spotID FROM reservations WHERE graceTime>'{now_string}' AND payment_status!='complete')").fetchall()
@@ -54,6 +57,9 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
 
         now_string = request.datetime.replace("'", "''")
         cur.execute(f"DELETE FROM reservations WHERE graceTime<='{now_string}' AND payment_status!='complete' AND spotID IN (SELECT spotID FROM spots WHERE occupied=false)")
+        expired_count = cur.rowcount
+        if expired_count > 0:
+            print(f"[updateReservations] auto-delete: Removed({expired_count}) reservation(s) for missed arrival window")
 
         start_dt = datetime.datetime.strptime(request.datetime, "%Y-%m-%d %H:%M:%S")
         duration_minutes = request.duration * 60
