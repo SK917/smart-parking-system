@@ -105,12 +105,11 @@ export const useParkingStore = defineStore("parking", () => {
 
     async function reserveSpot(spotId: number, lotId: number, plateNum: string, paymentInfo: string, datetime: string, duration: number, price: number) {
         clearUserBookingData();
-
-        // TODO: Ensure code below properly connects to the makeReservation call
         try {
             const result = await makeReservation(lotId, spotId, plateNum, paymentInfo, datetime, duration, price);
             setReservationStatus(result);
             if(result.success) {
+                reservationSearchStatus.value = false;
                 const targetSpot = spots.value.find(s => s.id === spotId);
                 if (targetSpot) {
                     targetSpot.booked_by_user = true;
@@ -127,14 +126,13 @@ export const useParkingStore = defineStore("parking", () => {
 
     async function lookUpReservation(reserveId: number, plateNum: string) {
         clearUserBookingData();
-
-        // TODO: Check whether below code actually works with gRPC
         try {
             const result = await getReservations(plateNum, reserveId);
             const parsed: ReservationSearchResponse = JSON.parse(result);
             setReservationResult(parsed);
             if(parsed.reservations.length > 0 ) {
                 reservationSearchStatus.value = true;
+                startCountdownPoll(plateNum, reserveId);
                 const targetSpot = spots.value.find(s => s.id === parsed.reservations[0]?.spotID );
                 if (targetSpot) {
                     targetSpot.booked_by_user = true;
@@ -156,17 +154,18 @@ export const useParkingStore = defineStore("parking", () => {
             try {
                 const result = await getReservations(plateNum, resID);
                 const parsed: ReservationSearchResponse = JSON.parse(result);
-
                 if (parsed.reservations.length > 0) {
                     const res = parsed.reservations[0];
-                    const timeLeft = res.timeRemainingSeconds;
+                    const timeLeft = res?.timeRemainingSeconds;
 
-                    if (timeLeft <= 0) {
-                        clearInterval(countdownInterval);
+                    if (timeLeft !== undefined && timeLeft <= 0) {
+                        reservationSearchStatus.value = false;
+                        clearUserBookingData();
+                        clearInterval(countdownInterval ?? 0);
                         countdownInterval = null;
                         reservationCountdown.value = 0;
                     } else {
-                        reservationCountdown.value = timeLeft;
+                        reservationCountdown.value = timeLeft ?? 0;
                     }
                 }
             } catch (error) {

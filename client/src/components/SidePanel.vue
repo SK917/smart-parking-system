@@ -137,7 +137,7 @@
             >
                 Submit
             </button>
-            <div v-if="parkingStore.reservationSearchStatus">
+            <div v-if="parkingStore.reservationSearchStatus && parkingStore.reservationCountdown != 0">
                 <div class="text-md text-red-600 font-semibold">
                     Welcome back! You have a spot booked with license plate #{{ parkingStore.reservationSearchResult?.plateNum }}.
                 </div>
@@ -148,13 +148,13 @@
                     Spot Number: <span class="font-bold">{{ parkingStore.reservationSearchResult?.reservations[0]?.spotID }}</span>
                 </div>
                 <div class="text=lg text-gray-700">
-                    Price Paid: $<span class="font-bold">{{ parkingStore.reservationSearchResult?.reservations[0]?.totalPayment }}</span>
+                    Price Paid: $<span class="font-bold">{{ parkingStore.reservationSearchResult?.reservations[0]?.totalPayment?.toFixed(2) }}</span>
                 </div>
                 <div class="text=lg text-gray-700">
                     Reservation Made For: <span class="font-bold">{{ parkingStore.reservationSearchResult?.reservations[0]?.startDateTime }}</span>
                 </div>
                 <div class="text=lg text-red-600">
-                    Duration: <span class="font-bold">{{ parkingStore.reservationSearchResult?.reservations[0]?.duration }}</span> minutes.
+                    You have: <span class="font-bold">{{ parkingStore.reservationCountdown }}</span> seconds to reach your spot.
                 </div>
             </div>
         </div>

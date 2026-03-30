@@ -99,6 +99,9 @@
                         Reservation Failed
                     </h2>
                     <div class="text-gray-500 text-md flex flex-col gap-2 text-center pb-4">
+                        <p>We do not accept <b>American Express</b> payments.</p>
+                        <p>Additionally, you can only have <b>1</b> existing reservation at a time.</p>
+                        <br>
                         <p>Please try again.</p>
                     </div>
                     <button

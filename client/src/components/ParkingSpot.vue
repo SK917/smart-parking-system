@@ -31,8 +31,9 @@
     });
 
     const colourClasses = computed(() => {
+        if(props.spot.booked_by_user && parkingStore.reservationSearchStatus) return "border-slate-500 text-slate-500";
         if (!props.spot.is_available) return "border-gray-300 text-gray-300 cursor-not-allowed";
-        if (props.spot.booked_by_user) return "border-slate-500 text-slate-500";
+        if (props.spot.booked_by_user && parkingStore.reservationCountdown != 0) return "border-slate-500 text-slate-500";
         if(isSelected.value) return "border-blue-600 text-blue-600 hover:border-blue-600 cursor-pointer";
         return "border-lime-500 text-lime-500 hover:border-blue-400 hover:text-blue-400 cursor-pointer";
     });
@@ -64,7 +65,7 @@
         {{ spot.id }}
 
         <div 
-            v-if="props.spot.booked_by_user" 
+            v-if="props.spot.booked_by_user && parkingStore.reservationCountdown != 0" 
             class="absolute bottom-0 w-full text-center text-xs tracking-tighter leading-none p-2 text-slate-400"
         >
             You are here

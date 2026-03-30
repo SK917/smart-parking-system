@@ -79,7 +79,7 @@ class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
 
     def getReservations(self, request, context):
         print(f"[getReservations] Received Request With: Plate({request.plateNum}), Reservation ID({request.resID if request.HasField('resID') else 'all'})")
-        resReq = database_interface_pb2.GetResReq(request.plateNum, request.resID)
+        resReq = database_interface_pb2.GetResReq(plateNum=request.plateNum, resID=request.resID)
         reservations = DB_INTERFACE.getReservations(resReq).reservations
         reply = client_interface_pb2.ResGetResp(reservations=reservations)
         print(f"[getReservations] response: Plate({request.plateNum})")
