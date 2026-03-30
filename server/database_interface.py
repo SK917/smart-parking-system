@@ -21,12 +21,17 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         conn = sqlite3.connect(self.db_path)
         cur = conn.cursor()
 
-        # delete reservations that have expired (L + ratio)
+        # delete reservations that have expired
         now_string = request.datetime.replace("'", "''")
-        cur.execute(f"DELETE FROM reservations WHERE graceTime<='{now_string}' AND payment_status!='complete' AND spotID IN (SELECT spotID FROM spots WHERE occupied=false)")
-        expired_count = cur.rowcount
-        if expired_count > 0:
-            print(f"[getAvailableSpots] Users Have Missed The Arrival Window!\nRemoved {expired_count} Reservations.")
+        expired_rows = cur.execute(f"SELECT resID FROM reservations WHERE graceTime<='{now_string}' AND payment_status!='complete' AND spotID IN (SELECT spotID FROM spots WHERE occupied=false)").fetchall()
+        expired_reservation_ids = [row[0] for row in expired_rows]
+        if expired_reservation_ids:
+            placeholders = ",".join("?" for _ in expired_reservation_ids)
+            # technically this should trigger a refund but idk if we have time to implement this fully
+            # deleting them now so we maintain db consistency
+            cur.execute(f"DELETE FROM transactions WHERE resID IN ({placeholders})", expired_reservation_ids)
+            cur.execute(f"DELETE FROM reservations WHERE resID IN ({placeholders})", expired_reservation_ids)
+        print(f"[getAvailableSpots] {len(expired_reservation_ids)} Users Missed The Window. Deleting Their Reservation & Transaction")
         conn.commit()
 
         free_spots = cur.execute(f"SELECT * FROM spots WHERE lotID={request.lotID} AND occupied=false AND spotID NOT IN (SELECT spotID FROM reservations WHERE graceTime>'{now_string}' AND payment_status!='complete')").fetchall()
@@ -35,6 +40,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
 
         for nextSpot in free_spots:
             spotsDict["spots"].append({"spotID": nextSpot[0], "occupied": nextSpot[1], "lotID": nextSpot[2]})
+
         reply = database_interface_pb2.AvailableSpotsResp(availableSpots=json.dumps(spotsDict, indent=4))
         print(f"[getAvailableSpots] Remaining Spots: {len(spotsDict['spots'])}, Total Possible Spots: ({spotsDict['totalSpots']})")
         return reply
