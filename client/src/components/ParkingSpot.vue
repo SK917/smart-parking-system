@@ -31,8 +31,8 @@
     });
 
     const colourClasses = computed(() => {
-        if (props.spot.booked_by_user) return "border-slate-500 text-slate-500";
         if (!props.spot.is_available) return "border-gray-300 text-gray-300 cursor-not-allowed";
+        if (props.spot.booked_by_user) return "border-slate-500 text-slate-500";
         if(isSelected.value) return "border-blue-600 text-blue-600 hover:border-blue-600 cursor-pointer";
         return "border-lime-500 text-lime-500 hover:border-blue-400 hover:text-blue-400 cursor-pointer";
     });
