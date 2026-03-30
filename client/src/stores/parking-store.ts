@@ -110,8 +110,8 @@ export const useParkingStore = defineStore("parking", () => {
         try {
             const result = await makeReservation(lotId, spotId, plateNum, paymentInfo, datetime, duration, price);
             setReservationStatus(result);
+            reservationSearchStatus.value = false;
             if(result.success) {
-                reservationSearchStatus.value = false;
                 reservationArrived.value = false;
                 const targetSpot = spots.value.find(s => s.id === spotId);
                 if (targetSpot) {
@@ -133,8 +133,8 @@ export const useParkingStore = defineStore("parking", () => {
             const result = await getReservations(plateNum, reserveId);
             const parsed: ReservationSearchResponse = JSON.parse(result);
             setReservationResult(parsed);
+            reservationSearchStatus.value = true;
             if(parsed.reservations.length > 0 ) {
-                reservationSearchStatus.value = true;
                 reservationArrived.value = parsed.reservations[0]?.paymentStatus === "complete";
                 startCountdownPoll(plateNum, reserveId);
                 const targetSpot = spots.value.find(s => s.id === parsed.reservations[0]?.spotID );
@@ -143,9 +143,6 @@ export const useParkingStore = defineStore("parking", () => {
                 } else {
                     console.warn(`Spot #${parsed.reservations[0]?.spotID} not found.`);
                 }
-            }
-            else {
-                reservationSearchStatus.value = false;
             }
 
         } catch (error) {

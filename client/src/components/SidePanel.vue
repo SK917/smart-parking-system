@@ -137,7 +137,7 @@
             >
                 Submit
             </button>
-            <div v-if="parkingStore.reservationSearchStatus && (parkingStore.reservationCountdown != 0 || parkingStore.reservationArrived)">
+            <div v-if="parkingStore.reservationSearchStatus && (parkingStore.reservationSearchResult?.reservations?.length ?? 0) > 0 && (parkingStore.reservationCountdown != 0 || parkingStore.reservationArrived)">
                 <div class="text-md text-red-600 font-semibold">
                     Welcome back! You have a spot booked with license plate #{{ parkingStore.reservationSearchResult?.plateNum }}.
                 </div>
@@ -158,6 +158,14 @@
                 </div>
                 <div v-else class="text-lg text-lime-700 font-semibold">
                     You've arrived.
+                </div>
+            </div>
+            <div v-else-if="parkingStore.reservationSearchStatus && ((parkingStore.reservationSearchResult?.reservations?.length ?? 0) === 0 || parkingStore.reservationSearchResult?.reservations == null)">
+                <div class="text-md text-red-600 font-semibold">
+                    <p><b>Failed</b> to find a reservation with that License Plate and Reservation ID!</p>
+                    <br>
+                    <p><span class="text-sm text-gray-500">Your reservation may have expired or you may be searching with the wrong information.</span></p>
+                    <p><span class="text-sm font-bold text-gray-500">Please try again.</span></p>
                 </div>
             </div>
         </div>
