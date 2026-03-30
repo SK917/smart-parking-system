@@ -24,6 +24,8 @@ def main():
     parser.add_argument("--serial", type=int, required=True, help="sensor serial number")
     parser.add_argument("--occupied", action="store_true", help="change the spot to occupied")
     parser.add_argument("--free", action="store_true", help="change the spot to free")
+
+    # Adding this in case TA asks us to show a service dropping (We should use the IoT service as the example)
     parser.add_argument("--iotService", type=str, default="localhost:50053", help="target address for IoT service (default: localhost:50053)")
     args = parser.parse_args()
 

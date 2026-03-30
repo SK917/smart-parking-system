@@ -21,6 +21,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         conn = sqlite3.connect(self.db_path)
         cur = conn.cursor()
 
+        # delete reservations that have expired (L + ratio)
         now_string = request.datetime.replace("'", "''")
         cur.execute(f"DELETE FROM reservations WHERE endDateTime<='{now_string}' AND payment_status!='complete' AND spotID IN (SELECT spotID FROM spots WHERE occupied=false)")
         conn.commit()
@@ -116,6 +117,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         return database_interface_pb2.UpdateResResp(success=True, resID=saved_res_id)
 
     def getReservations(self, request, context):
+        # TODO: Gotta update this for the new search
         print(f"[getReservations] Received Request With: Plate({request.plateNum}), Reservation ID({request.resID if request.HasField('resID') else 'all'})")
         conn = sqlite3.connect(self.db_path)
         cur = conn.cursor()

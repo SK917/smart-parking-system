@@ -10,14 +10,14 @@ class pricingCalculator(pricing_calculator_pb2_grpc.Pricing_CalculatorServicer):
         print(f"[getPrice] Received Request With: lotID({request.lotID}), Remaining Spots({request.remainingSpots}), Total Spots({request.totalSpots}), Duration Min({request.duration}), Datetime({request.datetime})")
         # return the price for the selected number of 1-hour blocks
 
-        # Should technically never happen
+        # Should technically never happen but leaving it here lmao
         if request.duration <= 0:
             print("[getPrice] Invalid duration, must be greater than 0")
             return pricing_calculator_pb2.PriceResp(price=0)
 
         rate = BASERATE
 
-        # Peak hours are 9:00am to 5:00pm -- (Base Rate Is Doubled)
+        # Peak hours are 9:00am to 5:00pm -- (Base Rate Is Doubled For Rush Hour)
         hour = int(request.datetime.split(" ")[1].split(":")[0])
         if hour >= 9 and hour <= 17:
             rate = BASERATE * 2

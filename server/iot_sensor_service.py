@@ -14,6 +14,8 @@ class IoTSensorManager(iot_interface_pb2_grpc.IoT_InterfaceServicer):
         print(f"Received IoT update request from IoT{serial_number}. Occupancy: {occupied}")
 
         # If this is the first time handeling a sensor. Do not assume state until after first DB request is done.
+        # Basically the service will slowly build a cache of the sensor states to avoid making too many DB calls
+        # TODO: For the future this should probably pull the available spots as well and update its cache but -_(o_o)_-
         if serial_number not in self.sensors:
             self.sensors[serial_number] = {"occupied": None}
 
@@ -52,7 +54,7 @@ class IoTSensorManager(iot_interface_pb2_grpc.IoT_InterfaceServicer):
                 # Update the state only if the DB updates (saves a lot of headache)
                 sensor["occupied"] = occupied
 
-        print(f"Replying to IoT{serial_number} with:\nSuccess: {success}\nSerialNumber: {serial_number}\nstateChanged: {stateChanged}\nerror: '{error}'")
+        print(f"Replying to IoT{serial_number} with:\n\tSuccess: {success}\n\tSerialNumber: {serial_number}\n\tstateChanged: {stateChanged}\n\terror: '{error}'")
         return iot_interface_pb2.IoTAck(success=success, serialNumber=serial_number, stateChanged=stateChanged, error=error)
 
     def reportFree(self, request, context):
