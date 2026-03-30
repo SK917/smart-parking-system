@@ -7,13 +7,17 @@ from backend_defs import transaction_handler_pb2_grpc, transaction_handler_pb2
 BASERATE = 2
 class pricingCalculator(pricing_calculator_pb2_grpc.Pricing_CalculatorServicer):
     def getPrice(self, request, context):
+        print(f"[getPrice] Received Request With: lotID({request.lotID}), Remaining Spots({request.remainingSpots}), Total Spots({request.totalSpots}), Duration Min({request.duration}), Datetime({request.datetime})")
         # return the price for the selected number of 1-hour blocks
+
+        # Should technically never happen
         if request.duration <= 0:
+            print("[getPrice] Invalid duration, must be greater than 0")
             return pricing_calculator_pb2.PriceResp(price=0)
 
         rate = BASERATE
 
-        # peak hours are 9:00 to 17:59
+        # Peak hours are 9:00am to 5:00pm -- (Base Rate Is Doubled)
         hour = int(request.datetime.split(" ")[1].split(":")[0])
         if hour >= 9 and hour <= 17:
             rate = BASERATE * 2
@@ -25,6 +29,8 @@ class pricingCalculator(pricing_calculator_pb2_grpc.Pricing_CalculatorServicer):
 
         price = rate * availability_multiplier * (request.duration / 60)
         reply = pricing_calculator_pb2.PriceResp(price=price)
+
+        print(f"[getPrice] response: Price({price})")
 
         return reply
 

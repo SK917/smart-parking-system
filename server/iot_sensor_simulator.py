@@ -17,7 +17,7 @@ def send_message(stub, sensor_id, args):
     if response.success:
         print(f"IoT({response.serialNumber}) has been set to {change} successfully.")
     else:
-        print(f"Failed to set Serial({response.serialNumber}) to {change}. Error: {response.error}")
+        print(f"Failed to set IoT({response.serialNumber}) to {change}. Error: {response.error}")
 
 def main():
     parser = argparse.ArgumentParser(description="Simulate IoT parking sensor gRPC messages")

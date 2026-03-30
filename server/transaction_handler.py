@@ -10,6 +10,7 @@ DB_INTERFACE: database_interface_pb2_grpc.Database_InterfaceStub = None
 
 class transactionHandler(transaction_handler_pb2_grpc.Transaction_HandlerServicer):
     def makePayment(self, request, context):
+        print(f"[makePayment] Received Request With: Reservation ID({request.resID}), Plate Number({request.plateNum}), PaymentInfo({request.paymentInfo}), Value({request.val})")
         # simulate an actual payment
         # check database for info
         checkResReq = database_interface_pb2.GetResReq(plateNum=request.plateNum, resID=request.resID)
@@ -17,6 +18,7 @@ class transactionHandler(transaction_handler_pb2_grpc.Transaction_HandlerService
         if reservations["reservations"] and reservations["reservations"][0]["paymentStatus"] in ["paid", "complete"]:
             # already been paid, return an error.
             reply = transaction_handler_pb2.transResp(resID=request.resID, transID=None, plateNum=request.plateNum, success=False, errorCode="Error: Reservation already paid for")
+            print(f"[makePayment] rejected: Error({reply.errorCode})")
             return reply
 
         # send request to database interface to create new transaction entry
@@ -37,6 +39,11 @@ class transactionHandler(transaction_handler_pb2_grpc.Transaction_HandlerService
 
         # return with success/fail indicator and relevant transaction details
         reply = transaction_handler_pb2.transResp(resID=request.resID, transID=transCreateResp.transID, plateNum=request.plateNum, success=(transCreateResp.success and suc), errorCode=full_error)
+
+        if reply.success:
+            print(f"[makePayment] success: Reservation ID({reply.resID}), Transaction ID({reply.transID})")
+        else:
+            print(f"[makePayment] failed: Reservation ID({reply.resID}), Error({reply.errorCode})")
 
         return reply
 
