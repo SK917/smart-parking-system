@@ -23,7 +23,7 @@ class transactionHandler(transaction_handler_pb2_grpc.Transaction_HandlerService
 
         # send request to database interface to create new transaction entry
         errCode = ""
-        if request.paymentInfo == "American Express":
+        if request.paymentInfo.strip().lower() in ["american express", "amex"]:
             suc = False
             errCode = "Error: American Express not accepted"
         else:

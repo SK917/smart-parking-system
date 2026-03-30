@@ -4,11 +4,12 @@
     import ReservationPopup from './ReservationPopup.vue';
 
     const reservePlateNum = ref('');
+    const paymentMethod = ref('visa');
     const parkingStore = useParkingStore();
     const showPopup = ref(false);
 
     const handleSubmit = () => {
-        parkingStore.reserveSpot(parkingStore.selectedSpot?.id ?? 0, 1, reservePlateNum.value, "Paid", formatDateTime(new Date()), parkingStore.duration, parkingStore.currentPrice);
+        parkingStore.reserveSpot(parkingStore.selectedSpot?.id ?? 0, 1, reservePlateNum.value, paymentMethod.value, formatDateTime(new Date()), parkingStore.duration, parkingStore.currentPrice);
         showPopup.value = true;
     };
 
@@ -19,7 +20,7 @@
     };
 
     const isFormInvalid = computed(() => {
-        return reservePlateNum.value.trim() === '' || parkingStore.selectedSpot === undefined;
+        return reservePlateNum.value.trim() === '' || paymentMethod.value.trim() === '' || parkingStore.selectedSpot === undefined;
     });
 
     const formattedPrice = computed(() => {
@@ -44,6 +45,15 @@
             class="border bg-gray-100 outline-0 border-gray-700 p-1 rounded-md focus:outline-red-500 focus:outline-2 hover:outline-red-300 hover:outline-2"
             placeholder="License Plate"
         />
+        <select
+            v-model="paymentMethod"
+            class="border bg-gray-100 outline-0 border-gray-700 p-1 rounded-md focus:outline-red-500 focus:outline-2 hover:outline-red-300 hover:outline-2"
+        >
+            <option value="visa">visa</option>
+            <option value="mastercard">mastercard</option>
+            <option value="amex">amex</option>
+            <option value="discover">discover</option>
+        </select>
         <div class="font-md">
             <div class="text-xs text-gray-500">
                 <p>Click on a parking spot from the map to select it.</p>
