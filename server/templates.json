@@ -12,14 +12,15 @@
         "spotID": 2,
         "startDateTime": "YYYY-MM-DD HH:MM:SS",
         "endDateTime": "YYYY-MM-DD HH:MM:SS",
-        "duration": 180,
-        "total payment": 15.00,
-        "payment status": "pending"
+        "graceTime": "YYYY-MM-DD HH:MM:SS",
+        "duration_min": 180,
+        "totalPayment": 15.00,
+        "payment_status": "pending"
     },
     "transactionFormat": {
-        "transID": 1,
+        "transactionID": 1,
         "value": 15.00,
-        "plateNum": "ABC 123",
+        "plate_number": "ABC 123",
         "resID": 1,
         "success": false,
         "method": "MasterCard"
@@ -51,9 +52,11 @@
                 "spotID": 2,
                 "startDateTime": "YYYY-MM-DD HH:MM:SS",
                 "endDateTime": "YYYY-MM-DD HH:MM:SS",
+                "graceTime": "YYYY-MM-DD HH:MM:SS",
                 "duration": 120,
                 "totalPayment": 12.00,
-                "paymentStatus": "paid"
+                "paymentStatus": "paid",
+                "timeRemainingSeconds": 75
             },
             {
                 "resID": 2,
@@ -62,9 +65,11 @@
                 "spotID": 3,
                 "startDateTime": "YYYY-MM-DD HH:MM:SS",
                 "endDateTime": "YYYY-MM-DD HH:MM:SS",
+                "graceTime": "YYYY-MM-DD HH:MM:SS",
                 "duration": 180,
                 "totalPayment": 15.00,
-                "paymentStatus": "pending"
+                "paymentStatus": "pending",
+                "timeRemainingSeconds": 30
             }
         ]
     },
@@ -85,11 +90,9 @@
         ]
     },
     "dbTransactionGetRespFormat": {
-        "plateNum": "ABC 123",
-        "resID": null,
         "transactions": [
             {
-                "transID": 1,
+                "transactionID": 1,
                 "value": 12.00,
                 "plateNum": "ABC 123",
                 "resID": 1,
@@ -97,7 +100,7 @@
                 "method": "MasterCard"
             },
             {
-                "transID": 2,
+                "transactionID": 2,
                 "value": 12.00,
                 "plateNum": "ABC 123",
                 "resID": 1,
@@ -116,9 +119,11 @@
                 "spotID": 2,
                 "startDateTime": "YYYY-MM-DD HH:MM:SS",
                 "endDateTime": "YYYY-MM-DD HH:MM:SS",
+                "graceTime": "YYYY-MM-DD HH:MM:SS",
                 "duration": 120,
                 "totalPayment": 12.00,
-                "paymentStatus": "paid"
+                "paymentStatus": "paid",
+                "timeRemainingSeconds": 75
             },
             {
                 "resID": 2,
@@ -127,9 +132,11 @@
                 "spotID": 3,
                 "startDateTime": "YYYY-MM-DD HH:MM:SS",
                 "endDateTime": "YYYY-MM-DD HH:MM:SS",
+                "graceTime": "YYYY-MM-DD HH:MM:SS",
                 "duration": 180,
                 "totalPayment": 15.00,
-                "paymentStatus": "pending"
+                "paymentStatus": "pending",
+                "timeRemainingSeconds": 30
             }
         ]
     }

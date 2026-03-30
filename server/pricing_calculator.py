@@ -30,7 +30,7 @@ class pricingCalculator(pricing_calculator_pb2_grpc.Pricing_CalculatorServicer):
         price = rate * availability_multiplier * (request.duration / 60)
         reply = pricing_calculator_pb2.PriceResp(price=price)
 
-        print(f"[getPrice] response: Price({price})")
+        print(f"[getPrice] Returning Price({price})")
 
         return reply
 

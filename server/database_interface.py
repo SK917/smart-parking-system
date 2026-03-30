@@ -26,7 +26,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         cur.execute(f"DELETE FROM reservations WHERE graceTime<='{now_string}' AND payment_status!='complete' AND spotID IN (SELECT spotID FROM spots WHERE occupied=false)")
         expired_count = cur.rowcount
         if expired_count > 0:
-            print(f"[getAvailableSpots] auto-delete: Removed({expired_count}) reservation(s) for missed arrival window")
+            print(f"[getAvailableSpots] Users Have Missed The Arrival Window!\nRemoved {expired_count} Reservations.")
         conn.commit()
 
         free_spots = cur.execute(f"SELECT * FROM spots WHERE lotID={request.lotID} AND occupied=false AND spotID NOT IN (SELECT spotID FROM reservations WHERE graceTime>'{now_string}' AND payment_status!='complete')").fetchall()
@@ -36,7 +36,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         for nextSpot in free_spots:
             spotsDict["spots"].append({"spotID": nextSpot[0], "occupied": nextSpot[1], "lotID": nextSpot[2]})
         reply = database_interface_pb2.AvailableSpotsResp(availableSpots=json.dumps(spotsDict, indent=4))
-        print(f"[getAvailableSpots] response: Remaining({len(spotsDict['spots'])}), Total({spotsDict['totalSpots']})")
+        print(f"[getAvailableSpots] Remaining Spots: {len(spotsDict['spots'])}, Total Possible Spots: ({spotsDict['totalSpots']})")
         return reply
 
     def updateReservations(self, request, context):
@@ -46,20 +46,15 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         cur = conn.cursor()
 
         # handle delete request
+        # I don't think this is actually being used atm
         if request.delete:
             cur.execute(f"DELETE FROM reservations WHERE resID={request.resID}")
-            print(f"[updateReservations] delete: Reservation ID({request.resID})")
+            print(f"[updateReservations] Deleting Reservation ID({request.resID})")
 
             conn.commit()
             conn.close()
 
             return database_interface_pb2.UpdateResResp(success=True, resID=request.resID)
-
-        now_string = request.datetime.replace("'", "''")
-        cur.execute(f"DELETE FROM reservations WHERE graceTime<='{now_string}' AND payment_status!='complete' AND spotID IN (SELECT spotID FROM spots WHERE occupied=false)")
-        expired_count = cur.rowcount
-        if expired_count > 0:
-            print(f"[updateReservations] auto-delete: Removed({expired_count}) reservation(s) for missed arrival window")
 
         start_dt = datetime.datetime.strptime(request.datetime, "%Y-%m-%d %H:%M:%S")
         duration_minutes = request.duration * 60
@@ -85,7 +80,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
                 cur.execute(f"UPDATE reservations SET plateNum='{plate}', lotID={request.lotID}, spotID={request.spotID}, startDateTime='{sdt}', endDateTime='{edt}', graceTime='{gpt}', duration_min={duration_minutes} WHERE resID={request.resID}")
 
             saved_res_id = request.resID
-            print(f"[updateReservations] updated: Reservation ID({saved_res_id}), End Datetime({endDateTime})")
+            print(f"[updateReservations] Modified Reservation ID({saved_res_id})")
 
         else:
             # INSERT
@@ -101,16 +96,16 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
             else:
                 cur.execute(f"INSERT INTO reservations (plateNum, lotID, spotID, startDateTime, endDateTime, graceTime, duration_min, totalPayment, payment_status) VALUES ('{plate}', {request.lotID}, {request.spotID}, '{sdt}', '{edt}', '{gpt}', {duration_minutes}, {price}, 'pending')")
                 saved_res_id = cur.lastrowid
-            print(f"[updateReservations] inserted: Reservation ID({saved_res_id}), End Datetime({endDateTime}), Price({price})")
+            print(f"[updateReservations] Added Reservation ID({saved_res_id}), End Datetime({endDateTime}), Price({price}), Grace Time({grace_time})")
 
         conn.commit()
         conn.close()
 
-        print(f"[updateReservations] response: Success(True), Reservation ID({saved_res_id})")
+        print(f"[updateReservations] Returning Successful Reservation For Reservation ID({saved_res_id})")
         return database_interface_pb2.UpdateResResp(success=True, resID=saved_res_id)
 
     def getReservations(self, request, context):
-        print(f"[getReservations] Received Request With: Plate({request.plateNum}), Reservation ID({request.resID if request.HasField('resID') else 'all'})")
+        print(f"[getReservations] Received Request With: Plate({request.plateNum}), Reservation ID({request.resID})")
         conn = sqlite3.connect(self.db_path)
         cur = conn.cursor()
         # gets reservations made under the platnumber
@@ -134,7 +129,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
             resDict["reservations"].append({"resID": nextRes[0], "plateNum": nextRes[1], "lotID": nextRes[2], "spotID": nextRes[3], "startDateTime": nextRes[4], "endDateTime": nextRes[5], "graceTime": nextRes[6], "duration": nextRes[7], "totalPayment": nextRes[8], "paymentStatus": nextRes[9], "timeRemainingSeconds": timeRemainingSeconds})
             nextRes = reservations.fetchone()
         reply = database_interface_pb2.GetResResp(reservations=json.dumps(resDict, indent=4))
-        print(f"[getReservations] response: Count({len(resDict['reservations'])})")
+        print(f"[getReservations] Returning Reservations: ({resDict['reservations']})")
         return reply
 
     def createTransaction(self, request, context):
@@ -160,11 +155,11 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         conn.commit()
         conn.close()
 
-        print(f"[createTransaction] response: Transaction ID({trans_id}), Success(True)")
+        print(f"[createTransaction] Returning Transaction ID({trans_id}), Success(True)")
         return database_interface_pb2.TransCreateResp(transID=trans_id, success=True)
 
     def getTransactions(self, request, context):
-        print(f"[getTransactions] Received Request With: Plate({request.plateNum if request.plateNum else 'none'}), Reservation ID({request.resID if request.resID != None else 'none'})")
+        print(f"[getTransactions] Received Request With: Plate({request.plateNum}), Reservation ID({request.resID})")
         # check which entries are filled in the request
         # If the user ID is filled, return all transactions made by the user
         # If the resID is filled, return the transactions associated with that reservation
@@ -201,7 +196,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
 
         reply = database_interface_pb2.TransGetResp(transactions=json.dumps(transDict, indent=4))
 
-        print(f"[getTransactions] response: Count({len(transDict['transactions'])})")
+        print(f"[getTransactions] Returning ({len(transDict['transactions'])} Transactions)")
 
         return reply
 
@@ -211,7 +206,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
 
         sensor_col = "sensorID"
 
-        print(f"Received updateSpotOccupancy request from IoT({request.iotID}) setting occupancy to {request.occupied}")
+        print(f"[updateSpotOccupancy] Received request from IoT({request.iotID}) setting occupancy to {request.occupied}")
 
         row = cur.execute(f"SELECT spotID, lotID, occupied FROM spots WHERE {sensor_col}={request.iotID}").fetchone()
 
@@ -239,9 +234,9 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         # For debug purposes I added this print that reads back the data
         try:
             row = cur.execute(f"SELECT * FROM spots WHERE {sensor_col}={request.iotID}").fetchone()
-            print(f"Updated spot occupancy in database. Current state for IoT({request.iotID}): {row}")
+            print(f"[updateSpotOccupancy] Updated spot occupancy in database. Current state for IoT({request.iotID}): {row}")
         except Exception as e:
-            print(f"Error fetching updated spot occupancy for IoT({request.iotID}): {e}")
+            print(f"[updateSpotOccupancy] Error fetching updated spot occupancy for IoT({request.iotID}): {e}")
 
         conn.close()
 

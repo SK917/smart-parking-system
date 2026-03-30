@@ -28,6 +28,8 @@ class transactionHandler(transaction_handler_pb2_grpc.Transaction_HandlerService
             errCode = "Error: American Express not accepted"
         else:
             suc = True
+
+        # make a transaction once reservation is submitted
         transCreateReq = database_interface_pb2.TransCreateReq(resID=request.resID, plateNum=request.plateNum, paymentMethod=request.paymentInfo, val=request.val, success=suc)
         transCreateResp = DB_INTERFACE.createTransaction(transCreateReq)
         db_error = transCreateResp.errorCode if transCreateResp.errorCode else ""
@@ -41,9 +43,9 @@ class transactionHandler(transaction_handler_pb2_grpc.Transaction_HandlerService
         reply = transaction_handler_pb2.transResp(resID=request.resID, transID=transCreateResp.transID, plateNum=request.plateNum, success=(transCreateResp.success and suc), errorCode=full_error)
 
         if reply.success:
-            print(f"[makePayment] success: Reservation ID({reply.resID}), Transaction ID({reply.transID})")
+            print(f"[makePayment] Successfully Processed Reservation ID({reply.resID}), Transaction ID({reply.transID})")
         else:
-            print(f"[makePayment] failed: Reservation ID({reply.resID}), Error({reply.errorCode})")
+            print(f"[makePayment] Failure With Payment On Reservation ID({reply.resID}), Error({reply.errorCode})")
 
         return reply
 
