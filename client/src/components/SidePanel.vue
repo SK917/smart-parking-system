@@ -59,7 +59,8 @@
             
         <div class="flex flex-col p-4 gap-4">
             <div class="text-md text-red-600 font-semibold">
-                <p>The price represents the number of 1-hour blocks below.</p>
+                <p>The price represents the number of hours you would stay.</p>
+                <p>Select the duration below:</p>
             </div>
             <div class="flex flex-row gap-2 items-end">
                 <div class="relative flex items-center bg-gray-200 border border-gray-700 rounded-sm min-h-9 group w-20 outline-2 outline-transparent
@@ -88,7 +89,7 @@
                     </div>
                 </div>
                 <div class="text-md text-gray-700 font-semibold">
-                    hour blocks
+                    hour(s)
                 </div>
             </div>
             <div class="text-md text-red-600 font-semibold pt-4">

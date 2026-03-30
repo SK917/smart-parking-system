@@ -26,7 +26,7 @@
                 </span>
             </div>
             <div class="text-md text-gray-400">
-                for <span class="text-gray-600 font-bold">{{ parkingStore.duration }}</span> hour blocks
+                for <span class="text-gray-600 font-bold">{{ parkingStore.duration }}</span> hour(s)
             </div>
             
         </div>

@@ -52,7 +52,7 @@
                 Selected Spot: <span class="font-bold">{{ parkingStore.selectedSpot?.id ?? 'None' }}</span>
             </div>
             <div class="pt-2">
-                Selected Stay: <span class="font-bold">{{ parkingStore.duration }}</span> hour blocks
+                Selected Stay: <span class="font-bold">{{ parkingStore.duration }}</span> hour(s)
             </div>
             <div class="pt-2">
                 Current price: $<span class="font-bold">{{ formattedPrice }}</span>
