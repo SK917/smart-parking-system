@@ -34,6 +34,7 @@ export interface Reservation {
     duration: number
     totalPayment: number
     paymentStatus: "paid"
+    timeRemainingSeconds: number
 }
 
 export interface ReservationSearchResponse {

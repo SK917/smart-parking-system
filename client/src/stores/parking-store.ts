@@ -12,7 +12,9 @@ export const useParkingStore = defineStore("parking", () => {
     const spots = ref<ParkingSpot[]>([]);
     const selectedSpot = ref<ParkingSpot>();
     const loading = ref(false);
+    const reservationCountdown = ref(0);
     let pollingInterval: ReturnType<typeof setInterval> | null = null;
+    let countdownInterval: ReturnType<typeof setInterval> | null = null;
 
     // Called once upon first load to load map onto the UI
     async function loadSpots() {
@@ -149,6 +151,38 @@ export const useParkingStore = defineStore("parking", () => {
         }
     }
 
+    async function startCountdownPoll(plateNum: string, resID: number) {
+        countdownInterval = setInterval(async () => {
+            try {
+                const result = await getReservations(plateNum, resID);
+                const parsed: ReservationSearchResponse = JSON.parse(result);
+
+                if (parsed.reservations.length > 0) {
+                    const res = parsed.reservations[0];
+                    const timeLeft = res.timeRemainingSeconds;
+
+                    if (timeLeft <= 0) {
+                        clearInterval(countdownInterval);
+                        countdownInterval = null;
+                        reservationCountdown.value = 0;
+                    } else {
+                        reservationCountdown.value = timeLeft;
+                    }
+                }
+            } catch (error) {
+                console.error("Failed to poll countdown: ", error);
+            }
+        }, 1000);
+    }
+
+    function stopCountdownPoll() {
+        if (countdownInterval) {
+            clearInterval(countdownInterval);
+            countdownInterval = null;
+        }
+        reservationCountdown.value = 0;
+    }
+
     return {
         currentPrice,
         spots,
@@ -168,5 +202,8 @@ export const useParkingStore = defineStore("parking", () => {
         clearUserBookingData,
         reserveSpot,
         lookUpReservation,
+        reservationCountdown,
+        startCountdownPoll,
+        stopCountdownPoll,
     };
 });

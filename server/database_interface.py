@@ -117,7 +117,6 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
         return database_interface_pb2.UpdateResResp(success=True, resID=saved_res_id)
 
     def getReservations(self, request, context):
-        # TODO: Gotta update this for the new search
         print(f"[getReservations] Received Request With: Plate({request.plateNum}), Reservation ID({request.resID if request.HasField('resID') else 'all'})")
         conn = sqlite3.connect(self.db_path)
         cur = conn.cursor()
@@ -130,10 +129,16 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
             reservations = cur.execute(f"SELECT * FROM reservations WHERE plateNum='{plate}'")
 
         resDict = {"plateNum": request.plateNum, "reservations": []}
+        now = datetime.datetime.now()
 
         nextRes = reservations.fetchone()
         while nextRes != None:
-            resDict["reservations"].append({"resID": nextRes[0], "plateNum": nextRes[1], "lotID": nextRes[2], "spotID": nextRes[3], "startDateTime": nextRes[4], "endDateTime": nextRes[5], "duration": nextRes[6], "totalPayment": nextRes[7], "paymentStatus": nextRes[8]})
+            endDateTime_str = nextRes[5]
+            endDateTime = datetime.datetime.strptime(endDateTime_str, "%Y-%m-%d %H:%M:%S")
+            timeRemaining = endDateTime - now
+            timeRemainingSeconds = int(timeRemaining.total_seconds())
+
+            resDict["reservations"].append({"resID": nextRes[0], "plateNum": nextRes[1], "lotID": nextRes[2], "spotID": nextRes[3], "startDateTime": nextRes[4], "endDateTime": nextRes[5], "duration": nextRes[6], "totalPayment": nextRes[7], "paymentStatus": nextRes[8], "timeRemainingSeconds": timeRemainingSeconds})
             nextRes = reservations.fetchone()
         reply = database_interface_pb2.GetResResp(reservations=json.dumps(resDict, indent=4))
         print(f"[getReservations] response: Count({len(resDict['reservations'])})")
