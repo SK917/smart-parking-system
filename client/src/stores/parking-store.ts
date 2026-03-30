@@ -13,6 +13,7 @@ export const useParkingStore = defineStore("parking", () => {
     const selectedSpot = ref<ParkingSpot>();
     const loading = ref(false);
     const reservationCountdown = ref(0);
+    const reservationArrived = ref(false);
     let pollingInterval: ReturnType<typeof setInterval> | null = null;
     let countdownInterval: ReturnType<typeof setInterval> | null = null;
 
@@ -93,6 +94,7 @@ export const useParkingStore = defineStore("parking", () => {
         spots.value.forEach(spot => {
             spot.booked_by_user = false;
         });
+        reservationArrived.value = false;
     }
 
     function selectParkingSpot(spotId: number) {
@@ -110,6 +112,7 @@ export const useParkingStore = defineStore("parking", () => {
             setReservationStatus(result);
             if(result.success) {
                 reservationSearchStatus.value = false;
+                reservationArrived.value = false;
                 const targetSpot = spots.value.find(s => s.id === spotId);
                 if (targetSpot) {
                     targetSpot.booked_by_user = true;
@@ -132,6 +135,7 @@ export const useParkingStore = defineStore("parking", () => {
             setReservationResult(parsed);
             if(parsed.reservations.length > 0 ) {
                 reservationSearchStatus.value = true;
+                reservationArrived.value = parsed.reservations[0]?.paymentStatus === "complete";
                 startCountdownPoll(plateNum, reserveId);
                 const targetSpot = spots.value.find(s => s.id === parsed.reservations[0]?.spotID );
                 if (targetSpot) {
@@ -158,8 +162,17 @@ export const useParkingStore = defineStore("parking", () => {
                     const res = parsed.reservations[0];
                     const timeLeft = res?.timeRemainingSeconds;
 
+                    if (res?.paymentStatus === "complete") {
+                        reservationArrived.value = true;
+                        reservationCountdown.value = 0;
+                        clearInterval(countdownInterval ?? 0);
+                        countdownInterval = null;
+                        return;
+                    }
+
                     if (timeLeft !== undefined && timeLeft <= 0) {
                         reservationSearchStatus.value = false;
+                        reservationArrived.value = false;
                         clearUserBookingData();
                         clearInterval(countdownInterval ?? 0);
                         countdownInterval = null;
@@ -180,6 +193,7 @@ export const useParkingStore = defineStore("parking", () => {
             countdownInterval = null;
         }
         reservationCountdown.value = 0;
+        reservationArrived.value = false;
     }
 
     return {
@@ -202,6 +216,7 @@ export const useParkingStore = defineStore("parking", () => {
         reserveSpot,
         lookUpReservation,
         reservationCountdown,
+        reservationArrived,
         startCountdownPoll,
         stopCountdownPoll,
     };

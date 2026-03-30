@@ -45,7 +45,7 @@
 </script>
 
 <template>
-    <div class="bg-gray-200 font-chakra flex flex-col gap-15 h-screen overflow-y-auto side-scroll">
+    <div class="bg-gray-200 font-chakra flex flex-col gap-4 h-screen overflow-y-auto side-scroll">
         <div>
             <div class="text-md pr-4 pl-4 pt-4 pb-2 text-red-600 font-semibold">
                 Welcome to
@@ -56,7 +56,7 @@
             <div class="w-full h-1 bg-gray-500">
             </div>
         </div>
-            
+
         <div class="flex flex-col p-4 gap-4">
             <div class="text-md text-red-600 font-semibold">
                 <p>The price represents the number of hours you would stay.</p>
@@ -137,24 +137,27 @@
             >
                 Submit
             </button>
-            <div v-if="parkingStore.reservationSearchStatus && parkingStore.reservationCountdown != 0">
+            <div v-if="parkingStore.reservationSearchStatus && (parkingStore.reservationCountdown != 0 || parkingStore.reservationArrived)">
                 <div class="text-md text-red-600 font-semibold">
                     Welcome back! You have a spot booked with license plate #{{ parkingStore.reservationSearchResult?.plateNum }}.
                 </div>
                 <div class="text-xs text-gray-500">
                     <p>Your reservation details are below.</p>
                 </div>
-                <div class="text=lg text-gray-700 pt-2">
+                <div class="text-lg text-gray-700 pt-2">
                     Spot Number: <span class="font-bold">{{ parkingStore.reservationSearchResult?.reservations[0]?.spotID }}</span>
                 </div>
-                <div class="text=lg text-gray-700">
+                <div class="text-lg text-gray-700">
                     Price Paid: $<span class="font-bold">{{ parkingStore.reservationSearchResult?.reservations[0]?.totalPayment?.toFixed(2) }}</span>
                 </div>
-                <div class="text=lg text-gray-700">
+                <div class="text-lg text-gray-700">
                     Reservation Made For: <span class="font-bold">{{ parkingStore.reservationSearchResult?.reservations[0]?.startDateTime }}</span>
                 </div>
-                <div class="text=lg text-red-600">
+                <div v-if="!parkingStore.reservationArrived" class="text-lg text-red-600">
                     You have: <span class="font-bold">{{ parkingStore.reservationCountdown }}</span> seconds to reach your spot.
+                </div>
+                <div v-else class="text-lg text-lime-700 font-semibold">
+                    You've arrived.
                 </div>
             </div>
         </div>
@@ -174,7 +177,7 @@
     .side-scroll::-webkit-scrollbar-thumb {
         background-color: #9ca3af; /* gray-400 */
         border-radius: 6px;
-        border: 2px solid #d1d5db; 
+        border: 2px solid #d1d5db;
     }
 
     .side-scroll::-webkit-scrollbar-thumb:hover {

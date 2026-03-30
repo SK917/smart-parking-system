@@ -33,7 +33,7 @@ export interface Reservation {
     endDateTime: string
     duration: number
     totalPayment: number
-    paymentStatus: "paid"
+    paymentStatus: "pending" | "paid" | "complete"
     timeRemainingSeconds: number
 }
 

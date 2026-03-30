@@ -48,14 +48,15 @@ class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
         resGetReq = database_interface_pb2.GetResReq(plateNum=request.plateNum)
         reservations = json.loads(DB_INTERFACE.getReservations(resGetReq).reservations)
         for r in reservations["reservations"]:
-            if r["paymentStatus"] != "complete" and r["endDateTime"] > now_string:
+            expires_at = r.get("graceTime", r.get("endDateTime", ""))
+            if r["paymentStatus"] != "complete" and expires_at > now_string:
                 error = "Error: User already has reservation today"
                 print(f"[makeReservation] rejected: Error({error})")
                 reply = client_interface_pb2.ResResp(success=False, errorCode=error)
                 return reply
 
         # make request to database to enter a new reservation entry or update existing entry for the requested spot
-        resMakeReq = database_interface_pb2.UpdateResReq(lotID=request.lotID, spotID=request.spotID, plateNum=request.plateNum, datetime=now_string, duration=2, price=request.price)
+        resMakeReq = database_interface_pb2.UpdateResReq(lotID=request.lotID, spotID=request.spotID, plateNum=request.plateNum, datetime=now_string, duration=request.duration, price=request.price)
         resResp = DB_INTERFACE.updateReservations(resMakeReq)
 
         if not resResp.success:
