@@ -4,7 +4,7 @@ from backend_defs import client_interface_pb2_grpc, client_interface_pb2
 from backend_defs import database_interface_pb2_grpc, database_interface_pb2
 from backend_defs import pricing_calculator_pb2_grpc, pricing_calculator_pb2
 from backend_defs import transaction_handler_pb2_grpc, transaction_handler_pb2
-BASERATE = 2
+BASERATE = 6
 class pricingCalculator(pricing_calculator_pb2_grpc.Pricing_CalculatorServicer):
     def getPrice(self, request, context):
         print(f"[getPrice] Received Request With: lotID({request.lotID}), Remaining Spots({request.remainingSpots}), Total Spots({request.totalSpots}), Duration Min({request.duration}), Datetime({request.datetime})")
