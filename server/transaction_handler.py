@@ -10,7 +10,7 @@ DB_INTERFACE: database_interface_pb2_grpc.Database_InterfaceStub = None
 
 class transactionHandler(transaction_handler_pb2_grpc.Transaction_HandlerServicer):
     def makePayment(self, request, context):
-        print(f"[makePayment] Received Request With: Reservation ID({request.resID}), Plate Number({request.plateNum}), PaymentInfo({request.paymentInfo}), Value({request.val})")
+        print(f"[makePayment] Received Request With: Reservation ID({request.resID}), Plate Number({request.plateNum}), PaymentInfo({request.paymentInfo}), Value({round(request.val, 2)})")
         # simulate an actual payment
         # check database for info
         checkResReq = database_interface_pb2.GetResReq(plateNum=request.plateNum, resID=request.resID)

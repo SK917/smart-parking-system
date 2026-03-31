@@ -41,7 +41,7 @@ class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
         return availableSpots
 
     def makeReservation(self, request, context):
-        print(f"[makeReservation] Forwarding Reservation Creation Request With: lotID({request.lotID}), spotID({request.spotID}), Plate Number({request.plateNum}), Hour Blocks({request.duration}), Price({request.price})")
+        print(f"[makeReservation] Forwarding Reservation Creation Request With: lotID({request.lotID}), spotID({request.spotID}), Plate Number({request.plateNum}), Hour Blocks({request.duration}), Price({round(request.price, 2)}), Payment Info({request.paymentInfo})")
         now_string = request.datetime
 
         # make a request to the database to check if the user already has a reservation
