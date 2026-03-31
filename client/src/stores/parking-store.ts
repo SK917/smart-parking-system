@@ -105,6 +105,7 @@ export const useParkingStore = defineStore("parking", () => {
         selectedSpot.value = undefined;
     }
 
+    // Make reservation
     async function reserveSpot(spotId: number, lotId: number, plateNum: string, paymentInfo: string, datetime: string, duration: number, price: number) {
         clearUserBookingData();
         try {
@@ -127,6 +128,7 @@ export const useParkingStore = defineStore("parking", () => {
         
     }
 
+    // Reservation lookup
     async function lookUpReservation(reserveId: number, plateNum: string) {
         clearUserBookingData();
         try {
@@ -150,6 +152,7 @@ export const useParkingStore = defineStore("parking", () => {
         }
     }
 
+    // Reservation countdown for UI purposes
     async function startCountdownPoll(plateNum: string, resID: number) {
         countdownInterval = setInterval(async () => {
             try {

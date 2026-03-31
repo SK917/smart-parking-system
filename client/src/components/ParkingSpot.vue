@@ -45,6 +45,7 @@
         }
     );
 
+    // select / deselect a spot
     const selectSpot = () => {
         if (isSelected.value) {
             parkingStore.clearSelectedSpot();

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-    import { onMounted } from "vue";
     import { useParkingStore } from "@/stores/parking-store";
     import ParkingSpot from "./ParkingSpot.vue";
 
