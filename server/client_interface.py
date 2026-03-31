@@ -14,7 +14,7 @@ PRICE_CALC = None
 
 class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
     def getAvailablespots(self, request, context):
-        print(f"[getAvailablespots] Received Request With: lotID({request.lotID}), Hour Blocks({request.duration})")
+        print(f"[getAvailablespots] Forwarding Availabile Spot Request With: lotID({request.lotID}), Hour Blocks({request.duration})")
         now_string = datetime.datetime.now().strftime("%Y-%m-%d %H:%M:%S")
 
         # make request to database for open spots with no reservation
@@ -37,11 +37,11 @@ class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
 
         # return spots with their prices
         availableSpots = client_interface_pb2.AvailablespotResp(availablespots=json.dumps(spots_dict, indent=4))
-        print(f"[getAvailablespots] response: Remaining({remainingSpots}), Total({totalSpots}), Price({spots_dict['price']})")
+        print(f"[getAvailablespots] Got Remaining Spots Resonse With Remaining({remainingSpots}), Total({totalSpots}), Price({round(spots_dict['price'], 2)})")
         return availableSpots
 
     def makeReservation(self, request, context):
-        print(f"[makeReservation] Received Request With: lotID({request.lotID}), spotID({request.spotID}), Plate Number({request.plateNum}), Hour Blocks({request.duration}), Price({request.price})")
+        print(f"[makeReservation] Forwarding Reservation Creation Request With: lotID({request.lotID}), spotID({request.spotID}), Plate Number({request.plateNum}), Hour Blocks({request.duration}), Price({request.price})")
         now_string = request.datetime
 
         # make a request to the database to check if the user already has a reservation
@@ -51,7 +51,6 @@ class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
             expires_at = r.get("graceTime", r.get("endDateTime", ""))
             if r["paymentStatus"] != "complete" and expires_at > now_string:
                 error = "Error: User already has reservation today"
-                print(f"[makeReservation] rejected: Error({error})")
                 reply = client_interface_pb2.ResResp(success=False, errorCode=error)
                 return reply
 
@@ -60,7 +59,7 @@ class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
         resResp = DB_INTERFACE.updateReservations(resMakeReq)
 
         if not resResp.success:
-            print(f"[makeReservation] db error: Error Code({resResp.errorCode})")
+            print(f"[makeReservation] Database Error Code({resResp.errorCode})")
             return client_interface_pb2.ResResp(success=False, errorCode=resResp.errorCode)
 
         # make request to transaction handler to process transaction
@@ -70,29 +69,28 @@ class clientInterface(client_interface_pb2_grpc.Client_InterfaceServicer):
         # return whether or not the reservation was successful
         if transResp.success:
             reply = client_interface_pb2.ResResp(success=True, resID=resResp.resID)
-            print(f"[makeReservation] success: Reservation ID({resResp.resID})")
+            print(f"[makeReservation] Got Reply That Reservation Was Successfully Made Reservation With ID({resResp.resID})")
         else:
             DB_INTERFACE.updateReservations(database_interface_pb2.UpdateResReq(resID=resResp.resID, delete=True))
             reply = client_interface_pb2.ResResp(success=False, resID=resResp.resID, errorCode=transResp.errorCode)
-            print(f"[makeReservation] payment failed: Reservation ID({resResp.resID}), Error({transResp.errorCode})")
+            print(f"[makeReservation] Got Reply That Reservation Failed To Be Made: Error({transResp.errorCode})")
 
         return reply
 
     def getReservations(self, request, context):
-        print(f"[getReservations] Received Request With: Plate({request.plateNum}), Reservation ID({request.resID if request.HasField('resID') else 'all'})")
+        print(f"[getReservationsCI] Forwarding Request With: Plate({request.plateNum}), Reservation ID({request.resID if request.HasField('resID') else 'all'})")
         resReq = database_interface_pb2.GetResReq(plateNum=request.plateNum, resID=request.resID)
         reservations = DB_INTERFACE.getReservations(resReq).reservations
         reply = client_interface_pb2.ResGetResp(reservations=reservations)
-        print(f"[getReservations] response: Plate({request.plateNum})")
+        print(f"[getReservationsCI] Got Reply With Reservations: {reservations}")
 
         return reply
 
+    # Is this still being used?
     def editRes(self, request, context):
-        print(f"[editRes] Received Request With: Reservation ID({request.resID}), Cancel({request.cancel}), Duration({request.duration if request.HasField('duration') else 'none'})")
         editReq = database_interface_pb2.UpdateResReq(resID=request.resID, datetime=request.datetime, duration=request.duration, delete=request.cancel)
         editResp = DB_INTERFACE.updateReservations(editReq)
         reply = client_interface_pb2.ResEditResp(resID=editResp.resID, success=editResp.success, errorCode=editResp.errorCode)
-        print(f"[editRes] response: Success({editResp.success}), Error({editResp.errorCode})")
         return reply
 
 def serve(host="0.0.0.0", port=50052, db_target="localhost:50051", pricing_target="localhost:50054", transaction_target="localhost:50055"):

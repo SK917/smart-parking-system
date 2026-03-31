@@ -31,7 +31,7 @@ class databaseInterface(database_interface_pb2_grpc.Database_InterfaceServicer):
             # deleting them now so we maintain db consistency
             cur.execute(f"DELETE FROM transactions WHERE resID IN ({placeholders})", expired_reservation_ids)
             cur.execute(f"DELETE FROM reservations WHERE resID IN ({placeholders})", expired_reservation_ids)
-        print(f"[getAvailableSpots] {len(expired_reservation_ids)} Users Missed The Window. Deleting Their Reservation & Transaction")
+            print(f"[getAvailableSpots] {len(expired_reservation_ids)} Users Missed The Window. Deleting Their Reservation & Transaction")
         conn.commit()
 
         free_spots = cur.execute(f"SELECT * FROM spots WHERE lotID={request.lotID} AND occupied=false AND spotID NOT IN (SELECT spotID FROM reservations WHERE graceTime>'{now_string}' AND payment_status!='complete')").fetchall()

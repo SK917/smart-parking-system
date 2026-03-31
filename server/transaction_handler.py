@@ -18,7 +18,7 @@ class transactionHandler(transaction_handler_pb2_grpc.Transaction_HandlerService
         if reservations["reservations"] and reservations["reservations"][0]["paymentStatus"] in ["paid", "complete"]:
             # already been paid, return an error.
             reply = transaction_handler_pb2.transResp(resID=request.resID, transID=None, plateNum=request.plateNum, success=False, errorCode="Error: Reservation already paid for")
-            print(f"[makePayment] rejected: Error({reply.errorCode})")
+            print(f"[makePayment] Error({reply.errorCode})")
             return reply
 
         # send request to database interface to create new transaction entry
@@ -43,7 +43,7 @@ class transactionHandler(transaction_handler_pb2_grpc.Transaction_HandlerService
         reply = transaction_handler_pb2.transResp(resID=request.resID, transID=transCreateResp.transID, plateNum=request.plateNum, success=(transCreateResp.success and suc), errorCode=full_error)
 
         if reply.success:
-            print(f"[makePayment] Successfully Processed Reservation ID({reply.resID}), Transaction ID({reply.transID})")
+            print(f"[makePayment] Successfully Processed Transaction ID({reply.transID}), Reservation ID({reply.resID})")
         else:
             print(f"[makePayment] Failure With Payment On Reservation ID({reply.resID}), Error({reply.errorCode})")
 
